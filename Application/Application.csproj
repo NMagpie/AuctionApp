@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="AuctionReviews\" />
+    <Folder Include="Auctions\Commands\" />
+    <Folder Include="Auctions\Dtos\" />
+    <Folder Include="Auctions\Queries\" />
+    <Folder Include="Bids\" />
+    <Folder Include="Lots\" />
+    <Folder Include="UserWatchlists\" />
+    <Folder Include="Users\" />
+  </ItemGroup>
+
+</Project>
