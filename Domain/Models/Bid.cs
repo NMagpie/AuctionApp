@@ -3,9 +3,9 @@
 namespace AuctionApp.Domain.Models;
 public class Bid : Entity
 {
-    public int? LotId { get; set; }
+    public required int LotId { get; set; }
 
-    public Lot? Lot { get; set; }
+    public required Lot Lot { get; set; }
 
     public required decimal Amount { get; set; }
 

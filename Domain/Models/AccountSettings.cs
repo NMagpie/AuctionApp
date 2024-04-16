@@ -9,6 +9,4 @@ public class AccountSettings : Entity
     public User User { get; set; }
 
     public string? BillingInfo { get; set; }
-
-    public string? TwoFactorAuthentication { get; set; }
 }

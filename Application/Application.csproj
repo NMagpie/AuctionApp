@@ -12,14 +12,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AuctionReviews\" />
-    <Folder Include="Auctions\Commands\" />
-    <Folder Include="Auctions\Dtos\" />
-    <Folder Include="Auctions\Queries\" />
-    <Folder Include="Bids\" />
-    <Folder Include="Lots\" />
-    <Folder Include="UserWatchlists\" />
-    <Folder Include="Users\" />
+    <Folder Include="App\CommandHandlers\" />
+    <Folder Include="App\Commands\" />
+    <Folder Include="App\QueryHandlers\" />
+    <Folder Include="App\Queries\" />
+    <Folder Include="App\Responses\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
 </Project>
