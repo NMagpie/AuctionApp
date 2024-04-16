@@ -1,4 +1,5 @@
-﻿using EntityFramework.Domain.Abstractions;
+﻿using Domain.Models;
+using EntityFramework.Domain.Abstractions;
 
 namespace AuctionApp.Domain.Models
 {
@@ -7,5 +8,7 @@ namespace AuctionApp.Domain.Models
         public required string Username { get; set; }
 
         public decimal Balance { get; set; }
+
+        public AccountSettings? AccountSettings { get; set; }
     }
 }
