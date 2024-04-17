@@ -1,12 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace AmdarisEshop.Application.Abstract
+﻿namespace Application.Abstractions;
+public interface IUnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
-    {
-        //public IProductRepository ProductRepository { get; }
-        //public ICategoryRepository CategoryRepository { get; }
-        Task Save();
-    }
+    public IRepository Repository { get; }
+
+    Task SaveChanges();
 }
