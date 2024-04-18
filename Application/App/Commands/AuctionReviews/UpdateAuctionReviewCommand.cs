@@ -8,5 +8,5 @@ public class UpdateAuctionReviewCommand : IRequest<AuctionReviewDto>
 
     public string? ReviewText { get; set; }
 
-    public required float Rating { get; set; }
+    public float? Rating { get; set; }
 }

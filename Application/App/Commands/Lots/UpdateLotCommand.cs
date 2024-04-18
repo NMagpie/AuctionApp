@@ -5,7 +5,7 @@ namespace Application.App.Commands.Lots;
 public class UpdateLotCommand : IRequest<LotDto>
 {
     public int Id { get; set; }
-    public string Title { get; set; }
+    public string? Title { get; set; }
 
     public string? Description { get; set; }
 

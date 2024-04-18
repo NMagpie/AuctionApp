@@ -12,5 +12,5 @@ public class CreateAuctionCommand : IRequest<AuctionDto>
 
     public DateTimeOffset? EndTime { get; set; }
 
-    public HashSet<int> LotIds { get; set; }
+    public HashSet<int> LotIds { get; set; } = [];
 }

@@ -8,12 +8,10 @@ namespace Infrastructure.Persistance.Repositories;
 public class EntityRepository : IRepository
 {
     private readonly AuctionAppDbContext _aucitonAppDbContext;
-    private readonly IMapper _mapper;
 
-    public EntityRepository(AuctionAppDbContext auctionAppDbContext, IMapper mapper)
+    public EntityRepository(AuctionAppDbContext auctionAppDbContext)
     {
         _aucitonAppDbContext = auctionAppDbContext;
-        _mapper = mapper;
     }
 
     public async Task Add<T>(T entity) where T : Entity
@@ -40,12 +38,8 @@ public class EntityRepository : IRepository
     {
         var entity = await _aucitonAppDbContext
             .Set<T>()
-            .FindAsync(id);
-
-        if (entity == null)
-        {
-            throw new ValidationException($"Object of type {typeof(T)} with id {id} not found");
-        }
+            .FindAsync(id)
+        ?? throw new ValidationException($"Object of type {typeof(T)} with id {id} not found");
 
         _aucitonAppDbContext.Set<T>().Remove(entity);
 

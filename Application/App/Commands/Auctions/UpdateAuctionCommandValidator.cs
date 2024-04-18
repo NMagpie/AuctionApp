@@ -10,10 +10,6 @@ public class UpdateAuctionCommandValidator : AbstractValidator<UpdateAuctionComm
             .WithMessage("Invalid user");
 
         RuleFor(x => x.Title)
-            .NotEmpty()
-            .WithMessage("Title must be present");
-
-        RuleFor(x => x.Title)
             .MaximumLength(256)
             .WithMessage("Title must be at most 256 characters long");
 
