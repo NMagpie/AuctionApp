@@ -2,6 +2,7 @@
 using Application.App.Commands.Bids;
 using AuctionApp.Domain.Enumerators;
 using AuctionApp.Domain.Models;
+using System.Timers;
 
 namespace Application.Context;
 public class AuctionContext
@@ -20,16 +21,30 @@ public class AuctionContext
 
     private readonly object lockCurrentLot = new();
 
+    private readonly System.Timers.Timer startTimer = new();
+
+    private readonly System.Timers.Timer endTimer = new();
+
+    private readonly System.Timers.Timer lotTimer = new();
+
     public AuctionContext(Auction auction, IUnitOfWork unitOfWork)
     {
         Auction = auction;
         _unitOfWork = unitOfWork;
+
+        startTimer.Elapsed += StartAuction;
+
+        startTimer.Interval = (DateTimeOffset.UtcNow - Auction.StartTime)!.Value.TotalMilliseconds;
+
+        startTimer.Start();
     }
 
     public DateTimeOffset CurrentLotEndTime => (DateTimeOffset)(Auction.StartTime! + (LotDuration * (_currentLotIndex + 1)));
 
-    public void StartAuction()
+    public void StartAuction(object? source, ElapsedEventArgs? e)
     {
+        startTimer.Stop();
+
         if (Auction.StartTime is null)
         {
             throw new ArgumentNullException("Start Time cannot be null");
@@ -59,19 +74,41 @@ public class AuctionContext
 
         CurrentLot = _lots[0];
 
+        endTimer.Elapsed += FinishAuction;
+
+        endTimer.Interval = (Auction.StartTime - Auction.EndTime).Value.TotalMilliseconds;
+
+        lotTimer.Elapsed += NextLot;
+
+        lotTimer.Interval = LotDuration.TotalMilliseconds;
+
+        endTimer.Start();
+
+        lotTimer.Start();
+
         Auction.StatusId = (int)AuctionStatusId.Active;
 
         _unitOfWork.SaveChanges();
     }
 
-    public void FinishAuction()
+    public void FinishAuction(object? source = null, ElapsedEventArgs? e = null)
     {
         Auction.StatusId = (int)AuctionStatusId.Finished;
 
         _unitOfWork.SaveChanges();
+
+        endTimer.Stop();
+
+        lotTimer.Stop();
+
+        startTimer.Dispose();
+
+        endTimer.Dispose();
+
+        lotTimer.Dispose();
     }
 
-    public void NextLot()
+    public void NextLot(object? source, ElapsedEventArgs? e)
     {
         lock (lockCurrentLot)
         {
@@ -87,6 +124,9 @@ public class AuctionContext
             }
 
             CurrentLot = _lots[++_currentLotIndex];
+
+            lotTimer.Stop();
+            lotTimer.Start();
         }
     }
 
@@ -131,8 +171,6 @@ public class AuctionContext
                 CreateTime = DateTime.UtcNow,
                 IsWon = false,
             };
-
-            //_unitOfWork.Repository.Add(bid);
 
             CurrentLot.Bids!.Add(bid);
 
