@@ -13,13 +13,9 @@ public class CreateLotCommandValidator : AbstractValidator<CreateLotCommand>
             .MaximumLength(256)
             .WithMessage("Title must be at most 256 characters long");
 
-        RuleFor(x => x.Title)
+        RuleFor(x => x.Description)
             .MaximumLength(2048)
             .WithMessage("Description must be at most 2048 characters long");
-
-        RuleFor(x => x.AuctionId)
-            .NotEmpty()
-            .WithMessage("Invalid auction");
 
         RuleFor(x => x.InitialPrice)
             .GreaterThan(0)

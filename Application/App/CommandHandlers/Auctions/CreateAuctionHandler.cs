@@ -23,10 +23,8 @@ public class CreateAuctionHandler : IRequestHandler<CreateAuctionCommand, Auctio
     {
         _validator.Validate(request);
 
-        User user = null;
-
-        //var user = await _unitofWork.Repository.GetById<User>(request.CreatorId)
-        //    ?? throw new ArgumentNullException("User cannot be found");
+        var user = await _unitofWork.Repository.GetById<User>(request.CreatorId)
+            ?? throw new ArgumentNullException("User cannot be found");
 
         var statusId = (int)AuctionStatusId.Created;
 
@@ -35,7 +33,8 @@ public class CreateAuctionHandler : IRequestHandler<CreateAuctionCommand, Auctio
         var lots = request.LotIds
             .Select(async lotId => await _unitofWork.Repository.GetById<Lot>(lotId))
             .Select(t => t.Result)
-            .ToHashSet();
+            .Select((lot, i) => { lot.LotOrder = i; return lot; })
+            .ToList();
 
         var auction = new Auction()
         {

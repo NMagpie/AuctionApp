@@ -8,9 +8,9 @@ public class CreateLotCommand : IRequest<LotDto>
 
     public string? Description { get; set; }
 
-    public int AuctionId { get; set; }
+    public int? AuctionId { get; set; }
 
     public decimal InitialPrice { get; set; }
 
-    public HashSet<CategoryDto> Categories { get; set; } = [];
+    public HashSet<int> Categories { get; set; } = [];
 }

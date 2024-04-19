@@ -12,6 +12,8 @@ public class Lot : Entity
 
     public Auction? Auction { get; set; }
 
+    public int? LotOrder {  get; set; }
+
     public decimal? InitialPrice { get; set; }
 
     public ICollection<Bid>? Bids { get; set; }

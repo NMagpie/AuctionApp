@@ -1,4 +1,5 @@
 ﻿using AuctionApp.Domain.Models;
+using EntityFramework.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -11,6 +12,8 @@ public class AuctionAppDbContext : DbContext
 
     public DbSet<Bid> Bids { get; set; } = default!;
 
+    public DbSet<Category> Categories { get; set; } = default!;
+
     public DbSet<Lot> Lots { get; set; } = default!;
 
     public DbSet<User> Users { get; set; } = default!;
@@ -22,7 +25,7 @@ public class AuctionAppDbContext : DbContext
         //(localdb)\mssqllocaldb
 
         optionsBuilder
-            .UseSqlServer(@"Server=localhost;Database=AuctionAppEF3;Trusted_Connection=True;MultipleActiveResultSets=False;Integrated Security=true;Encrypt=false")
+            .UseSqlServer(@"Server=localhost;Database=AuctionAppEF2;Trusted_Connection=True;MultipleActiveResultSets=False;Integrated Security=true;Encrypt=false")
             .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },
             LogLevel.Information);
     }

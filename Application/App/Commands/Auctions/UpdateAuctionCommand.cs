@@ -12,5 +12,5 @@ public class UpdateAuctionCommand : IRequest<AuctionDto>
 
     public DateTimeOffset? EndTime { get; set; }
 
-    public HashSet<int>? LotIds { get; set; }
+    public List<int>? LotIds { get; set; }
 }

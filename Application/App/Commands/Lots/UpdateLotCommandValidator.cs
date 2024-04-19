@@ -21,10 +21,6 @@ public class UpdateLotCommandValidator : AbstractValidator<UpdateLotCommand>
             .MaximumLength(2048)
             .WithMessage("Description must be at most 2048 characters long");
 
-        RuleFor(x => x.AuctionId)
-            .NotEmpty()
-            .WithMessage("Invalid auction");
-
         RuleFor(x => x.InitialPrice)
             .GreaterThan(0)
             .WithMessage("Initial price must be greater than 0");

@@ -11,6 +11,8 @@ public class LotDto
 
     public int? AuctionId { get; set; }
 
+    public int? LotOrder { get; set; }
+
     public decimal? InitialPrice { get; set; }
 
     public HashSet<int> BidIds { get; set; } = [];
@@ -25,6 +27,7 @@ public class LotDto
             Title = lot.Title,
             Description = lot.Description,
             AuctionId = lot.AuctionId,
+            LotOrder = lot.LotOrder,
             InitialPrice = lot.InitialPrice,
             BidIds = lot.Bids?.Select(bid => bid.Id).ToHashSet() ?? [],
             Categories = lot.Categories?.Select(category => new CategoryDto { Id = category.Id, Name = category.Name }).ToHashSet() ?? [],
