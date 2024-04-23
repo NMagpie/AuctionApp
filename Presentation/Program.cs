@@ -1,5 +1,5 @@
 ﻿using Application.Abstractions;
-using Application.App.Commands.Auctions;
+using Application.App.Auctions.Commands;
 using Infrastructure.Persistance;
 using Infrastructure.Persistance.Repositories;
 using MediatR;
@@ -8,8 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 var diContainer = new ServiceCollection()
     .AddSingleton<AuctionAppDbContext, AuctionAppDbContext>()
     .AddSingleton<IRepository, EntityRepository>()
-    .AddSingleton<IUnitOfWork, UnitOfWork>()
-    .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IUnitOfWork).Assembly))
+    .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IRepository).Assembly))
     .BuildServiceProvider();
 
 var mediator = diContainer.GetRequiredService<IMediator>();

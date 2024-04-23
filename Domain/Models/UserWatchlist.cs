@@ -6,10 +6,10 @@ namespace AuctionApp.Domain.Models
     {
         public required int UserId { get; set; }
 
-        public required User User { get; set; }
+        public User User { get; set; }
 
-        public int? AuctionId { get; set; }
+        public required int AuctionId { get; set; }
 
-        public Auction? Auction { get; set; }
+        public Auction Auction { get; set; }
     }
 }

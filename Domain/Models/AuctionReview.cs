@@ -10,7 +10,7 @@ namespace AuctionApp.Domain.Models
 
         public required int AuctionId { get; set; }
 
-        public required Auction Auction { get; set; }
+        public Auction Auction { get; set; }
 
         public string? ReviewText { get; set; }
 

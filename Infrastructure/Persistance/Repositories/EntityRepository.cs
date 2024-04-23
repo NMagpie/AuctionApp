@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions;
-using AutoMapper;
 using EntityFramework.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
@@ -7,42 +6,57 @@ using System.ComponentModel.DataAnnotations;
 namespace Infrastructure.Persistance.Repositories;
 public class EntityRepository : IRepository
 {
-    private readonly AuctionAppDbContext _aucitonAppDbContext;
+    private readonly AuctionAppDbContext _auctionAppDbContext;
 
     public EntityRepository(AuctionAppDbContext auctionAppDbContext)
     {
-        _aucitonAppDbContext = auctionAppDbContext;
+        _auctionAppDbContext = auctionAppDbContext;
     }
 
-    public async Task Add<T>(T entity) where T : Entity
+    public Task<T?> GetById<T>(int id) where T : Entity
     {
-        await _aucitonAppDbContext
+        return _auctionAppDbContext.FindAsync<T>(id).AsTask();
+    }
+
+    public Task<List<T>> GetByIds<T>(List<int> ids) where T : Entity
+    {
+        IQueryable<T> query = _auctionAppDbContext
             .Set<T>()
-            .AddAsync(entity);
+            .AsQueryable()
+            .Where(e => ids.Contains(e.Id));
+
+        return query.ToListAsync();
     }
 
-    public async Task<List<T>> GetAll<T>() where T : Entity
+    public Task<List<T>> GetAll<T>() where T : Entity
     {
-        return await _aucitonAppDbContext
+        return _auctionAppDbContext
             .Set<T>()
             .ToListAsync();
     }
 
-    public async Task<T> GetById<T>(int id) where T : Entity
+    public Task Add<T>(T entity) where T : Entity
     {
-        return await _aucitonAppDbContext
-            .FindAsync<T>(id);
+        return _auctionAppDbContext
+            .Set<T>()
+            .AddAsync(entity)
+            .AsTask();
     }
 
     public async Task<T> Remove<T>(int id) where T : Entity
     {
-        var entity = await _aucitonAppDbContext
+        var entity = await _auctionAppDbContext
             .Set<T>()
             .FindAsync(id)
         ?? throw new ValidationException($"Object of type {typeof(T)} with id {id} not found");
 
-        _aucitonAppDbContext.Set<T>().Remove(entity);
+        _auctionAppDbContext.Set<T>().Remove(entity);
 
         return entity;
+    }
+
+    public Task SaveChanges()
+    {
+        return _auctionAppDbContext.SaveChangesAsync();
     }
 }

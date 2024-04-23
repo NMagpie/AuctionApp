@@ -5,7 +5,7 @@ public class Bid : Entity
 {
     public required int LotId { get; set; }
 
-    public required Lot Lot { get; set; }
+    public Lot Lot { get; set; }
 
     public required decimal Amount { get; set; }
 

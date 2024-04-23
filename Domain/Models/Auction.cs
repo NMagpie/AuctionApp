@@ -16,7 +16,7 @@ public class Auction : Entity
 
     public required int StatusId { get; set; }
 
-    public required AuctionStatus Status { get; set; }
+    public AuctionStatus? Status { get; set; }
 
-    public ICollection<Lot>? Lots { get; set; }
+    public ICollection<Lot>? Lots { get; set; } = [];
 }

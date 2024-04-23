@@ -8,15 +8,13 @@ public class Lot : Entity
 
     public string? Description { get; set; }
 
-    public int? AuctionId { get; set; }
+    public required int AuctionId { get; set; }
 
-    public Auction? Auction { get; set; }
+    public Auction Auction { get; set; }
 
-    public int? LotOrder {  get; set; }
+    public decimal InitialPrice { get; set; }
 
-    public decimal? InitialPrice { get; set; }
+    public ICollection<Bid>? Bids { get; set; } = [];
 
-    public ICollection<Bid>? Bids { get; set; }
-
-    public ICollection<Category>? Categories { get; set; }
+    public ICollection<Category>? Categories { get; set; } = [];
 }
