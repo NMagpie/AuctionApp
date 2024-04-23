@@ -10,9 +10,5 @@ public class AuctionConfiguration : IEntityTypeConfiguration<Auction>
         builder
             .Property(x => x.Title)
             .HasMaxLength(256);
-
-        builder
-            .Property(x => x.StatusId)
-            .HasConversion<int>();
     }
 }

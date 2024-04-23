@@ -24,5 +24,13 @@ public class CreateAuctionCommandValidator : AbstractValidator<CreateAuctionComm
         RuleFor(x => x.EndTime)
             .GreaterThan(DateTimeOffset.UtcNow)
             .WithMessage("End Time must be greater than current time");
+
+        RuleFor(x => x.EndTime)
+            .GreaterThan(x => x.StartTime)
+            .WithMessage("End Time must be greater than start time");
+
+        RuleFor(x => x.Lots.Count)
+            .GreaterThanOrEqualTo(1)
+            .WithMessage("Must be at least one lot");
     }
 }

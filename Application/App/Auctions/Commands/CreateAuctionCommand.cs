@@ -1,8 +1,6 @@
 ﻿using Application.Abstractions;
 using Application.App.Auctions.Responses;
-using AuctionApp.Domain.Enumerators;
 using AuctionApp.Domain.Models;
-using EntityFramework.Domain.Models;
 using MediatR;
 
 namespace Application.App.Auctions.Commands;
@@ -13,11 +11,11 @@ public class CreateAuctionCommand : IRequest<AuctionDto>
 
     public int CreatorId { get; set; }
 
-    public DateTimeOffset? StartTime { get; set; }
+    public DateTimeOffset StartTime { get; set; }
 
-    public DateTimeOffset? EndTime { get; set; }
+    public DateTimeOffset EndTime { get; set; }
 
-    public List<int> LotIds { get; set; } = [];
+    public List<Lot> Lots { get; set; } = [];
 }
 
 public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand, AuctionDto>
@@ -39,12 +37,6 @@ public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand,
         var user = await _repository.GetById<User>(request.CreatorId)
             ?? throw new ArgumentNullException("User cannot be found");
 
-        var statusId = (int)AuctionStatusId.Created;
-
-        var auctionStatus = await _repository.GetById<AuctionStatus>(statusId);
-
-        var lots = await _repository.GetByIds<Lot>(request.LotIds);
-            
         var auction = new Auction()
         {
             Title = request.Title,
@@ -52,9 +44,7 @@ public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand,
             Creator = user,
             StartTime = request.StartTime,
             EndTime = request.EndTime,
-            StatusId = statusId,
-            Status = auctionStatus,
-            Lots = lots
+            Lots = request.Lots
         };
 
         await _repository.Add(auction);

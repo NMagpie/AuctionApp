@@ -13,8 +13,6 @@ public class AuctionDto
 
     public DateTimeOffset? EndTime { get; set; }
 
-    public required string Status { get; set; }
-
     public HashSet<int> LotIds { get; set; } = [];
 
     public static AuctionDto FromAuction(Auction auction)
@@ -26,7 +24,6 @@ public class AuctionDto
             CreatorId = auction.CreatorId,
             StartTime = auction.StartTime,
             EndTime = auction.EndTime,
-            Status = auction.Status.Status.ToString(),
             LotIds = auction.Lots?.Select(lot => lot.Id).ToHashSet() ?? []
         };
     }

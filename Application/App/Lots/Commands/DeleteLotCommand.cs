@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Application.App.Lots.Responses;
-using AuctionApp.Domain.Enumerators;
 using AuctionApp.Domain.Models;
 using MediatR;
 
@@ -24,9 +23,14 @@ public class DeleteLotCommandHandler : IRequestHandler<DeleteLotCommand, LotDto>
         var lot = await _repository.GetById<Lot>(request.Id)
             ?? throw new ArgumentNullException("Lot cannot be found");
 
-        if (lot.Auction?.StatusId != (int)AuctionStatusId.Created)
+        if (lot.Auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {
-            throw new ArgumentException("Cannot edit lot of started auction");
+            throw new ArgumentException("Cannot edit lots of auction 5 minutes before its start");
+        }
+
+        if (lot.Auction.Lots.Count <= 1)
+        {
+            throw new ArgumentException("Cannot delete lot: must be at least one lot present");
         }
 
         lot = await _repository.Remove<Lot>(request.Id);

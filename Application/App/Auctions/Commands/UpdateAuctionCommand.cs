@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Application.App.Auctions.Responses;
-using AuctionApp.Domain.Enumerators;
 using AuctionApp.Domain.Models;
 using MediatR;
 
@@ -15,8 +14,6 @@ public class UpdateAuctionCommand : IRequest<AuctionDto>
     public DateTimeOffset? StartTime { get; set; }
 
     public DateTimeOffset? EndTime { get; set; }
-
-    public List<int>? LotIds { get; set; }
 }
 
 public class UpdateAuctionCommandHandler : IRequestHandler<UpdateAuctionCommand, AuctionDto>
@@ -38,18 +35,14 @@ public class UpdateAuctionCommandHandler : IRequestHandler<UpdateAuctionCommand,
         var auction = await _repository.GetById<Auction>(request.Id)
             ?? throw new ArgumentNullException("Auction cannot be found");
 
-        if (auction.StatusId != (int)AuctionStatusId.Created)
+        if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {
-            throw new ArgumentException("Cannot update started or finished auction");
+            throw new ArgumentException("Cannot edit auction 5 minutes before its start");
         }
 
         auction.Title = request.Title ?? auction.Title;
         auction.StartTime = request.StartTime ?? auction.StartTime;
         auction.EndTime = request.EndTime ?? auction.EndTime;
-
-        var lots = await _repository.GetByIds<Lot>(request.LotIds ?? []);
-
-        auction.Lots = lots ?? [];
 
         await _repository.SaveChanges();
 

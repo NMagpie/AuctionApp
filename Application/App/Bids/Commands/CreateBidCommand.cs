@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Application.App.Bids.Responses;
-using AuctionApp.Domain.Enumerators;
 using AuctionApp.Domain.Models;
 using MediatR;
 
@@ -9,6 +8,8 @@ namespace Application.App.Bids.Commands;
 public class CreateBidCommand : IRequest<BidDto>
 {
     public required int LotId { get; set; }
+
+    public required int UserId { get; set; }
 
     public required decimal Amount { get; set; }
 }
@@ -32,22 +33,21 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
         var lot = await _repository.GetById<Lot>(request.LotId)
             ?? throw new ArgumentNullException("Lot cannot be found");
 
-        var auction = lot.Auction
-            ?? throw new ArgumentNullException("Auction cannot be found");
-
-        if (auction.StatusId != (int)AuctionStatusId.Active)
-        {
-            throw new ArgumentException("Cannot place bid: Auction is not active");
-        }
+        var auction = lot.Auction;
 
         if (auction.EndTime <= DateTime.UtcNow)
         {
             throw new ArgumentException("Cannot place bid: Auction Time is out");
         }
 
-        // place bid using auction manager and receive bid record.
-
-        Bid bid = null;
+        var bid = new Bid()
+        {
+            LotId = lot.Id,
+            UserId = request.UserId,
+            Amount = request.Amount,
+            CreateTime = DateTime.UtcNow,
+            IsWon = false
+        };
 
         await _repository.Add(bid);
 

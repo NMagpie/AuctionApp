@@ -1,6 +1,5 @@
 ﻿using Application.Abstractions;
 using Application.App.Auctions.Responses;
-using AuctionApp.Domain.Enumerators;
 using AuctionApp.Domain.Models;
 using MediatR;
 
@@ -25,9 +24,9 @@ public class DeleteAuctionCommandHandler : IRequestHandler<DeleteAuctionCommand,
         var auction = await _repository.GetById<Auction>(request.Id)
             ?? throw new ArgumentNullException("Auction cannot be found");
 
-        if (auction.StatusId != (int)AuctionStatusId.Created)
+        if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {
-            throw new ArgumentException("Cannot edit started auction");
+            throw new ArgumentException("Cannot delete auction 5 minutes before its start");
         }
 
         auction = await _repository.Remove<Auction>(request.Id);

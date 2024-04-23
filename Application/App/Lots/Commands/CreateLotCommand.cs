@@ -10,7 +10,7 @@ public class CreateLotCommand : IRequest<LotDto>
 {
     public string Title { get; set; }
 
-    public string? Description { get; set; }
+    public string? Description { get; set; } = "";
 
     public int AuctionId { get; set; }
 
@@ -39,13 +39,18 @@ public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand, LotDto>
         var auction = await _repository.GetById<Auction>(request.AuctionId)
             ?? throw new ArgumentNullException("Auciton cannot be found");
 
+        if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
+        {
+            throw new ArgumentException("Cannot edit lots of auction 5 minutes before its start");
+        }
+
         var categories = (await _repository.GetByIds<Category>(request.Categories.ToList()))
             .ToHashSet();
 
         var lot = new Lot()
         {
             Title = request.Title,
-            Description = request.Description ?? "",
+            Description = request.Description,
             AuctionId = auction.Id,
             InitialPrice = request.InitialPrice,
             Categories = categories

@@ -39,12 +39,15 @@ public class CreateAuctionReviewCommandHandler : IRequestHandler<CreateAuctionRe
         var auction = await _repository.GetById<Auction>(request.AuctionId)
             ?? throw new ArgumentNullException("Auction cannot be found");
 
+        if (auction.EndTime >= DateTime.UtcNow)
+        {
+            throw new ArgumentException("Cannot put review: auction is not finished");
+        }
+
         var auctionReview = new AuctionReview
         {
-            UserId = request.UserId,
-            User = user,
-            AuctionId = request.AuctionId,
-            Auction = auction,
+            UserId = user.Id,
+            AuctionId = auction.Id,
             ReviewText = request.ReviewText,
             Rating = request.Rating,
         };

@@ -7,6 +7,10 @@ public class Bid : Entity
 
     public Lot Lot { get; set; }
 
+    public required int UserId { get; set; }
+
+    public User User { get; set; }
+
     public required decimal Amount { get; set; }
 
     public required DateTimeOffset CreateTime { get; set; }
