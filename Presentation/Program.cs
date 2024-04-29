@@ -1,24 +1,34 @@
-﻿using Application.Abstractions;
-using Application.App.Auctions.Commands;
+using Application.Abstractions;
 using Infrastructure.Persistance;
 using Infrastructure.Persistance.Repositories;
-using MediatR;
-using Microsoft.Extensions.DependencyInjection;
 
-var diContainer = new ServiceCollection()
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+builder.Services
     .AddSingleton<AuctionAppDbContext, AuctionAppDbContext>()
     .AddSingleton<IRepository, EntityRepository>()
-    .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IRepository).Assembly))
-    .BuildServiceProvider();
+    .AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(IRepository).Assembly));
 
-var mediator = diContainer.GetRequiredService<IMediator>();
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-var auction = await mediator.Send(
-    new CreateAuctionCommand
-    {
-        Title = "123",
-        CreatorId = 1,
-        StartTime = DateTime.UtcNow + TimeSpan.FromMinutes(10),
-        EndTime = DateTime.UtcNow + TimeSpan.FromMinutes(20),
-    }
-    );
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseHttpsRedirection();
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();

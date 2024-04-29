@@ -8,12 +8,12 @@ namespace AuctionApp.Domain.Models
 
         public User? User { get; set; }
 
-        public required int AuctionId { get; set; }
+        public int AuctionId { get; set; }
 
-        public Auction Auction { get; set; }
+        public Auction? Auction { get; set; }
 
         public string? ReviewText { get; set; }
 
-        public required float Rating { get; set; }
+        public float Rating { get; set; }
     }
 }

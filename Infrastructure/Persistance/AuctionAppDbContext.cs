@@ -22,8 +22,6 @@ public class AuctionAppDbContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        //(localdb)\mssqllocaldb
-
         optionsBuilder
             .UseSqlServer(@"Server=localhost;Database=AuctionAppEF2;Trusted_Connection=True;MultipleActiveResultSets=False;Integrated Security=true;Encrypt=false")
             .LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name },

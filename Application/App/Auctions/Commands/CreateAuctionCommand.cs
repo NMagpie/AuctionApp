@@ -1,13 +1,14 @@
 ﻿using Application.Abstractions;
 using Application.App.Auctions.Responses;
 using AuctionApp.Domain.Models;
+using FluentValidation;
 using MediatR;
 
 namespace Application.App.Auctions.Commands;
 
 public class CreateAuctionCommand : IRequest<AuctionDto>
 {
-    public required string Title { get; set; }
+    public string Title { get; set; }
 
     public int CreatorId { get; set; }
 
@@ -32,7 +33,7 @@ public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand,
 
     public async Task<AuctionDto> Handle(CreateAuctionCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var user = await _repository.GetById<User>(request.CreatorId)
             ?? throw new ArgumentNullException("User cannot be found");

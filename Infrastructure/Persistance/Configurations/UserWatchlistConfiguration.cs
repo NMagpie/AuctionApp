@@ -10,5 +10,9 @@ public class UserWatchlistConfiguration : IEntityTypeConfiguration<UserWatchlist
         builder
             .HasIndex(x => new { x.UserId, x.AuctionId })
             .IsUnique();
+
+        builder.Navigation(x => x.User).AutoInclude();
+
+        builder.Navigation(x => x.Auction).AutoInclude();
     }
 }

@@ -3,7 +3,7 @@
 namespace AuctionApp.Domain.Models;
 public class Auction : Entity
 {
-    public required string Title { get; set; }
+    public string Title { get; set; }
 
     public int? CreatorId { get; set; }
 

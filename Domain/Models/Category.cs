@@ -4,7 +4,7 @@ using EntityFramework.Domain.Abstractions;
 namespace EntityFramework.Domain.Models;
 public class Category : Entity
 {
-    public required string Name { get; set; }
+    public string Name { get; set; }
 
     public ICollection<Lot>? Lots { get; set; } = [];
 }

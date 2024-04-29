@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.App.Lots.Commands;
+using FluentValidation;
 
 namespace Application.App.Auctions.Commands;
 public class CreateAuctionCommandValidator : AbstractValidator<CreateAuctionCommand>
@@ -18,8 +19,8 @@ public class CreateAuctionCommandValidator : AbstractValidator<CreateAuctionComm
             .WithMessage("Invalid user");
 
         RuleFor(x => x.StartTime)
-            .GreaterThan(DateTimeOffset.UtcNow)
-            .WithMessage("Start Time must be greater than current time");
+            .GreaterThan(DateTimeOffset.UtcNow + TimeSpan.FromMinutes(5))
+            .WithMessage("Start Time must be greater than current time for at least 5 minutes");
 
         RuleFor(x => x.EndTime)
             .GreaterThan(DateTimeOffset.UtcNow)
@@ -32,5 +33,7 @@ public class CreateAuctionCommandValidator : AbstractValidator<CreateAuctionComm
         RuleFor(x => x.Lots.Count)
             .GreaterThanOrEqualTo(1)
             .WithMessage("Must be at least one lot");
+
+        RuleForEach(x => x.Lots).SetValidator(new LotObjectValibator());
     }
 }

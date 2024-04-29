@@ -10,5 +10,9 @@ public class AuctionReviewConfiguration : IEntityTypeConfiguration<AuctionReview
         builder
             .Property(x => x.ReviewText)
             .HasMaxLength(2048);
+
+        builder.Navigation(x => x.User).AutoInclude();
+
+        builder.Navigation(x => x.Auction).AutoInclude();
     }
 }

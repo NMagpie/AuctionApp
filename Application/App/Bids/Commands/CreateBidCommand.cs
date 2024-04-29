@@ -33,7 +33,8 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
         var lot = await _repository.GetById<Lot>(request.LotId)
             ?? throw new ArgumentNullException("Lot cannot be found");
 
-        var auction = lot.Auction;
+        var auction = await _repository.GetById<Auction>(lot.AuctionId)
+            ?? throw new ArgumentNullException("Auction cannot be found");
 
         if (auction.EndTime <= DateTime.UtcNow)
         {

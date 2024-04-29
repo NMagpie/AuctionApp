@@ -1,5 +1,6 @@
 ﻿using Application.App.Responses;
 using AuctionApp.Domain.Models;
+using EntityFramework.Domain.Models;
 
 namespace Application.App.Lots.Responses;
 public class LotDto
@@ -11,8 +12,6 @@ public class LotDto
     public string? Description { get; set; }
 
     public int? AuctionId { get; set; }
-
-    public int? LotOrder { get; set; }
 
     public decimal? InitialPrice { get; set; }
 
