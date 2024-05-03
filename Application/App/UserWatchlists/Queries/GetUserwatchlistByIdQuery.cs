@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.UserWatchlists.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Queries;
@@ -13,9 +14,12 @@ public class GetUserWatchlistByIdQueryHandler : IRequestHandler<GetUserWatchlist
 {
     private readonly IRepository _repository;
 
-    public GetUserWatchlistByIdQueryHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public GetUserWatchlistByIdQueryHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<UserWatchlistDto> Handle(GetUserWatchlistByIdQuery request, CancellationToken cancellationToken)
@@ -23,7 +27,7 @@ public class GetUserWatchlistByIdQueryHandler : IRequestHandler<GetUserWatchlist
         var auction = await _repository.GetById<UserWatchlist>(request.Id)
             ?? throw new ArgumentNullException("User watchlist cannot be found");
 
-        var auctionDto = UserWatchlistDto.FromUserWatchlist(auction);
+        var auctionDto = _mapper.Map<UserWatchlist, UserWatchlistDto>(auction);
 
         return auctionDto;
     }

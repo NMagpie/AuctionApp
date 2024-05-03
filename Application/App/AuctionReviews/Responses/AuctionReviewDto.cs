@@ -12,16 +12,4 @@ public class AuctionReviewDto
     public string? ReviewText { get; set; }
 
     public required float Rating { get; set; }
-
-    public static AuctionReviewDto FromAuctionReview(AuctionReview auctionReview)
-    {
-        return new AuctionReviewDto
-        {
-            Id = auctionReview.Id,
-            UserId = auctionReview.UserId,
-            AuctionId = auctionReview.AuctionId,
-            ReviewText = auctionReview.ReviewText,
-            Rating = auctionReview.Rating,
-        };
-    }
 }

@@ -8,14 +8,4 @@ public class UserWatchlistDto
     public required int UserId { get; set; }
 
     public int? AuctionId { get; set; }
-
-    public static UserWatchlistDto FromUserWatchlist(UserWatchlist userWatchlist)
-    {
-        return new UserWatchlistDto
-        {
-            Id = userWatchlist.Id,
-            UserId = userWatchlist.UserId,
-            AuctionId = userWatchlist.AuctionId,
-        };
-    }
 }

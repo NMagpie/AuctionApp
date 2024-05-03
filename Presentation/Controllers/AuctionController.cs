@@ -10,13 +10,10 @@ namespace Presentation.Controllers;
 [Route("[controller]")]
 public class AuctionController : ControllerBase
 {
-    private readonly ILogger<AuctionController> _logger;
-
     private readonly IMediator _mediator;
 
-    public AuctionController(ILogger<AuctionController> logger, IMediator mediator)
+    public AuctionController(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 

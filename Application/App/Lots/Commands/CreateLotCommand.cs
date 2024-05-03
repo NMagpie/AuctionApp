@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Lots.Responses;
 using AuctionApp.Domain.Models;
-using EntityFramework.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Lots.Commands;
@@ -10,13 +10,13 @@ public class CreateLotCommand : IRequest<LotDto>
 {
     public string Title { get; set; }
 
-    public string? Description { get; set; } = "";
+    public string? Description { get; set; }
 
     public int AuctionId { get; set; }
 
     public decimal InitialPrice { get; set; }
 
-    public HashSet<int> Categories { get; set; } = [];
+    public HashSet<string> Categories { get; set; } = [];
 }
 
 public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand, LotDto>
@@ -26,10 +26,13 @@ public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand, LotDto>
 
     private readonly CreateLotCommandValidator _validator;
 
-    public CreateLotCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public CreateLotCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new CreateLotCommandValidator();
+        _mapper = mapper;
     }
 
     public async Task<LotDto> Handle(CreateLotCommand request, CancellationToken cancellationToken)
@@ -44,23 +47,13 @@ public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand, LotDto>
             throw new ArgumentException("Cannot edit lots of auction 5 minutes before its start");
         }
 
-        var categories = (await _repository.GetByIds<Category>(request.Categories.ToList()))
-            .ToHashSet();
-
-        var lot = new Lot()
-        {
-            Title = request.Title,
-            Description = request.Description,
-            AuctionId = auction.Id,
-            InitialPrice = request.InitialPrice,
-            Categories = categories
-        };
+        var lot = _mapper.Map<CreateLotCommand, Lot>(request);
 
         await _repository.Add(lot);
 
         await _repository.SaveChanges();
 
-        var lotDto = LotDto.FromLot(lot);
+        var lotDto = _mapper.Map<Lot, LotDto>(lot);
 
         return lotDto;
     }

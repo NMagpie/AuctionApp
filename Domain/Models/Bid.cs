@@ -15,5 +15,5 @@ public class Bid : Entity
 
     public DateTimeOffset CreateTime { get; set; }
 
-    public bool IsWon { get; set; }
+    public bool IsWon { get; set; } = false;
 }

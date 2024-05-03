@@ -1,7 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Lots.Responses;
 using AuctionApp.Domain.Models;
-using EntityFramework.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Lots.Commands;
@@ -9,13 +9,13 @@ namespace Application.App.Lots.Commands;
 public class UpdateLotCommand : IRequest<LotDto>
 {
     public int Id { get; set; }
-    public string? Title { get; set; }
+    public string Title { get; set; }
 
-    public string? Description { get; set; }
+    public string Description { get; set; }
 
-    public decimal? InitialPrice { get; set; }
+    public decimal InitialPrice { get; set; }
 
-    public HashSet<int>? Categories { get; set; } = [];
+    public HashSet<string> Categories { get; set; } = [];
 }
 
 public class UpdateLotCommandHandler : IRequestHandler<UpdateLotCommand, LotDto>
@@ -25,17 +25,20 @@ public class UpdateLotCommandHandler : IRequestHandler<UpdateLotCommand, LotDto>
 
     private readonly UpdateLotCommandValidator _validator;
 
-    public UpdateLotCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public UpdateLotCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new UpdateLotCommandValidator();
+        _mapper = mapper;
     }
 
     public async Task<LotDto> Handle(UpdateLotCommand request, CancellationToken cancellationToken)
     {
         _validator.Validate(request);
 
-        var lot = await _repository.GetById<Lot>(request.Id)
+        var lot = await _repository.GetByIdWithInclude<Lot>(request.Id, lot => lot.Auction)
             ?? throw new ArgumentNullException("Lot cannot be found");
 
         if (lot.Auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
@@ -43,17 +46,11 @@ public class UpdateLotCommandHandler : IRequestHandler<UpdateLotCommand, LotDto>
             throw new ArgumentException("Cannot edit lots of auction 5 minutes before its start");
         }
 
-        var categories = (await _repository.GetByIds<Category>(request.Categories?.ToList() ?? []))
-            .ToHashSet();
-
-        lot.Title = request.Title ?? lot.Title;
-        lot.Description = request.Description ?? lot.Description;
-        lot.InitialPrice = request.InitialPrice ?? lot.InitialPrice;
-        lot.Categories = categories ?? lot.Categories;
+        _mapper.Map(request, lot);
 
         await _repository.SaveChanges();
 
-        var lotDto = LotDto.FromLot(lot);
+        var lotDto = _mapper.Map<Lot, LotDto>(lot);
 
         return lotDto;
     }

@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Bids.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Queries;
@@ -13,18 +14,21 @@ public class GetBidByIdQueryHandler : IRequestHandler<GetBidByIdQuery, BidDto>
 {
     private readonly IRepository _repository;
 
-    public GetBidByIdQueryHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public GetBidByIdQueryHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<BidDto> Handle(GetBidByIdQuery request, CancellationToken cancellationToken)
     {
-        var auction = await _repository.GetById<Bid>(request.Id)
+        var bid = await _repository.GetById<Bid>(request.Id)
             ?? throw new ArgumentNullException("Bid cannot be found");
 
-        var auctionDto = BidDto.FromBid(auction);
+        var bidDto = _mapper.Map<Bid, BidDto>(bid);
 
-        return auctionDto;
+        return bidDto;
     }
 }

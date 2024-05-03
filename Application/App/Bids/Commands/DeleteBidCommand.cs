@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Bids.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Bids.Commands;
@@ -16,9 +17,12 @@ public class DeleteBidCommandHandler : IRequestHandler<DeleteBidCommand, BidDto>
 
     private readonly IRepository _repository;
 
-    public DeleteBidCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public DeleteBidCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<BidDto> Handle(DeleteBidCommand request, CancellationToken cancellationToken)
@@ -35,7 +39,7 @@ public class DeleteBidCommandHandler : IRequestHandler<DeleteBidCommand, BidDto>
 
         await _repository.SaveChanges();
 
-        var bidDto = BidDto.FromBid(bid);
+        var bidDto = _mapper.Map<Bid, BidDto>(bid);
 
         return bidDto;
     }

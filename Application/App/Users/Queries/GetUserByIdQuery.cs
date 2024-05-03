@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Users.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Queries;
@@ -13,18 +14,21 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto
 {
     private readonly IRepository _repository;
 
-    public GetUserByIdQueryHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public GetUserByIdQueryHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var auction = await _repository.GetById<User>(request.Id)
+        var user = await _repository.GetById<User>(request.Id)
             ?? throw new ArgumentNullException("User cannot be found");
 
-        var auctionDto = UserDto.FromUser(auction);
+        var userDto = _mapper.Map<User, UserDto>(user);
 
-        return auctionDto;
+        return userDto;
     }
 }

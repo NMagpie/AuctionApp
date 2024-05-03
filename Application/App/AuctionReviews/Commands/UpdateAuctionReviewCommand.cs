@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.AuctionReviews.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using FluentValidation;
 using MediatR;
 
@@ -10,9 +11,9 @@ public class UpdateAuctionReviewCommand : IRequest<AuctionReviewDto>
 {
     public int Id { get; set; }
 
-    public string? ReviewText { get; set; }
+    public string ReviewText { get; set; }
 
-    public float? Rating { get; set; }
+    public float Rating { get; set; }
 }
 
 public class UpdateAuctionReviewCommandHandler : IRequestHandler<UpdateAuctionReviewCommand, AuctionReviewDto>
@@ -21,10 +22,13 @@ public class UpdateAuctionReviewCommandHandler : IRequestHandler<UpdateAuctionRe
 
     private readonly UpdateAuctionReviewCommandValidator _validator;
 
-    public UpdateAuctionReviewCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public UpdateAuctionReviewCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new UpdateAuctionReviewCommandValidator();
+        _mapper = mapper;
     }
 
     public async Task<AuctionReviewDto> Handle(UpdateAuctionReviewCommand request, CancellationToken cancellationToken)
@@ -34,13 +38,11 @@ public class UpdateAuctionReviewCommandHandler : IRequestHandler<UpdateAuctionRe
         var auctionReview = await _repository.GetById<AuctionReview>(request.Id)
             ?? throw new ArgumentNullException("AuctionReview cannot be found");
 
-        auctionReview.ReviewText = request.ReviewText ?? auctionReview.ReviewText;
-
-        auctionReview.Rating = request.Rating ?? auctionReview.Rating;
+        _mapper.Map(request, auctionReview);
 
         await _repository.SaveChanges();
 
-        var auctionReviewDto = AuctionReviewDto.FromAuctionReview(auctionReview);
+        var auctionReviewDto = _mapper.Map<AuctionReview, AuctionReviewDto>(auctionReview);
 
         return auctionReviewDto;
     }

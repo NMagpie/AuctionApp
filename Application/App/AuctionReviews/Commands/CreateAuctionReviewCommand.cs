@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.AuctionReviews.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.AuctionReviews.Commands;
@@ -23,10 +24,13 @@ public class CreateAuctionReviewCommandHandler : IRequestHandler<CreateAuctionRe
 
     private readonly CreateAuctionReviewCommandValidator _validator;
 
-    public CreateAuctionReviewCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public CreateAuctionReviewCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new CreateAuctionReviewCommandValidator();
+        _mapper = mapper;
     }
 
     public async Task<AuctionReviewDto> Handle(CreateAuctionReviewCommand request, CancellationToken cancellationToken)
@@ -44,19 +48,13 @@ public class CreateAuctionReviewCommandHandler : IRequestHandler<CreateAuctionRe
             throw new ArgumentException("Cannot put review: auction is not finished");
         }
 
-        var auctionReview = new AuctionReview
-        {
-            UserId = user.Id,
-            AuctionId = auction.Id,
-            ReviewText = request.ReviewText,
-            Rating = request.Rating,
-        };
+        var auctionReview = _mapper.Map<CreateAuctionReviewCommand, AuctionReview>(request);
 
         await _repository.Add(auctionReview);
 
         await _repository.SaveChanges();
 
-        var auctionReviewDto = AuctionReviewDto.FromAuctionReview(auctionReview);
+        var auctionReviewDto = _mapper.Map<AuctionReview, AuctionReviewDto>(auctionReview);
 
         return auctionReviewDto;
     }

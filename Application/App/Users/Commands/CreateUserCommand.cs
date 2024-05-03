@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Users.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Users.Commands;
@@ -16,27 +17,28 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
 
     private readonly CreateUserCommandValidator _validator;
 
-    public CreateUserCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public CreateUserCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new CreateUserCommandValidator();
+        _mapper = mapper;
     }
 
     public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
         _validator.Validate(request);
 
-        var user = new User()
-        {
-            Username = request.Username,
-            Balance = 0
-        };
+        var user = _mapper.Map<CreateUserCommand, User>(request);
+
+        user.Balance = 0;
 
         await _repository.Add(user);
 
         await _repository.SaveChanges();
 
-        var userDto = UserDto.FromUser(user);
+        var userDto = _mapper.Map<User, UserDto>(user);
 
         return userDto;
     }

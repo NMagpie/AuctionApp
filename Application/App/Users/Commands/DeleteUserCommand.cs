@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Users.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Users.Commands;
@@ -15,9 +16,12 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, UserD
 
     private readonly IRepository _repository;
 
-    public DeleteUserCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public DeleteUserCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
     public async Task<UserDto> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
@@ -25,7 +29,7 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, UserD
 
         await _repository.SaveChanges();
 
-        var userDto = UserDto.FromUser(user);
+        var userDto = _mapper.Map<User, UserDto>(user);
 
         return userDto;
     }

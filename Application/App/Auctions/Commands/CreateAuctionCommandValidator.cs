@@ -30,10 +30,10 @@ public class CreateAuctionCommandValidator : AbstractValidator<CreateAuctionComm
             .GreaterThan(x => x.StartTime)
             .WithMessage("End Time must be greater than start time");
 
-        RuleFor(x => x.Lots.Count)
-            .GreaterThanOrEqualTo(1)
+        RuleFor(x => x.Lots)
+            .NotEmpty()
             .WithMessage("Must be at least one lot");
 
-        RuleForEach(x => x.Lots).SetValidator(new LotObjectValibator());
+        RuleForEach(x => x.Lots).SetValidator(new LotDtoValidator());
     }
 }

@@ -18,11 +18,5 @@ public class LotConfiguration : IEntityTypeConfiguration<Lot>
         builder
             .Property(x => x.InitialPrice)
             .HasColumnType("money");
-
-        builder.Navigation(x => x.Auction).AutoInclude();
-
-        builder.Navigation(x => x.Bids).AutoInclude();
-
-        builder.Navigation(x => x.Categories).AutoInclude();
     }
 }

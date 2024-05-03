@@ -14,9 +14,5 @@ public class BidConfiguration : IEntityTypeConfiguration<Bid>
         builder
             .Property(x => x.IsWon)
             .HasDefaultValue(false);
-
-        builder.Navigation(x => x.Lot).AutoInclude();
-
-        builder.Navigation(x => x.User).AutoInclude();
     }
 }

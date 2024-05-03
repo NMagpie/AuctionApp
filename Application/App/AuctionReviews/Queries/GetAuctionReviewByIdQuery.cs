@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.AuctionReviews.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Queries;
@@ -13,9 +14,12 @@ public class GetAuctionReviewByIdQueryHandler : IRequestHandler<GetAuctionReview
 {
     private readonly IRepository _repository;
 
-    public GetAuctionReviewByIdQueryHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public GetAuctionReviewByIdQueryHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<AuctionReviewDto> Handle(GetAuctionReviewByIdQuery request, CancellationToken cancellationToken)
@@ -23,7 +27,7 @@ public class GetAuctionReviewByIdQueryHandler : IRequestHandler<GetAuctionReview
         var auctionReview = await _repository.GetById<AuctionReview>(request.Id)
             ?? throw new ArgumentNullException("Auction Review cannot be found");
 
-        var auctionReviewDto = AuctionReviewDto.FromAuctionReview(auctionReview);
+        var auctionReviewDto = _mapper.Map<AuctionReview, AuctionReviewDto>(auctionReview);
 
         return auctionReviewDto;
     }

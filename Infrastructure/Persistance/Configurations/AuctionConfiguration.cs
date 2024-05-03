@@ -10,9 +10,5 @@ public class AuctionConfiguration : IEntityTypeConfiguration<Auction>
         builder
             .Property(x => x.Title)
             .HasMaxLength(256);
-
-        builder.Navigation(x => x.Creator).AutoInclude();
-
-        builder.Navigation(x => x.Lots).AutoInclude();
     }
 }

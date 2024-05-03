@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Users.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Users.Commands;
@@ -19,10 +20,13 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
 
     private readonly UpdateUserCommandValidator _validator;
 
-    public UpdateUserCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public UpdateUserCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new UpdateUserCommandValidator();
+        _mapper = mapper;
     }
     public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
@@ -31,11 +35,11 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
         var user = await _repository.GetById<User>(request.Id)
             ?? throw new ArgumentNullException("Use rcannot be found");
 
-        user.Username = request.Username;
+        _mapper.Map(request, user);
 
         await _repository.SaveChanges();
 
-        var userDto = UserDto.FromUser(user);
+        var userDto = _mapper.Map<User, UserDto>(user);
 
         return userDto;
     }

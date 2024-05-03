@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Lots.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Queries;
@@ -13,18 +14,21 @@ public class GetLotByIdQueryHandler : IRequestHandler<GetLotByIdQuery, LotDto>
 {
     private readonly IRepository _repository;
 
-    public GetLotByIdQueryHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public GetLotByIdQueryHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<LotDto> Handle(GetLotByIdQuery request, CancellationToken cancellationToken)
     {
-        var auction = await _repository.GetById<Lot>(request.Id)
+        var lot = await _repository.GetById<Lot>(request.Id)
             ?? throw new ArgumentNullException("Lot cannot be found");
 
-        var auctionDto = LotDto.FromLot(auction);
+        var lotDto = _mapper.Map<Lot, LotDto>(lot);
 
-        return auctionDto;
+        return lotDto;
     }
 }

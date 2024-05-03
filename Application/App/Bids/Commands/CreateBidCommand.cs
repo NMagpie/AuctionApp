@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.Bids.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.Bids.Commands;
@@ -20,41 +21,36 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
 
     private readonly CreateBidCommandValidator _validator;
 
-    public CreateBidCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public CreateBidCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new CreateBidCommandValidator();
+        _mapper = mapper;
     }
 
     public async Task<BidDto> Handle(CreateBidCommand request, CancellationToken cancellationToken)
     {
         _validator.Validate(request);
 
-        var lot = await _repository.GetById<Lot>(request.LotId)
+        var lot = await _repository.GetByIdWithInclude<Lot>(request.LotId, lot => lot.Auction)
             ?? throw new ArgumentNullException("Lot cannot be found");
 
-        var auction = await _repository.GetById<Auction>(lot.AuctionId)
-            ?? throw new ArgumentNullException("Auction cannot be found");
-
-        if (auction.EndTime <= DateTime.UtcNow)
+        if (lot.Auction.EndTime <= DateTimeOffset.UtcNow)
         {
             throw new ArgumentException("Cannot place bid: Auction Time is out");
         }
 
-        var bid = new Bid()
-        {
-            LotId = lot.Id,
-            UserId = request.UserId,
-            Amount = request.Amount,
-            CreateTime = DateTime.UtcNow,
-            IsWon = false
-        };
+        var bid = _mapper.Map<CreateBidCommand, Bid>(request);
+
+        bid.CreateTime = DateTimeOffset.UtcNow;
 
         await _repository.Add(bid);
 
         await _repository.SaveChanges();
 
-        var bidDto = BidDto.FromBid(bid);
+        var bidDto = _mapper.Map<Bid, BidDto>(bid);
 
         return bidDto;
     }

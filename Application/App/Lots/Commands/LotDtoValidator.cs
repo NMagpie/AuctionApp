@@ -1,10 +1,10 @@
-﻿using AuctionApp.Domain.Models;
+﻿using Application.Models;
 using FluentValidation;
 
 namespace Application.App.Lots.Commands;
-public class LotObjectValibator : AbstractValidator<Lot>
+public class LotDtoValidator : AbstractValidator<LotInAuctionDto>
 {
-    public LotObjectValibator()
+    public LotDtoValidator()
     {
         RuleFor(x => x.Title)
             .NotEmpty()

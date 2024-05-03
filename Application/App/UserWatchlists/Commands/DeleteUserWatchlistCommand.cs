@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.UserWatchlists.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.UserWatchlists.Commands;
@@ -14,9 +15,12 @@ public class DeleteUserWatchlistCommandHandler : IRequestHandler<DeleteUserWatch
 {
     private readonly IRepository _repository;
 
-    public DeleteUserWatchlistCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public DeleteUserWatchlistCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<UserWatchlistDto> Handle(DeleteUserWatchlistCommand request, CancellationToken cancellationToken)
@@ -25,7 +29,7 @@ public class DeleteUserWatchlistCommandHandler : IRequestHandler<DeleteUserWatch
 
         await _repository.SaveChanges();
 
-        var userWatchlistDto = UserWatchlistDto.FromUserWatchlist(userWatchlist);
+        var userWatchlistDto = _mapper.Map<UserWatchlist, UserWatchlistDto>(userWatchlist);
 
         return userWatchlistDto;
     }

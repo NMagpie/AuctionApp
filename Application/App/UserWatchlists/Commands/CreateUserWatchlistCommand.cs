@@ -1,6 +1,7 @@
 ﻿using Application.Abstractions;
 using Application.App.UserWatchlists.Responses;
 using AuctionApp.Domain.Models;
+using AutoMapper;
 using MediatR;
 
 namespace Application.App.UserWatchlists.Commands;
@@ -18,10 +19,13 @@ public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatch
 
     private readonly CreateUserWatchlistCommandValidator _validator;
 
-    public CreateUserWatchlistCommandHandler(IRepository repository)
+    private readonly IMapper _mapper;
+
+    public CreateUserWatchlistCommandHandler(IRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new CreateUserWatchlistCommandValidator();
+        _mapper = mapper;
     }
 
     public async Task<UserWatchlistDto> Handle(CreateUserWatchlistCommand request, CancellationToken cancellationToken)
@@ -34,19 +38,13 @@ public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatch
         var auction = await _repository.GetById<Auction>(request.AuctionId)
             ?? throw new ArgumentNullException("Auction cannot be found");
 
-        var userWatchlist = new UserWatchlist()
-        {
-            UserId = request.UserId,
-            User = user,
-            AuctionId = request.AuctionId,
-            Auction = auction,
-        };
+        var userWatchlist = _mapper.Map<CreateUserWatchlistCommand, UserWatchlist>(request);
 
         await _repository.Add(userWatchlist);
 
         await _repository.SaveChanges();
 
-        var userWatchlistDto = UserWatchlistDto.FromUserWatchlist(userWatchlist);
+        var userWatchlistDto = _mapper.Map<UserWatchlist, UserWatchlistDto>(userWatchlist);
 
         return userWatchlistDto;
     }
