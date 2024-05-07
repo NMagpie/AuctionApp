@@ -4,9 +4,9 @@ using AuctionApp.Domain.Models;
 using AutoMapper;
 
 namespace Application.Profiles;
-public class BidProfiles : Profile
+public class BidProfile : Profile
 {
-    public BidProfiles()
+    public BidProfile()
     {
         CreateMap<Bid, BidDto>();
 

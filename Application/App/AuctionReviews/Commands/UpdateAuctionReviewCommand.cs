@@ -1,5 +1,6 @@
-﻿using Application.Abstractions;
-using Application.App.AuctionReviews.Responses;
+﻿using Application.App.AuctionReviews.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using FluentValidation;
@@ -36,7 +37,7 @@ public class UpdateAuctionReviewCommandHandler : IRequestHandler<UpdateAuctionRe
         _validator.ValidateAndThrow(request);
 
         var auctionReview = await _repository.GetById<AuctionReview>(request.Id)
-            ?? throw new ArgumentNullException("AuctionReview cannot be found");
+            ?? throw new EntityNotFoundException("AuctionReview cannot be found");
 
         _mapper.Map(request, auctionReview);
 

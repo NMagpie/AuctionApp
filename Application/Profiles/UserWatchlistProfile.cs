@@ -4,9 +4,9 @@ using AuctionApp.Domain.Models;
 using AutoMapper;
 
 namespace Application.Profiles;
-public class UserWatchlistProfiles : Profile
+public class UserWatchlistProfile : Profile
 {
-    public UserWatchlistProfiles()
+    public UserWatchlistProfile()
     {
         CreateMap<UserWatchlist, UserWatchlistDto>();
 

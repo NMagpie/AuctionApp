@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using Application.Common.Validation;
+using FluentValidation;
 
 namespace Application.App.Lots.Commands;
-public class CreateLotCommandValidator : AbstractValidator<CreateLotCommand>
+public class CreateLotCommandValidator : BaseValidator<CreateLotCommand>
 {
     public CreateLotCommandValidator()
     {

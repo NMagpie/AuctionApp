@@ -8,13 +8,13 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<UsersController> _logger;
 
     private readonly IMediator _mediator;
 
-    public UserController(ILogger<UserController> logger, IMediator mediator)
+    public UsersController(ILogger<UsersController> logger, IMediator mediator)
     {
         _logger = logger;
         _mediator = mediator;
@@ -36,7 +36,13 @@ public class UserController : ControllerBase
         return userDto;
     }
 
-    [HttpPut]
+    [HttpPost("add-balance")]
+    public async Task AddUserBalance(AddUserBalanceCommand addUserBalanceCommand)
+    {
+        await _mediator.Send(addUserBalanceCommand);
+    }
+
+    [HttpPut("{id}")]
     public async Task<UserDto> UpdateUser(UpdateUserCommand updateUserCommand)
     {
         var userDto = await _mediator.Send(updateUserCommand);
@@ -45,10 +51,8 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<UserDto> DeleteUser(int id)
+    public async Task DeleteUser(int id)
     {
-        var userDto = await _mediator.Send(new DeleteUserCommand() { Id = id });
-
-        return userDto;
+        await _mediator.Send(new DeleteUserCommand() { Id = id });
     }
 }

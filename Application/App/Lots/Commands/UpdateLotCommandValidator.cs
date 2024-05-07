@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using Application.Common.Validation;
+using FluentValidation;
 
 namespace Application.App.Lots.Commands;
-public class UpdateLotCommandValidator : AbstractValidator<UpdateLotCommand>
+public class UpdateLotCommandValidator : BaseValidator<UpdateLotCommand>
 {
     public UpdateLotCommandValidator()
     {

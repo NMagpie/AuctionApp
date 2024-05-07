@@ -1,5 +1,6 @@
-﻿using Application.Abstractions;
-using Application.App.Users.Responses;
+﻿using Application.App.Users.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using MediatR;
@@ -25,7 +26,7 @@ public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto
     public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
         var user = await _repository.GetById<User>(request.Id)
-            ?? throw new ArgumentNullException("User cannot be found");
+            ?? throw new EntityNotFoundException("User cannot be found");
 
         var userDto = _mapper.Map<User, UserDto>(user);
 

@@ -4,9 +4,9 @@ using AuctionApp.Domain.Models;
 using AutoMapper;
 
 namespace Application.Profiles;
-public class AuctionProfiles : Profile
+public class AuctionProfile : Profile
 {
-    public AuctionProfiles()
+    public AuctionProfile()
     {
         CreateMap<Auction, AuctionDto>()
             .ForMember(dest => dest.LotIds, src => src.MapFrom(dest => dest.Lots.Select(lot => lot.Id)));

@@ -1,7 +1,9 @@
-﻿using Application.Abstractions;
-using Application.App.Bids.Responses;
+﻿using Application.App.Bids.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.App.Bids.Commands;
@@ -32,14 +34,14 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
 
     public async Task<BidDto> Handle(CreateBidCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var lot = await _repository.GetByIdWithInclude<Lot>(request.LotId, lot => lot.Auction)
-            ?? throw new ArgumentNullException("Lot cannot be found");
+            ?? throw new EntityNotFoundException("Lot cannot be found");
 
         if (lot.Auction.EndTime <= DateTimeOffset.UtcNow)
         {
-            throw new ArgumentException("Cannot place bid: Auction Time is out");
+            throw new BusinessValidationException("Cannot place bid: Auction Time is out");
         }
 
         var bid = _mapper.Map<CreateBidCommand, Bid>(request);

@@ -1,7 +1,9 @@
-﻿using Application.Abstractions;
-using Application.App.Auctions.Responses;
+﻿using Application.App.Auctions.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -38,14 +40,14 @@ public class UpdateAuctionCommandHandler : IRequestHandler<UpdateAuctionCommand,
 
     public async Task<AuctionDto> Handle(UpdateAuctionCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var auction = await _repository.GetById<Auction>(request.Id)
-            ?? throw new ArgumentNullException("Auction cannot be found");
+            ?? throw new EntityNotFoundException("Auction cannot be found");
 
         if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {
-            throw new ArgumentException("Cannot edit auction 5 minutes before its start");
+            throw new BusinessValidationException("Cannot edit auction 5 minutes before its start");
         }
 
         _mapper.Map(request, auction);

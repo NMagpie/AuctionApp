@@ -1,17 +1,16 @@
-﻿using Application.Abstractions;
-using Application.App.Users.Responses;
+﻿using Application.Common.Abstractions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using MediatR;
 
 namespace Application.App.Users.Commands;
 
-public class DeleteUserCommand : IRequest<UserDto>
+public class DeleteUserCommand : IRequest
 {
     public int Id { get; set; }
 }
 
-public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, UserDto>
+public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
 
     private readonly IRepository _repository;
@@ -23,14 +22,10 @@ public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, UserD
         _repository = repository;
         _mapper = mapper;
     }
-    public async Task<UserDto> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _repository.Remove<User>(request.Id);
+        await _repository.Remove<User>(request.Id);
 
         await _repository.SaveChanges();
-
-        var userDto = _mapper.Map<User, UserDto>(user);
-
-        return userDto;
     }
 }

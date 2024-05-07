@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using Application.Common.Validation;
+using FluentValidation;
 
 namespace Application.App.AuctionReviews.Commands;
-public class UpdateAuctionReviewCommandValidator : AbstractValidator<UpdateAuctionReviewCommand>
+public class UpdateAuctionReviewCommandValidator : BaseValidator<UpdateAuctionReviewCommand>
 {
     public UpdateAuctionReviewCommandValidator()
     {

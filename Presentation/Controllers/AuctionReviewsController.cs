@@ -8,13 +8,13 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuctionReviewController : ControllerBase
+public class AuctionReviewsController : ControllerBase
 {
-    private readonly ILogger<AuctionReviewController> _logger;
+    private readonly ILogger<AuctionReviewsController> _logger;
 
     private readonly IMediator _mediator;
 
-    public AuctionReviewController(ILogger<AuctionReviewController> logger, IMediator mediator)
+    public AuctionReviewsController(ILogger<AuctionReviewsController> logger, IMediator mediator)
     {
         _logger = logger;
         _mediator = mediator;
@@ -36,7 +36,7 @@ public class AuctionReviewController : ControllerBase
         return auctionReviewDto;
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<AuctionReviewDto> UpdateAuctionReview(UpdateAuctionReviewCommand updateAuctionReviewCommand)
     {
         var auctionReviewDto = await _mediator.Send(updateAuctionReviewCommand);
@@ -45,10 +45,8 @@ public class AuctionReviewController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<AuctionReviewDto> DeleteAuctionReview(int id)
+    public async Task DeleteAuctionReview(int id)
     {
-        var auctionReviewDto = await _mediator.Send(new DeleteAuctionReviewCommand() { Id = id });
-
-        return auctionReviewDto;
+        await _mediator.Send(new DeleteAuctionReviewCommand() { Id = id });
     }
 }

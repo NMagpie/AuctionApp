@@ -1,5 +1,6 @@
-﻿using Application.Abstractions;
-using Application.App.Auctions.Responses;
+﻿using Application.App.Auctions.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using MediatR;
@@ -29,7 +30,7 @@ public class GetAuctionByIdQueryHandler : IRequestHandler<GetAuctionByIdQuery, A
     public async Task<AuctionDto> Handle(GetAuctionByIdQuery request, CancellationToken cancellationToken)
     {
         var auction = await _repository.GetById<Auction>(request.Id)
-            ?? throw new ArgumentNullException("Auction cannot be found");
+            ?? throw new EntityNotFoundException("Auction cannot be found");
 
         var auctionDto = _mapper.Map<Auction, AuctionDto>(auction);
 

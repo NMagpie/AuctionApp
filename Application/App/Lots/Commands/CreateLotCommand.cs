@@ -1,7 +1,9 @@
-﻿using Application.Abstractions;
-using Application.App.Lots.Responses;
+﻿using Application.App.Lots.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.App.Lots.Commands;
@@ -37,14 +39,14 @@ public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand, LotDto>
 
     public async Task<LotDto> Handle(CreateLotCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var auction = await _repository.GetById<Auction>(request.AuctionId)
-            ?? throw new ArgumentNullException("Auciton cannot be found");
+            ?? throw new EntityNotFoundException("Auciton cannot be found");
 
         if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {
-            throw new ArgumentException("Cannot edit lots of auction 5 minutes before its start");
+            throw new BusinessValidationException("Cannot edit lots of auction 5 minutes before its start");
         }
 
         var lot = _mapper.Map<CreateLotCommand, Lot>(request);

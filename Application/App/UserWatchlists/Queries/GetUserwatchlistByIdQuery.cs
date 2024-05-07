@@ -1,5 +1,6 @@
-﻿using Application.Abstractions;
-using Application.App.UserWatchlists.Responses;
+﻿using Application.App.UserWatchlists.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using MediatR;
@@ -25,7 +26,7 @@ public class GetUserWatchlistByIdQueryHandler : IRequestHandler<GetUserWatchlist
     public async Task<UserWatchlistDto> Handle(GetUserWatchlistByIdQuery request, CancellationToken cancellationToken)
     {
         var auction = await _repository.GetById<UserWatchlist>(request.Id)
-            ?? throw new ArgumentNullException("User watchlist cannot be found");
+            ?? throw new EntityNotFoundException("User watchlist cannot be found");
 
         var auctionDto = _mapper.Map<UserWatchlist, UserWatchlistDto>(auction);
 

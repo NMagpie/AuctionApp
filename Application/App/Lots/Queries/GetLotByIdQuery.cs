@@ -1,5 +1,6 @@
-﻿using Application.Abstractions;
-using Application.App.Lots.Responses;
+﻿using Application.App.Lots.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using MediatR;
@@ -25,7 +26,7 @@ public class GetLotByIdQueryHandler : IRequestHandler<GetLotByIdQuery, LotDto>
     public async Task<LotDto> Handle(GetLotByIdQuery request, CancellationToken cancellationToken)
     {
         var lot = await _repository.GetById<Lot>(request.Id)
-            ?? throw new ArgumentNullException("Lot cannot be found");
+            ?? throw new EntityNotFoundException("Lot cannot be found");
 
         var lotDto = _mapper.Map<Lot, LotDto>(lot);
 

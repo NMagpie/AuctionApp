@@ -1,7 +1,9 @@
-﻿using Application.Abstractions;
-using Application.App.Users.Responses;
+﻿using Application.App.Users.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.App.Users.Commands;
@@ -30,10 +32,10 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
     }
     public async Task<UserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var user = await _repository.GetById<User>(request.Id)
-            ?? throw new ArgumentNullException("Use rcannot be found");
+            ?? throw new EntityNotFoundException("User cannot be found");
 
         _mapper.Map(request, user);
 

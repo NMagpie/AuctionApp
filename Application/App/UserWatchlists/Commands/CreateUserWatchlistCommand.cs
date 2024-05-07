@@ -1,7 +1,9 @@
-﻿using Application.Abstractions;
-using Application.App.UserWatchlists.Responses;
+﻿using Application.App.UserWatchlists.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.App.UserWatchlists.Commands;
@@ -30,13 +32,13 @@ public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatch
 
     public async Task<UserWatchlistDto> Handle(CreateUserWatchlistCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var user = await _repository.GetById<User>(request.UserId)
-            ?? throw new ArgumentNullException("User cannot be found");
+            ?? throw new EntityNotFoundException("User cannot be found");
 
         var auction = await _repository.GetById<Auction>(request.AuctionId)
-            ?? throw new ArgumentNullException("Auction cannot be found");
+            ?? throw new EntityNotFoundException("Auction cannot be found");
 
         var userWatchlist = _mapper.Map<CreateUserWatchlistCommand, UserWatchlist>(request);
 

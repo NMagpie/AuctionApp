@@ -8,13 +8,13 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserWatchlistController : ControllerBase
+public class UserWatchlistsController : ControllerBase
 {
-    private readonly ILogger<UserWatchlistController> _logger;
+    private readonly ILogger<UserWatchlistsController> _logger;
 
     private readonly IMediator _mediator;
 
-    public UserWatchlistController(ILogger<UserWatchlistController> logger, IMediator mediator)
+    public UserWatchlistsController(ILogger<UserWatchlistsController> logger, IMediator mediator)
     {
         _logger = logger;
         _mediator = mediator;
@@ -37,10 +37,8 @@ public class UserWatchlistController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<UserWatchlistDto> DeleteUserWatchlist(int id)
+    public async Task DeleteUserWatchlist(int id)
     {
-        var userWatchlistDto = await _mediator.Send(new DeleteUserWatchlistCommand() { Id = id });
-
-        return userWatchlistDto;
+        await _mediator.Send(new DeleteUserWatchlistCommand() { Id = id });
     }
 }

@@ -8,11 +8,11 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class AuctionController : ControllerBase
+public class AuctionsController : ControllerBase
 {
     private readonly IMediator _mediator;
 
-    public AuctionController(IMediator mediator)
+    public AuctionsController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -33,7 +33,7 @@ public class AuctionController : ControllerBase
         return auctionDto;
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<AuctionDto> UpdateAuction(UpdateAuctionCommand updateAuctionCommand)
     {
         var auctionDto = await _mediator.Send(updateAuctionCommand);
@@ -42,11 +42,9 @@ public class AuctionController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<AuctionDto> DeleteAuction(int id)
+    public async Task DeleteAuction(int id)
     {
-        var auctionDto = await _mediator.Send(new DeleteAuctionCommand() { Id = id });
-
-        return auctionDto;
+        await _mediator.Send(new DeleteAuctionCommand() { Id = id });
     }
 
 }

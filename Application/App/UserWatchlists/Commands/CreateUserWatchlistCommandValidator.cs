@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using Application.Common.Validation;
+using FluentValidation;
 
 namespace Application.App.UserWatchlists.Commands;
-public class CreateUserWatchlistCommandValidator : AbstractValidator<CreateUserWatchlistCommand>
+public class CreateUserWatchlistCommandValidator : BaseValidator<CreateUserWatchlistCommand>
 {
     public CreateUserWatchlistCommandValidator()
     {

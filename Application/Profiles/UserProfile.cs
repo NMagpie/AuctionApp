@@ -4,9 +4,9 @@ using AuctionApp.Domain.Models;
 using AutoMapper;
 
 namespace Application.Profiles;
-public class UserProfiles : Profile
+public class UserProfile : Profile
 {
-    public UserProfiles()
+    public UserProfile()
     {
         CreateMap<User, UserDto>();
 

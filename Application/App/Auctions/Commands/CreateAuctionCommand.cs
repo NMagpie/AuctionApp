@@ -1,6 +1,7 @@
-﻿using Application.Abstractions;
-using Application.App.Auctions.Responses;
-using Application.Models;
+﻿using Application.App.Auctions.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
+using Application.Common.Models;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using FluentValidation;
@@ -45,9 +46,11 @@ public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand,
         _validator.ValidateAndThrow(request);
 
         var user = await _repository.GetById<User>(request.CreatorId)
-            ?? throw new ArgumentNullException("User cannot be found");
+            ?? throw new EntityNotFoundException("User cannot be found");
 
         var auction = _mapper.Map<CreateAuctionCommand, Auction>(request);
+
+        auction.CreatorId = user.Id;
 
         await _repository.Add(auction);
 

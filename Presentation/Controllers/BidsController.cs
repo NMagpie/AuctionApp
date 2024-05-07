@@ -8,13 +8,13 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class BidController : ControllerBase
+public class BidsController : ControllerBase
 {
-    private readonly ILogger<BidController> _logger;
+    private readonly ILogger<BidsController> _logger;
 
     private readonly IMediator _mediator;
 
-    public BidController(ILogger<BidController> logger, IMediator mediator)
+    public BidsController(ILogger<BidsController> logger, IMediator mediator)
     {
         _logger = logger;
         _mediator = mediator;
@@ -37,10 +37,8 @@ public class BidController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<BidDto> DeleteBid(int id)
+    public async Task DeleteBid(int id)
     {
-        var bidDto = await _mediator.Send(new DeleteBidCommand() { Id = id });
-
-        return bidDto;
+        await _mediator.Send(new DeleteBidCommand() { Id = id });
     }
 }

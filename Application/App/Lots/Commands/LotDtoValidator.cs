@@ -1,8 +1,9 @@
-﻿using Application.Models;
+﻿using Application.Common.Models;
+using Application.Common.Validation;
 using FluentValidation;
 
 namespace Application.App.Lots.Commands;
-public class LotDtoValidator : AbstractValidator<LotInAuctionDto>
+public class LotDtoValidator : BaseValidator<LotInAuctionDto>
 {
     public LotDtoValidator()
     {

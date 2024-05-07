@@ -8,13 +8,13 @@ namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class LotController : ControllerBase
+public class LotsController : ControllerBase
 {
-    private readonly ILogger<LotController> _logger;
+    private readonly ILogger<LotsController> _logger;
 
     private readonly IMediator _mediator;
 
-    public LotController(ILogger<LotController> logger, IMediator mediator)
+    public LotsController(ILogger<LotsController> logger, IMediator mediator)
     {
         _logger = logger;
         _mediator = mediator;
@@ -36,7 +36,7 @@ public class LotController : ControllerBase
         return lotDto;
     }
 
-    [HttpPut]
+    [HttpPut("{id}")]
     public async Task<LotDto> UpdateLot(UpdateLotCommand updateLotCommand)
     {
         var lotDto = await _mediator.Send(updateLotCommand);
@@ -45,10 +45,8 @@ public class LotController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<LotDto> DeleteLot(int id)
+    public async Task DeleteLot(int id)
     {
-        var lotDto = await _mediator.Send(new DeleteLotCommand() { Id = id });
-
-        return lotDto;
+        await _mediator.Send(new DeleteLotCommand() { Id = id });
     }
 }

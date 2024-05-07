@@ -1,15 +1,15 @@
 ﻿using Application.App.Lots.Commands;
 using Application.App.Lots.Responses;
 using Application.App.Responses;
-using Application.Models;
+using Application.Common.Models;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using EntityFramework.Domain.Models;
 
 namespace Application.Profiles;
-public class LotProfiles : Profile
+public class LotProfile : Profile
 {
-    public LotProfiles()
+    public LotProfile()
     {
         CreateMap<Lot, LotDto>()
             .ForMember(dest => dest.BidIds, src => src.MapFrom(src => src.Bids.Select(lot => lot.Id)));

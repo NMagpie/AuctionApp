@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using Application.Common.Validation;
+using FluentValidation;
 
 namespace Application.App.Users.Commands;
-public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
+public class UpdateUserCommandValidator : BaseValidator<UpdateUserCommand>
 {
     public UpdateUserCommandValidator()
     {

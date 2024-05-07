@@ -1,7 +1,8 @@
-﻿using FluentValidation;
+﻿using Application.Common.Validation;
+using FluentValidation;
 
 namespace Application.App.Bids.Commands;
-public class CreateBidCommandValidator : AbstractValidator<CreateBidCommand>
+public class CreateBidCommandValidator : BaseValidator<CreateBidCommand>
 {
     public CreateBidCommandValidator()
     {

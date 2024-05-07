@@ -1,7 +1,8 @@
-﻿using Application.Abstractions;
-using Application.App.Users.Responses;
+﻿using Application.App.Users.Responses;
+using Application.Common.Abstractions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.App.Users.Commands;
@@ -28,7 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, UserD
 
     public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var user = _mapper.Map<CreateUserCommand, User>(request);
 

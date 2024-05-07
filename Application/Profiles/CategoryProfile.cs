@@ -1,12 +1,12 @@
 ﻿using Application.App.Responses;
-using Application.Models;
+using Application.Common.Models;
 using AutoMapper;
 using EntityFramework.Domain.Models;
 
 namespace Application.Profiles;
-public class CategoryProfiles : Profile
+public class CategoryProfile : Profile
 {
-    public CategoryProfiles()
+    public CategoryProfile()
     {
         CreateMap<CategoryInLotDto, Category>();
 

@@ -1,4 +1,4 @@
-﻿namespace Application.Models;
+﻿namespace Application.Common.Models;
 public class LotInAuctionDto
 {
     public string Title { get; set; }

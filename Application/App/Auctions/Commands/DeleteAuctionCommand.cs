@@ -1,5 +1,5 @@
-﻿using Application.Abstractions;
-using Application.App.Auctions.Responses;
+﻿using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using MediatR;
@@ -7,12 +7,12 @@ using Microsoft.Extensions.Logging;
 
 namespace Application.App.Auctions.Commands;
 
-public class DeleteAuctionCommand : IRequest<AuctionDto>
+public class DeleteAuctionCommand : IRequest
 {
     public int Id { get; set; }
 }
 
-public class DeleteAuctionCommandHandler : IRequestHandler<DeleteAuctionCommand, AuctionDto>
+public class DeleteAuctionCommandHandler : IRequestHandler<DeleteAuctionCommand>
 {
     private readonly IRepository _repository;
 
@@ -27,24 +27,20 @@ public class DeleteAuctionCommandHandler : IRequestHandler<DeleteAuctionCommand,
         _mapper = mapper;
     }
 
-    public async Task<AuctionDto> Handle(DeleteAuctionCommand request, CancellationToken cancellationToken)
+    public async Task Handle(DeleteAuctionCommand request, CancellationToken cancellationToken)
     {
         var auction = await _repository.GetById<Auction>(request.Id)
-            ?? throw new ArgumentNullException("Auction cannot be found");
+            ?? throw new EntityNotFoundException("Auction cannot be found");
 
         if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {
-            throw new ArgumentException("Cannot delete auction 5 minutes before its start");
+            throw new BusinessValidationException("Cannot delete auction 5 minutes before its start");
         }
 
-        auction = await _repository.Remove<Auction>(request.Id);
+        _repository.Remove<Auction>(request.Id);
 
         await _repository.SaveChanges();
 
-        var auctionDto = _mapper.Map<Auction, AuctionDto>(auction);
-
         _logger.LogInformation($"[{DateTime.UtcNow}]-[{this.GetType().Name}] was executed successfully!");
-
-        return auctionDto;
     }
 }

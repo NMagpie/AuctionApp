@@ -1,7 +1,9 @@
-﻿using Application.Abstractions;
-using Application.App.AuctionReviews.Responses;
+﻿using Application.App.AuctionReviews.Responses;
+using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using FluentValidation;
 using MediatR;
 
 namespace Application.App.AuctionReviews.Commands;
@@ -35,17 +37,17 @@ public class CreateAuctionReviewCommandHandler : IRequestHandler<CreateAuctionRe
 
     public async Task<AuctionReviewDto> Handle(CreateAuctionReviewCommand request, CancellationToken cancellationToken)
     {
-        _validator.Validate(request);
+        _validator.ValidateAndThrow(request);
 
         var user = await _repository.GetById<User>(request.UserId)
-            ?? throw new ArgumentNullException("User cannot be found");
+            ?? throw new EntityNotFoundException("User cannot be found");
 
         var auction = await _repository.GetById<Auction>(request.AuctionId)
-            ?? throw new ArgumentNullException("Auction cannot be found");
+            ?? throw new EntityNotFoundException("Auction cannot be found");
 
         if (auction.EndTime >= DateTime.UtcNow)
         {
-            throw new ArgumentException("Cannot put review: auction is not finished");
+            throw new BusinessValidationException("Cannot put review: auction is not finished");
         }
 
         var auctionReview = _mapper.Map<CreateAuctionReviewCommand, AuctionReview>(request);

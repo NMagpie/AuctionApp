@@ -1,8 +1,9 @@
 ﻿using Application.App.Lots.Commands;
+using Application.Common.Validation;
 using FluentValidation;
 
 namespace Application.App.Auctions.Commands;
-public class CreateAuctionCommandValidator : AbstractValidator<CreateAuctionCommand>
+public class CreateAuctionCommandValidator : BaseValidator<CreateAuctionCommand>
 {
     public CreateAuctionCommandValidator()
     {
