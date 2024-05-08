@@ -14,12 +14,9 @@ public class DeleteUserWatchlistCommandHandler : IRequestHandler<DeleteUserWatch
 {
     private readonly IRepository _repository;
 
-    private readonly IMapper _mapper;
-
-    public DeleteUserWatchlistCommandHandler(IRepository repository, IMapper mapper)
+    public DeleteUserWatchlistCommandHandler(IRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
 
     public async Task Handle(DeleteUserWatchlistCommand request, CancellationToken cancellationToken)

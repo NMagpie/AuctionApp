@@ -18,13 +18,10 @@ public class DeleteAuctionCommandHandler : IRequestHandler<DeleteAuctionCommand>
 
     private readonly ILogger<DeleteAuctionCommandHandler> _logger;
 
-    private readonly IMapper _mapper;
-
-    public DeleteAuctionCommandHandler(IRepository repository, ILogger<DeleteAuctionCommandHandler> logger, IMapper mapper)
+    public DeleteAuctionCommandHandler(IRepository repository, ILogger<DeleteAuctionCommandHandler> logger)
     {
         _repository = repository;
         _logger = logger;
-        _mapper = mapper;
     }
 
     public async Task Handle(DeleteAuctionCommand request, CancellationToken cancellationToken)
@@ -37,7 +34,7 @@ public class DeleteAuctionCommandHandler : IRequestHandler<DeleteAuctionCommand>
             throw new BusinessValidationException("Cannot delete auction 5 minutes before its start");
         }
 
-        _repository.Remove<Auction>(request.Id);
+        await _repository.Remove<Auction>(request.Id);
 
         await _repository.SaveChanges();
 

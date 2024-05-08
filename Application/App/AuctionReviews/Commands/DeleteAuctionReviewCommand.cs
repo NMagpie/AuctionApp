@@ -1,6 +1,5 @@
 ﻿using Application.Common.Abstractions;
 using AuctionApp.Domain.Models;
-using AutoMapper;
 using MediatR;
 
 namespace Application.App.AuctionReviews.Commands;
@@ -14,12 +13,9 @@ public class DeleteAuctionReviewCommandHandler : IRequestHandler<DeleteAuctionRe
 {
     private readonly IRepository _repository;
 
-    private readonly IMapper _mapper;
-
-    public DeleteAuctionReviewCommandHandler(IRepository repository, IMapper mapper)
+    public DeleteAuctionReviewCommandHandler(IRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
 
     public async Task Handle(DeleteAuctionReviewCommand request, CancellationToken cancellationToken)

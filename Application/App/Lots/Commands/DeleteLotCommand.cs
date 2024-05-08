@@ -1,7 +1,6 @@
 ﻿using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
-using AutoMapper;
 using MediatR;
 
 namespace Application.App.Lots.Commands;
@@ -15,12 +14,9 @@ public class DeleteLotCommandHandler : IRequestHandler<DeleteLotCommand>
 {
     private readonly IRepository _repository;
 
-    private readonly IMapper _mapper;
-
-    public DeleteLotCommandHandler(IRepository repository, IMapper mapper)
+    public DeleteLotCommandHandler(IRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
     public async Task Handle(DeleteLotCommand request, CancellationToken cancellationToken)
     {

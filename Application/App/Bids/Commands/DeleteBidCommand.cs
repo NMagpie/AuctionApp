@@ -1,9 +1,8 @@
-﻿using Application.App.Bids.Responses;
-using Application.Common.Abstractions;
+﻿using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
-using AutoMapper;
 using MediatR;
+using Serilog;
 
 namespace Application.App.Bids.Commands;
 
@@ -18,22 +17,19 @@ public class DeleteBidCommandHandler : IRequestHandler<DeleteBidCommand>
 
     private readonly IRepository _repository;
 
-    private readonly IMapper _mapper;
-
-    public DeleteBidCommandHandler(IRepository repository, IMapper mapper)
+    public DeleteBidCommandHandler(IRepository repository)
     {
         _repository = repository;
-        _mapper = mapper;
     }
 
     public async Task Handle(DeleteBidCommand request, CancellationToken cancellationToken)
     {
-        var bid = await _repository.GetById<Bid>(request.Id)
+        var bid = await _repository.GetByIdWithInclude<Bid>(request.Id, bid => bid.Lot, bid => bid.Lot.Auction)
             ?? throw new EntityNotFoundException("Bid cannot be found");
 
-        if (bid.Lot.Auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
+        if (bid.Lot.Auction.EndTime <= DateTimeOffset.UtcNow)
         {
-            throw new BusinessValidationException("Cannot edit lots of auction 5 minutes before its start");
+            throw new BusinessValidationException("Cannot remove bid: Auction Time is out");
         }
 
         await _repository.Remove<Bid>(request.Id);

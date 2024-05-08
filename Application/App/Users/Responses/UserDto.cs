@@ -6,4 +6,6 @@ public class UserDto
     public int Id { get; set; }
 
     public required string Username { get; set; }
+
+    public decimal Balance { get; set; }
 }

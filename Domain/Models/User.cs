@@ -6,6 +6,6 @@ namespace AuctionApp.Domain.Models
     {
         public string Username { get; set; }
 
-        public decimal Balance { get; set; }
+        public decimal Balance { get; set; } = 0;
     }
 }
