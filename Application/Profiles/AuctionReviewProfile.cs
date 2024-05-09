@@ -10,9 +10,9 @@ public class AuctionReviewProfile : Profile
     {
         CreateMap<AuctionReview, AuctionReviewDto>();
 
-        CreateMap<CreateAuctionReviewCommand, Auction>();
+        CreateMap<CreateAuctionReviewCommand, AuctionReview>();
 
-        CreateMap<UpdateAuctionReviewCommand, Auction>();
+        CreateMap<UpdateAuctionReviewCommand, AuctionReview>();
     }
 }
 

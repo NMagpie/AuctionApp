@@ -10,43 +10,43 @@ namespace Presentation.Controllers;
 [Route("[controller]")]
 public class AuctionReviewsController : ControllerBase
 {
-    private readonly ILogger<AuctionReviewsController> _logger;
 
     private readonly IMediator _mediator;
 
-    public AuctionReviewsController(ILogger<AuctionReviewsController> logger, IMediator mediator)
+    public AuctionReviewsController(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 
     [HttpGet("{id}")]
-    public async Task<AuctionReviewDto> GetAuctionReview(int id)
+    public async Task<ActionResult<AuctionReviewDto>> GetAuctionReview(int id)
     {
         var auctionReviewDto = await _mediator.Send(new GetAuctionReviewByIdQuery() { Id = id });
 
-        return auctionReviewDto;
+        return Ok(auctionReviewDto);
     }
 
     [HttpPost]
-    public async Task<AuctionReviewDto> CreateAuctionReview(CreateAuctionReviewCommand createAuctionReviewCommand)
+    public async Task<ActionResult<AuctionReviewDto>> CreateAuctionReview(CreateAuctionReviewCommand createAuctionReviewCommand)
     {
         var auctionReviewDto = await _mediator.Send(createAuctionReviewCommand);
 
-        return auctionReviewDto;
+        return Ok(auctionReviewDto);
     }
 
     [HttpPut("{id}")]
-    public async Task<AuctionReviewDto> UpdateAuctionReview(UpdateAuctionReviewCommand updateAuctionReviewCommand)
+    public async Task<ActionResult<AuctionReviewDto>> UpdateAuctionReview(UpdateAuctionReviewCommand updateAuctionReviewCommand)
     {
         var auctionReviewDto = await _mediator.Send(updateAuctionReviewCommand);
 
-        return auctionReviewDto;
+        return Ok(auctionReviewDto);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteAuctionReview(int id)
+    public async Task<ActionResult> DeleteAuctionReview(int id)
     {
         await _mediator.Send(new DeleteAuctionReviewCommand() { Id = id });
+
+        return Ok();
     }
 }

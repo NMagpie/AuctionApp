@@ -10,35 +10,35 @@ namespace Presentation.Controllers;
 [Route("[controller]")]
 public class UserWatchlistsController : ControllerBase
 {
-    private readonly ILogger<UserWatchlistsController> _logger;
 
     private readonly IMediator _mediator;
 
-    public UserWatchlistsController(ILogger<UserWatchlistsController> logger, IMediator mediator)
+    public UserWatchlistsController(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 
     [HttpGet("{id}")]
-    public async Task<UserWatchlistDto> GetUserWatchlist(int id)
+    public async Task<ActionResult<UserWatchlistDto>> GetUserWatchlist(int id)
     {
         var userWatchlistDto = await _mediator.Send(new GetUserWatchlistByIdQuery() { Id = id });
 
-        return userWatchlistDto;
+        return Ok(userWatchlistDto);
     }
 
     [HttpPost]
-    public async Task<UserWatchlistDto> CreateUserWatchlist(CreateUserWatchlistCommand createUserWatchlistCommand)
+    public async Task<ActionResult<UserWatchlistDto>> CreateUserWatchlist(CreateUserWatchlistCommand createUserWatchlistCommand)
     {
         var userWatchlistDto = await _mediator.Send(createUserWatchlistCommand);
 
-        return userWatchlistDto;
+        return Ok(userWatchlistDto);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteUserWatchlist(int id)
+    public async Task<ActionResult> DeleteUserWatchlist(int id)
     {
         await _mediator.Send(new DeleteUserWatchlistCommand() { Id = id });
+
+        return Ok();
     }
 }

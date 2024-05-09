@@ -18,33 +18,35 @@ public class AuctionsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<AuctionDto> GetAuction(int id)
+    public async Task<ActionResult<AuctionDto>> GetAuction(int id)
     {
         var auctionDto = await _mediator.Send(new GetAuctionByIdQuery() { Id = id });
 
-        return auctionDto;
+        return Ok(auctionDto);
     }
 
     [HttpPost]
-    public async Task<AuctionDto> CreateAuction(CreateAuctionCommand createAuctionCommand)
+    public async Task<ActionResult<AuctionDto>> CreateAuction(CreateAuctionCommand createAuctionCommand)
     {
         var auctionDto = await _mediator.Send(createAuctionCommand);
 
-        return auctionDto;
+        return Ok(auctionDto);
     }
 
     [HttpPut("{id}")]
-    public async Task<AuctionDto> UpdateAuction(UpdateAuctionCommand updateAuctionCommand)
+    public async Task<ActionResult<AuctionDto>> UpdateAuction(UpdateAuctionCommand updateAuctionCommand)
     {
         var auctionDto = await _mediator.Send(updateAuctionCommand);
 
-        return auctionDto;
+        return Ok(auctionDto);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteAuction(int id)
+    public async Task<ActionResult> DeleteAuction(int id)
     {
         await _mediator.Send(new DeleteAuctionCommand() { Id = id });
+
+        return Ok();
     }
 
 }

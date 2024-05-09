@@ -10,35 +10,34 @@ namespace Presentation.Controllers;
 [Route("[controller]")]
 public class BidsController : ControllerBase
 {
-    private readonly ILogger<BidsController> _logger;
-
     private readonly IMediator _mediator;
 
-    public BidsController(ILogger<BidsController> logger, IMediator mediator)
+    public BidsController(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 
     [HttpGet("{id}")]
-    public async Task<BidDto> GetBid(int id)
+    public async Task<ActionResult<BidDto>> GetBid(int id)
     {
         var bidDto = await _mediator.Send(new GetBidByIdQuery() { Id = id });
 
-        return bidDto;
+        return Ok(bidDto);
     }
 
     [HttpPost]
-    public async Task<BidDto> CreateBid(CreateBidCommand createBidCommand)
+    public async Task<ActionResult<BidDto>> CreateBid(CreateBidCommand createBidCommand)
     {
         var bidDto = await _mediator.Send(createBidCommand);
 
-        return bidDto;
+        return Ok(bidDto);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteBid(int id)
+    public async Task<ActionResult> DeleteBid(int id)
     {
         await _mediator.Send(new DeleteBidCommand() { Id = id });
+
+        return Ok();
     }
 }

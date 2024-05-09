@@ -10,43 +10,42 @@ namespace Presentation.Controllers;
 [Route("[controller]")]
 public class LotsController : ControllerBase
 {
-    private readonly ILogger<LotsController> _logger;
-
     private readonly IMediator _mediator;
 
-    public LotsController(ILogger<LotsController> logger, IMediator mediator)
+    public LotsController(IMediator mediator)
     {
-        _logger = logger;
         _mediator = mediator;
     }
 
     [HttpGet("{id}")]
-    public async Task<LotDto> GetLot(int id)
+    public async Task<ActionResult<LotDto>> GetLot(int id)
     {
         var lotDto = await _mediator.Send(new GetLotByIdQuery() { Id = id });
 
-        return lotDto;
+        return Ok(lotDto);
     }
 
     [HttpPost]
-    public async Task<LotDto> CreateLot(CreateLotCommand createLotCommand)
+    public async Task<ActionResult<LotDto>> CreateLot(CreateLotCommand createLotCommand)
     {
         var lotDto = await _mediator.Send(createLotCommand);
 
-        return lotDto;
+        return Ok(lotDto);
     }
 
     [HttpPut("{id}")]
-    public async Task<LotDto> UpdateLot(UpdateLotCommand updateLotCommand)
+    public async Task<ActionResult<LotDto>> UpdateLot(UpdateLotCommand updateLotCommand)
     {
         var lotDto = await _mediator.Send(updateLotCommand);
 
-        return lotDto;
+        return Ok(lotDto);
     }
 
     [HttpDelete("{id}")]
-    public async Task DeleteLot(int id)
+    public async Task<ActionResult> DeleteLot(int id)
     {
         await _mediator.Send(new DeleteLotCommand() { Id = id });
+
+        return Ok();
     }
 }
