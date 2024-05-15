@@ -4,6 +4,7 @@ using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using Moq;
 
 namespace UnitTests.Application.UserWatchlists.Commands;
@@ -36,19 +37,21 @@ public class CreateUserWatchlistCommandTests
             AuctionId = userWatchlist.AuctionId,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var entityRepositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock
-            .Setup(x => x.GetById<User>(It.IsAny<int>()))
+        userRepositoryMock
+            .Setup(x => x.GetById(It.IsAny<int>()))
             .Returns(Task.FromResult(user));
 
-        repositoryMock
+        entityRepositoryMock
             .Setup(x => x.GetById<Auction>(It.IsAny<int>()))
             .Returns(Task.FromResult(auction));
 
-        repositoryMock
+        entityRepositoryMock
             .Setup(x => x.Add(It.IsAny<UserWatchlist>()))
             .Returns(Task.FromResult(userWatchlist));
 
@@ -60,15 +63,15 @@ public class CreateUserWatchlistCommandTests
             .Setup(x => x.Map<UserWatchlist, UserWatchlistDto>(It.IsAny<UserWatchlist>()))
             .Returns(userWatchlistDto);
 
-        var createUserWatchlistCommandHandler = new CreateUserWatchlistCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createUserWatchlistCommandHandler = new CreateUserWatchlistCommandHandler(entityRepositoryMock.Object, userRepositoryMock.Object, mapperMock.Object);
 
         var result = await createUserWatchlistCommandHandler.Handle(userWatchlistCommand, new CancellationToken());
 
         mapperMock.Verify(x => x.Map<CreateUserWatchlistCommand, UserWatchlist>(It.IsAny<CreateUserWatchlistCommand>()), Times.Once);
 
-        repositoryMock.Verify(x => x.Add(It.IsAny<UserWatchlist>()), Times.Once);
+        entityRepositoryMock.Verify(x => x.Add(It.IsAny<UserWatchlist>()), Times.Once);
 
-        repositoryMock.Verify(x => x.SaveChanges(), Times.Once);
+        entityRepositoryMock.Verify(x => x.SaveChanges(), Times.Once);
 
         mapperMock.Verify(x => x.Map<UserWatchlist, UserWatchlistDto>(It.IsAny<UserWatchlist>()), Times.Once);
     }
@@ -82,23 +85,25 @@ public class CreateUserWatchlistCommandTests
             AuctionId = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var entityRepositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock
-            .Setup(x => x.GetById<User>(It.IsAny<int>()))
+        userRepositoryMock
+            .Setup(x => x.GetById(It.IsAny<int>()))
             .Returns(Task.FromResult<User?>(null));
 
-        var createUserWatchlistCommandHandler = new CreateUserWatchlistCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createUserWatchlistCommandHandler = new CreateUserWatchlistCommandHandler(entityRepositoryMock.Object, userRepositoryMock.Object, mapperMock.Object);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(async () => await createUserWatchlistCommandHandler.Handle(userWatchlistCommand, new CancellationToken()));
 
         mapperMock.Verify(x => x.Map<CreateUserWatchlistCommand, UserWatchlist>(It.IsAny<CreateUserWatchlistCommand>()), Times.Never);
 
-        repositoryMock.Verify(x => x.Add(It.IsAny<UserWatchlist>()), Times.Never);
+        entityRepositoryMock.Verify(x => x.Add(It.IsAny<UserWatchlist>()), Times.Never);
 
-        repositoryMock.Verify(x => x.SaveChanges(), Times.Never);
+        entityRepositoryMock.Verify(x => x.SaveChanges(), Times.Never);
 
         mapperMock.Verify(x => x.Map<UserWatchlist, UserWatchlistDto>(It.IsAny<UserWatchlist>()), Times.Never);
     }
@@ -114,27 +119,29 @@ public class CreateUserWatchlistCommandTests
 
         var user = new User();
 
-        var repositoryMock = new Mock<IRepository>();
+        var entityRepositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock
-            .Setup(x => x.GetById<User>(It.IsAny<int>()))
+        userRepositoryMock
+            .Setup(x => x.GetById(It.IsAny<int>()))
             .Returns(Task.FromResult<User?>(user));
 
-        repositoryMock
+        entityRepositoryMock
             .Setup(x => x.GetById<Auction>(It.IsAny<int>()))
             .Returns(Task.FromResult<Auction?>(null));
 
-        var createUserWatchlistCommandHandler = new CreateUserWatchlistCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createUserWatchlistCommandHandler = new CreateUserWatchlistCommandHandler(entityRepositoryMock.Object, userRepositoryMock.Object, mapperMock.Object);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(async () => await createUserWatchlistCommandHandler.Handle(userWatchlistCommand, new CancellationToken()));
 
         mapperMock.Verify(x => x.Map<CreateUserWatchlistCommand, UserWatchlist>(It.IsAny<CreateUserWatchlistCommand>()), Times.Never);
 
-        repositoryMock.Verify(x => x.Add(It.IsAny<UserWatchlist>()), Times.Never);
+        entityRepositoryMock.Verify(x => x.Add(It.IsAny<UserWatchlist>()), Times.Never);
 
-        repositoryMock.Verify(x => x.SaveChanges(), Times.Never);
+        entityRepositoryMock.Verify(x => x.SaveChanges(), Times.Never);
 
         mapperMock.Verify(x => x.Map<UserWatchlist, UserWatchlistDto>(It.IsAny<UserWatchlist>()), Times.Never);
     }

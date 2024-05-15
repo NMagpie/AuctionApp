@@ -1,8 +1,8 @@
 ﻿using Application.App.Users.Responses;
 using Application.Common.Abstractions;
 using Application.Common.Exceptions;
-using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using FluentValidation;
 using MediatR;
 
@@ -12,21 +12,25 @@ public class UpdateUserCommand : IRequest<UserDto>
 {
     public int Id { get; set; }
 
-    public string Username { get; set; }
+    public string UserName { get; set; }
+
+    public string Email { get; set; }
+
+    public string Password { get; set; }
 }
 
 public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserDto>
 {
 
-    private readonly IRepository _repository;
+    private readonly IUserRepository _userRepository;
 
     private readonly UpdateUserCommandValidator _validator;
 
     private readonly IMapper _mapper;
 
-    public UpdateUserCommandHandler(IRepository repository, IMapper mapper)
+    public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
     {
-        _repository = repository;
+        _userRepository = userRepository;
         _validator = new UpdateUserCommandValidator();
         _mapper = mapper;
     }
@@ -34,12 +38,12 @@ public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, UserD
     {
         _validator.ValidateAndThrow(request);
 
-        var user = await _repository.GetById<User>(request.Id)
+        var user = await _userRepository.GetById(request.Id)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         _mapper.Map(request, user);
 
-        await _repository.SaveChanges();
+        await _userRepository.SaveChanges();
 
         var userDto = _mapper.Map<User, UserDto>(user);
 

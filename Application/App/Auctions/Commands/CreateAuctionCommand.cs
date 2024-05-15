@@ -25,7 +25,9 @@ public class CreateAuctionCommand : IRequest<AuctionDto>
 
 public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand, AuctionDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _entityRepository;
+
+    private readonly IUserRepository _userRepository;
 
     private readonly CreateAuctionCommandValidator _validator;
 
@@ -33,9 +35,10 @@ public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand,
 
     private readonly IMapper _mapper;
 
-    public CreateAuctionCommandHandler(IRepository repository, ILogger<CreateAuctionCommandHandler> logger, IMapper mapper)
+    public CreateAuctionCommandHandler(IEntityRepository entityRepository, IUserRepository userRepository, ILogger<CreateAuctionCommandHandler> logger, IMapper mapper)
     {
-        _repository = repository;
+        _entityRepository = entityRepository;
+        _userRepository = userRepository;
         _validator = new CreateAuctionCommandValidator();
         _logger = logger;
         _mapper = mapper;
@@ -45,16 +48,16 @@ public class CreateAuctionCommandHandler : IRequestHandler<CreateAuctionCommand,
     {
         _validator.ValidateAndThrow(request);
 
-        var user = await _repository.GetById<User>(request.CreatorId)
+        var user = await _userRepository.GetById(request.CreatorId)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         var auction = _mapper.Map<CreateAuctionCommand, Auction>(request);
 
         auction.CreatorId = user.Id;
 
-        await _repository.Add(auction);
+        await _entityRepository.Add(auction);
 
-        await _repository.SaveChanges();
+        await _entityRepository.SaveChanges();
 
         var auctionDto = _mapper.Map<Auction, AuctionDto>(auction);
 

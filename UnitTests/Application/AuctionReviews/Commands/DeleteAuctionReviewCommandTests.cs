@@ -14,7 +14,7 @@ public class DeleteAuctionReviewCommandTests
             Id = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock.Setup(x => x.Remove<AuctionReview>(It.IsAny<int>())).Returns(Task.CompletedTask);
 

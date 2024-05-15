@@ -1,5 +1,4 @@
 ﻿using Application.Common.Abstractions;
-using AuctionApp.Domain.Models;
 using MediatR;
 
 namespace Application.App.Users.Commands;
@@ -12,16 +11,16 @@ public class DeleteUserCommand : IRequest
 public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
 
-    private readonly IRepository _repository;
+    private readonly IUserRepository _userRepository;
 
-    public DeleteUserCommandHandler(IRepository repository)
+    public DeleteUserCommandHandler(IUserRepository userRepository)
     {
-        _repository = repository;
+        _userRepository = userRepository;
     }
     public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        await _repository.Remove<User>(request.Id);
+        await _userRepository.Remove(request.Id);
 
-        await _repository.SaveChanges();
+        await _userRepository.SaveChanges();
     }
 }

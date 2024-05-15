@@ -1,4 +1,4 @@
-﻿using AuctionApp.Domain.Models;
+﻿using Domain.Auth;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -8,11 +8,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder
-            .Property(x => x.Username)
+            .Property(x => x.UserName)
             .HasMaxLength(64);
 
         builder
-            .HasIndex(x => x.Username)
+            .HasIndex(x => x.UserName)
             .IsUnique();
 
         builder

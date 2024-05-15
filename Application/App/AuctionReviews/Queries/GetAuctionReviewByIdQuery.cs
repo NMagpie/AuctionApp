@@ -13,11 +13,11 @@ public class GetAuctionReviewByIdQuery : IRequest<AuctionReviewDto>
 
 public class GetAuctionReviewByIdQueryHandler : IRequestHandler<GetAuctionReviewByIdQuery, AuctionReviewDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public GetAuctionReviewByIdQueryHandler(IRepository repository, IMapper mapper)
+    public GetAuctionReviewByIdQueryHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;

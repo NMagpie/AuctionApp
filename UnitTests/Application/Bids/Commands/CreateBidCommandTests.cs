@@ -58,7 +58,7 @@ public class CreateBidCommandTests
             IsWon = false,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -122,7 +122,7 @@ public class CreateBidCommandTests
             Auction = auction,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -156,7 +156,7 @@ public class CreateBidCommandTests
             Amount = 2,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 

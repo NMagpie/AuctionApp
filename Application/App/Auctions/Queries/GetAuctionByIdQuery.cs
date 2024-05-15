@@ -14,13 +14,13 @@ public class GetAuctionByIdQuery : IRequest<AuctionDto>
 
 public class GetAuctionByIdQueryHandler : IRequestHandler<GetAuctionByIdQuery, AuctionDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly ILogger<GetAuctionByIdQueryHandler> _logger;
 
     private readonly IMapper _mapper;
 
-    public GetAuctionByIdQueryHandler(IRepository repository, ILogger<GetAuctionByIdQueryHandler> logger, IMapper mapper)
+    public GetAuctionByIdQueryHandler(IEntityRepository repository, ILogger<GetAuctionByIdQueryHandler> logger, IMapper mapper)
     {
         _repository = repository;
         _logger = logger;

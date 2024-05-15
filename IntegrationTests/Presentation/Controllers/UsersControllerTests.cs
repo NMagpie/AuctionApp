@@ -38,34 +38,6 @@ public class UsersControllerTests
     }
 
     [Fact]
-    public async void UsersController_PostUserGood()
-    {
-
-        using var contextBuilder = new DataContextBuilder();
-
-        var dbContext = contextBuilder.GetContext();
-
-        var entityRepository = new EntityRepository(dbContext);
-
-        var mediator = TestHelpers.CreateMediator(entityRepository);
-
-        var controller = new UsersController(mediator);
-
-        var command = new CreateUserCommand
-        {
-            Username = "Test",
-        };
-
-        var resultRequest = await controller.CreateUser(command);
-
-        var result = resultRequest.Result as OkObjectResult;
-        var dto = result!.Value as UserDto;
-
-        Assert.NotNull(dto);
-        Assert.Equal((int)HttpStatusCode.OK, result.StatusCode);
-    }
-
-    [Fact]
     public async void UsersController_AddUserBalanceGood()
     {
         var nUsers = 1;
@@ -115,7 +87,7 @@ public class UsersControllerTests
         var command = new UpdateUserCommand
         {
             Id = 1,
-            Username = "Test",
+            UserName = "Test",
         };
 
         var resultRequest = await controller.UpdateUser(command);

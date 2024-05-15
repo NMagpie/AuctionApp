@@ -12,6 +12,8 @@ public class UpdateAuctionReviewCommand : IRequest<AuctionReviewDto>
 {
     public int Id { get; set; }
 
+    public int UserId { get; set; }
+
     public string ReviewText { get; set; }
 
     public float Rating { get; set; }
@@ -19,13 +21,13 @@ public class UpdateAuctionReviewCommand : IRequest<AuctionReviewDto>
 
 public class UpdateAuctionReviewCommandHandler : IRequestHandler<UpdateAuctionReviewCommand, AuctionReviewDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly UpdateAuctionReviewCommandValidator _validator;
 
     private readonly IMapper _mapper;
 
-    public UpdateAuctionReviewCommandHandler(IRepository repository, IMapper mapper)
+    public UpdateAuctionReviewCommandHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new UpdateAuctionReviewCommandValidator();
@@ -38,6 +40,11 @@ public class UpdateAuctionReviewCommandHandler : IRequestHandler<UpdateAuctionRe
 
         var auctionReview = await _repository.GetById<AuctionReview>(request.Id)
             ?? throw new EntityNotFoundException("AuctionReview cannot be found");
+
+        if (auctionReview.UserId != request.UserId)
+        {
+            throw new InvalidUserException("You do not have permission to modify this data");
+        }
 
         _mapper.Map(request, auctionReview);
 

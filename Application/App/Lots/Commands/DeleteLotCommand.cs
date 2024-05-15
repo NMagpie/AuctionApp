@@ -8,13 +8,15 @@ namespace Application.App.Lots.Commands;
 public class DeleteLotCommand : IRequest
 {
     public int Id { get; set; }
+
+    public int UserId { get; set; }
 }
 
 public class DeleteLotCommandHandler : IRequestHandler<DeleteLotCommand>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
-    public DeleteLotCommandHandler(IRepository repository)
+    public DeleteLotCommandHandler(IEntityRepository repository)
     {
         _repository = repository;
     }
@@ -22,6 +24,11 @@ public class DeleteLotCommandHandler : IRequestHandler<DeleteLotCommand>
     {
         var lot = await _repository.GetByIdWithInclude<Lot>(request.Id, lot => lot.Auction)
             ?? throw new EntityNotFoundException("Lot cannot be found");
+
+        if (lot.Auction.CreatorId != request.UserId)
+        {
+            throw new InvalidUserException("You do not have permission to modify this data");
+        }
 
         if (lot.Auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {

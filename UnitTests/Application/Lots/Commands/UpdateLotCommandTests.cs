@@ -52,7 +52,7 @@ public class UpdateLotCommandTests
             InitialPrice = lot.InitialPrice,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -120,7 +120,7 @@ public class UpdateLotCommandTests
 
         auction.Lots.Add(lot);
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -158,7 +158,7 @@ public class UpdateLotCommandTests
             InitialPrice = 2,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 

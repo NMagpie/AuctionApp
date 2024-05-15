@@ -32,7 +32,7 @@ public class GetUserWatchlistByIdQueryTests
             AuctionId = userWatchlist.AuctionId,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -61,7 +61,7 @@ public class GetUserWatchlistByIdQueryTests
             Id = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 

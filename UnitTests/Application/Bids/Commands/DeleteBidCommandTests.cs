@@ -45,7 +45,7 @@ public class DeleteBidCommandTests
             Amount = 2,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.GetByIdWithInclude<Bid>(
@@ -76,7 +76,7 @@ public class DeleteBidCommandTests
             Id = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.GetByIdWithInclude<Bid>(
@@ -136,7 +136,7 @@ public class DeleteBidCommandTests
             Amount = 2,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.GetByIdWithInclude<Bid>(

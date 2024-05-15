@@ -1,4 +1,5 @@
-﻿using EntityFramework.Domain.Abstractions;
+﻿using Domain.Auth;
+using EntityFramework.Domain.Abstractions;
 
 namespace AuctionApp.Domain.Models;
 public class Auction : Entity

@@ -13,11 +13,11 @@ public class GetLotByIdQuery : IRequest<LotDto>
 
 public class GetLotByIdQueryHandler : IRequestHandler<GetLotByIdQuery, LotDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public GetLotByIdQueryHandler(IRepository repository, IMapper mapper)
+    public GetLotByIdQueryHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;

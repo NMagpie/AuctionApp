@@ -3,6 +3,7 @@ using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using Moq;
 
 namespace UnitTests.Application.AuctionReviews.Commands;
@@ -38,21 +39,23 @@ public class CreateAuctionReviewCommandTests
             EndTime = DateTime.Today,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock.Setup(x => x.GetById<User>(It.IsAny<int>())).Returns(Task.FromResult<User?>(user));
+        userRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(Task.FromResult<User?>(user));
 
         repositoryMock.Setup(x => x.GetById<Auction>(It.IsAny<int>())).Returns(Task.FromResult<Auction?>(auction));
 
         repositoryMock.Setup(x => x.Add(It.IsAny<AuctionReview>())).Returns(Task.FromResult(auctionReview));
 
-        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, userRepositoryMock.Object, mapperMock.Object);
 
         var result = await createAuctionReviewHandler.Handle(auctionReviewCommand, new CancellationToken());
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         repositoryMock.Verify(x => x.GetById<Auction>(It.IsAny<int>()), Times.Once);
 
@@ -74,17 +77,19 @@ public class CreateAuctionReviewCommandTests
             Rating = 2,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock.Setup(x => x.GetById<User>(It.IsAny<int>())).Returns(Task.FromResult<User?>(null));
+        userRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(Task.FromResult<User?>(null));
 
-        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, userRepositoryMock.Object, mapperMock.Object);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(async () => await createAuctionReviewHandler.Handle(auctionReview, new CancellationToken()));
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         repositoryMock.Verify(x => x.GetById<Auction>(It.IsAny<int>()), Times.Never);
 
@@ -109,19 +114,21 @@ public class CreateAuctionReviewCommandTests
             Id = auctionReview.UserId,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock.Setup(x => x.GetById<User>(It.IsAny<int>())).Returns(Task.FromResult<User?>(user));
+        userRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(Task.FromResult<User?>(user));
 
         repositoryMock.Setup(x => x.GetById<Auction>(It.IsAny<int>())).Returns(Task.FromResult<Auction?>(null));
 
-        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, userRepositoryMock.Object, mapperMock.Object);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(async () => await createAuctionReviewHandler.Handle(auctionReview, new CancellationToken()));
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         repositoryMock.Verify(x => x.GetById<Auction>(It.IsAny<int>()), Times.Once);
 
@@ -152,19 +159,21 @@ public class CreateAuctionReviewCommandTests
             EndTime = DateTime.MaxValue,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock.Setup(x => x.GetById<User>(It.IsAny<int>())).Returns(Task.FromResult<User?>(user));
+        userRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(Task.FromResult<User?>(user));
 
         repositoryMock.Setup(x => x.GetById<Auction>(It.IsAny<int>())).Returns(Task.FromResult<Auction?>(auction));
 
-        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createAuctionReviewHandler = new CreateAuctionReviewCommandHandler(repositoryMock.Object, userRepositoryMock.Object, mapperMock.Object);
 
         await Assert.ThrowsAsync<BusinessValidationException>(async () => await createAuctionReviewHandler.Handle(auctionReview, new CancellationToken()));
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         repositoryMock.Verify(x => x.GetById<Auction>(It.IsAny<int>()), Times.Once);
 

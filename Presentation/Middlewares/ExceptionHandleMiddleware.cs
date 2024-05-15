@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Application.Common.Exceptions;
+using FluentValidation;
 using OnlineBookShop.API.Middlewares.Models;
 using System.Net;
 
@@ -29,6 +30,12 @@ public class ExceptionHandleMiddleware
             {
                 case ValidationException _:
                     ctx.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    break;
+                case EntityNotFoundException _:
+                    ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
+                    break;
+                case InvalidUserException _:
+                    ctx.Response.StatusCode = (int)HttpStatusCode.Forbidden;
                     break;
                 default:
                     ctx.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

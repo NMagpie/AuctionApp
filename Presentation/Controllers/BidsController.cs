@@ -2,13 +2,16 @@
 using Application.App.Bids.Responses;
 using Application.App.Queries;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Common.Abstractions;
 
 namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class BidsController : ControllerBase
+[Authorize]
+public class BidsController : AppBaseController
 {
     private readonly IMediator _mediator;
 
@@ -17,6 +20,7 @@ public class BidsController : ControllerBase
         _mediator = mediator;
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<BidDto>> GetBid(int id)
     {

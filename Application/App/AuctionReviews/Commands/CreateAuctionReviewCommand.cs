@@ -3,6 +3,7 @@ using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using FluentValidation;
 using MediatR;
 
@@ -22,15 +23,18 @@ public class CreateAuctionReviewCommand : IRequest<AuctionReviewDto>
 public class CreateAuctionReviewCommandHandler : IRequestHandler<CreateAuctionReviewCommand, AuctionReviewDto>
 {
 
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _entityRepository;
+
+    private readonly IUserRepository _userRepository;
 
     private readonly CreateAuctionReviewCommandValidator _validator;
 
     private readonly IMapper _mapper;
 
-    public CreateAuctionReviewCommandHandler(IRepository repository, IMapper mapper)
+    public CreateAuctionReviewCommandHandler(IEntityRepository entityRepository, IUserRepository userRepository, IMapper mapper)
     {
-        _repository = repository;
+        _entityRepository = entityRepository;
+        _userRepository = userRepository;
         _validator = new CreateAuctionReviewCommandValidator();
         _mapper = mapper;
     }
@@ -39,10 +43,10 @@ public class CreateAuctionReviewCommandHandler : IRequestHandler<CreateAuctionRe
     {
         _validator.ValidateAndThrow(request);
 
-        var user = await _repository.GetById<User>(request.UserId)
+        var user = await _userRepository.GetById(request.UserId)
             ?? throw new EntityNotFoundException("User cannot be found");
 
-        var auction = await _repository.GetById<Auction>(request.AuctionId)
+        var auction = await _entityRepository.GetById<Auction>(request.AuctionId)
             ?? throw new EntityNotFoundException("Auction cannot be found");
 
         if (auction.EndTime >= DateTime.UtcNow)
@@ -52,9 +56,9 @@ public class CreateAuctionReviewCommandHandler : IRequestHandler<CreateAuctionRe
 
         var auctionReview = _mapper.Map<CreateAuctionReviewCommand, AuctionReview>(request);
 
-        await _repository.Add(auctionReview);
+        await _entityRepository.Add(auctionReview);
 
-        await _repository.SaveChanges();
+        await _entityRepository.SaveChanges();
 
         var auctionReviewDto = _mapper.Map<AuctionReview, AuctionReviewDto>(auctionReview);
 

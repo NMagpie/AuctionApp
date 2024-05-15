@@ -2,8 +2,8 @@
 using Application.App.Users.Responses;
 using Application.Common.Abstractions;
 using Application.Common.Exceptions;
-using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using Moq;
 
 namespace UnitTests.Application.Users.Commands;
@@ -15,28 +15,28 @@ public class UpdateUserCommandTests
         var userCommand = new UpdateUserCommand
         {
             Id = 1,
-            Username = "Test",
+            UserName = "Test",
         };
 
         var user = new User
         {
             Id = 1,
-            Username = "OldUsername",
+            UserName = "OldUsername",
         };
 
         var userDto = new UserDto
         {
             Id = 1,
-            Username = userCommand.Username,
+            UserName = userCommand.UserName,
             Balance = user.Balance,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock
-            .Setup(x => x.GetById<User>(It.IsAny<int>()))
+        userRepositoryMock
+            .Setup(x => x.GetById(It.IsAny<int>()))
             .Returns(Task.FromResult(user));
 
         mapperMock
@@ -47,15 +47,15 @@ public class UpdateUserCommandTests
             .Setup(x => x.Map<User, UserDto>(It.IsAny<User>()))
             .Returns(userDto);
 
-        var createUserCommandHandler = new UpdateUserCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createUserCommandHandler = new UpdateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object);
 
         var result = await createUserCommandHandler.Handle(userCommand, new CancellationToken());
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         mapperMock.Verify(x => x.Map(It.IsAny<UpdateUserCommand>(), It.IsAny<User>()), Times.Once);
 
-        repositoryMock.Verify(x => x.SaveChanges(), Times.Once);
+        userRepositoryMock.Verify(x => x.SaveChanges(), Times.Once);
 
         mapperMock.Verify(x => x.Map<User, UserDto>(It.IsAny<User>()), Times.Once);
     }
@@ -66,26 +66,26 @@ public class UpdateUserCommandTests
         var userCommand = new UpdateUserCommand
         {
             Id = 1,
-            Username = "Test",
+            UserName = "Test",
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock
-            .Setup(x => x.GetById<User>(It.IsAny<int>()))
+        userRepositoryMock
+            .Setup(x => x.GetById(It.IsAny<int>()))
             .Returns(Task.FromResult<User?>(null));
 
-        var createUserCommandHandler = new UpdateUserCommandHandler(repositoryMock.Object, mapperMock.Object);
+        var createUserCommandHandler = new UpdateUserCommandHandler(userRepositoryMock.Object, mapperMock.Object);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(async () => await createUserCommandHandler.Handle(userCommand, new CancellationToken()));
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         mapperMock.Verify(x => x.Map(It.IsAny<UpdateUserCommand>(), It.IsAny<User>()), Times.Never);
 
-        repositoryMock.Verify(x => x.SaveChanges(), Times.Never);
+        userRepositoryMock.Verify(x => x.SaveChanges(), Times.Never);
 
         mapperMock.Verify(x => x.Map<User, UserDto>(It.IsAny<User>()), Times.Never);
     }

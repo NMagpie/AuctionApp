@@ -16,6 +16,8 @@ public class CreateLotCommand : IRequest<LotDto>
 
     public int AuctionId { get; set; }
 
+    public int UserId { get; set; }
+
     public decimal InitialPrice { get; set; }
 
     public HashSet<string> Categories { get; set; } = [];
@@ -24,13 +26,13 @@ public class CreateLotCommand : IRequest<LotDto>
 public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand, LotDto>
 {
 
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly CreateLotCommandValidator _validator;
 
     private readonly IMapper _mapper;
 
-    public CreateLotCommandHandler(IRepository repository, IMapper mapper)
+    public CreateLotCommandHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new CreateLotCommandValidator();
@@ -43,6 +45,11 @@ public class CreateLotCommandHandler : IRequestHandler<CreateLotCommand, LotDto>
 
         var auction = await _repository.GetById<Auction>(request.AuctionId)
             ?? throw new EntityNotFoundException("Auciton cannot be found");
+
+        if (auction.CreatorId != request.UserId)
+        {
+            throw new InvalidUserException("You do not have permission to modify this data");
+        }
 
         if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {

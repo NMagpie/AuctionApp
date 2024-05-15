@@ -36,7 +36,7 @@ public class UpdateAuctionReviewCommandTests
             Rating = updatedAuctionReview.Rating,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -74,7 +74,7 @@ public class UpdateAuctionReviewCommandTests
             Rating = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 

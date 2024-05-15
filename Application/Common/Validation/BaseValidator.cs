@@ -5,10 +5,7 @@ using FluentValidation.Results;
 namespace Application.Common.Validation;
 public class BaseValidator<T> : AbstractValidator<T>
 {
-    public BaseValidator() : base()
-    {
-
-    }
+    public BaseValidator() : base() { }
 
     protected override void RaiseValidationException(ValidationContext<T> context, ValidationResult result)
     {

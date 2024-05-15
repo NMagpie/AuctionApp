@@ -14,7 +14,7 @@ public class DeleteUserWatchlistCommandTests
             Id = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.Remove<UserWatchlist>(It.IsAny<int>()))

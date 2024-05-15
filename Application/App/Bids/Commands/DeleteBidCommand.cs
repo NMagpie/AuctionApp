@@ -15,9 +15,9 @@ public class DeleteBidCommand : IRequest
 public class DeleteBidCommandHandler : IRequestHandler<DeleteBidCommand>
 {
 
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
-    public DeleteBidCommandHandler(IRepository repository)
+    public DeleteBidCommandHandler(IEntityRepository repository)
     {
         _repository = repository;
     }

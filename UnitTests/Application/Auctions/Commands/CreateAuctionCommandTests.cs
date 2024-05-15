@@ -5,6 +5,7 @@ using Application.Common.Exceptions;
 using Application.Common.Models;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -51,14 +52,16 @@ public class CreateAuctionCommandTests
             Id = auctionCommand.CreatorId,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var loggerMock = new Mock<ILogger<CreateAuctionCommandHandler>>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock
-            .Setup(x => x.GetById<User>(It.IsAny<int>()))
+        userRepositoryMock
+            .Setup(x => x.GetById(It.IsAny<int>()))
             .Returns(Task.FromResult<User?>(user));
 
         repositoryMock
@@ -69,11 +72,11 @@ public class CreateAuctionCommandTests
             .Setup(x => x.Map<CreateAuctionCommand, Auction>(It.IsAny<CreateAuctionCommand>()))
             .Returns(auction);
 
-        var createAuctionHandler = new CreateAuctionCommandHandler(repositoryMock.Object, loggerMock.Object, mapperMock.Object);
+        var createAuctionHandler = new CreateAuctionCommandHandler(repositoryMock.Object, userRepositoryMock.Object, loggerMock.Object, mapperMock.Object);
 
         var result = await createAuctionHandler.Handle(auctionCommand, new CancellationToken());
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         mapperMock.Verify(x => x.Map<CreateAuctionCommand, Auction>(It.IsAny<CreateAuctionCommand>()), Times.Once);
 
@@ -119,21 +122,23 @@ public class CreateAuctionCommandTests
                 ]
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
+
+        var userRepositoryMock = new Mock<IUserRepository>();
 
         var loggerMock = new Mock<ILogger<CreateAuctionCommandHandler>>();
 
         var mapperMock = new Mock<IMapper>();
 
-        repositoryMock.Setup(x => x.GetById<User>(It.IsAny<int>())).Returns(Task.FromResult<User?>(null));
+        userRepositoryMock.Setup(x => x.GetById(It.IsAny<int>())).Returns(Task.FromResult<User?>(null));
 
         repositoryMock.Setup(x => x.Add(It.IsAny<Auction>())).Returns(Task.FromResult(auction));
 
-        var createAuctionHandler = new CreateAuctionCommandHandler(repositoryMock.Object, loggerMock.Object, mapperMock.Object);
+        var createAuctionHandler = new CreateAuctionCommandHandler(repositoryMock.Object, userRepositoryMock.Object, loggerMock.Object, mapperMock.Object);
 
         await Assert.ThrowsAsync<EntityNotFoundException>(async () => await createAuctionHandler.Handle(auctionCommand, new CancellationToken()));
 
-        repositoryMock.Verify(x => x.GetById<User>(It.IsAny<int>()), Times.Once);
+        userRepositoryMock.Verify(x => x.GetById(It.IsAny<int>()), Times.Once);
 
         mapperMock.Verify(x => x.Map<CreateAuctionCommand, Auction>(It.IsAny<CreateAuctionCommand>()), Times.Never);
 

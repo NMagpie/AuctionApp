@@ -40,7 +40,7 @@ public class DeleteLotCommandTests
 
         auction.Lots.Add(new Lot());
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.GetByIdWithInclude<Lot>(
@@ -71,7 +71,7 @@ public class DeleteLotCommandTests
             Id = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.GetByIdWithInclude<Lot>(
@@ -126,7 +126,7 @@ public class DeleteLotCommandTests
 
         auction.Lots.Add(new Lot());
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.GetByIdWithInclude<Lot>(
@@ -179,7 +179,7 @@ public class DeleteLotCommandTests
 
         auction.Lots.Add(lot);
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         repositoryMock
             .Setup(x => x.GetByIdWithInclude<Lot>(

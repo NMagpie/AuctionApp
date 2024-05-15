@@ -2,11 +2,10 @@
 using Application.Common.Exceptions;
 using EntityFramework.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
 namespace Infrastructure.Persistance.Repositories;
-public class EntityRepository : IRepository
+public class EntityRepository : IEntityRepository
 {
     private readonly AuctionAppDbContext _auctionAppDbContext;
 
@@ -86,7 +85,7 @@ public class EntityRepository : IRepository
         return _auctionAppDbContext.SaveChangesAsync();
     }
 
-    private IQueryable<T> IncludeProperties<T>(params Expression<Func<T, object>>[] includeProperties) where T: Entity
+    private IQueryable<T> IncludeProperties<T>(params Expression<Func<T, object>>[] includeProperties) where T : Entity
     {
         IQueryable<T> entities = _auctionAppDbContext.Set<T>();
         foreach (var includeProperty in includeProperties)

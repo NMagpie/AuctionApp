@@ -13,11 +13,11 @@ public class GetBidByIdQuery : IRequest<BidDto>
 
 public class GetBidByIdQueryHandler : IRequestHandler<GetBidByIdQuery, BidDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public GetBidByIdQueryHandler(IRepository repository, IMapper mapper)
+    public GetBidByIdQueryHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;

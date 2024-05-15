@@ -11,6 +11,9 @@ namespace Application.App.Lots.Commands;
 public class UpdateLotCommand : IRequest<LotDto>
 {
     public int Id { get; set; }
+
+    public int UserId { get; set; }
+
     public string Title { get; set; }
 
     public string Description { get; set; }
@@ -23,13 +26,13 @@ public class UpdateLotCommand : IRequest<LotDto>
 public class UpdateLotCommandHandler : IRequestHandler<UpdateLotCommand, LotDto>
 {
 
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly UpdateLotCommandValidator _validator;
 
     private readonly IMapper _mapper;
 
-    public UpdateLotCommandHandler(IRepository repository, IMapper mapper)
+    public UpdateLotCommandHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new UpdateLotCommandValidator();
@@ -42,6 +45,11 @@ public class UpdateLotCommandHandler : IRequestHandler<UpdateLotCommand, LotDto>
 
         var lot = await _repository.GetByIdWithInclude<Lot>(request.Id, lot => lot.Auction)
             ?? throw new EntityNotFoundException("Lot cannot be found");
+
+        if (lot.Auction.CreatorId != request.UserId)
+        {
+            throw new InvalidUserException("You do not have permission to modify this data");
+        }
 
         if (lot.Auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {

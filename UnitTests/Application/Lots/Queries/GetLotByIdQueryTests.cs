@@ -35,7 +35,7 @@ public class GetLotByIdQueryTests
             InitialPrice = lot.InitialPrice,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -64,7 +64,7 @@ public class GetLotByIdQueryTests
             Id = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 

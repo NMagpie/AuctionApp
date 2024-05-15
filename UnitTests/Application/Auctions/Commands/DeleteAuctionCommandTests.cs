@@ -21,7 +21,7 @@ public class DeleteAuctionCommandTests
             StartTime = DateTimeOffset.UtcNow + TimeSpan.FromMinutes(10),
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var loggerMock = new Mock<ILogger<DeleteAuctionCommandHandler>>();
 
@@ -50,7 +50,7 @@ public class DeleteAuctionCommandTests
             Id = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var loggerMock = new Mock<ILogger<DeleteAuctionCommandHandler>>();
 
@@ -80,7 +80,7 @@ public class DeleteAuctionCommandTests
             StartTime = DateTimeOffset.UtcNow,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var loggerMock = new Mock<ILogger<DeleteAuctionCommandHandler>>();
 

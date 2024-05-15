@@ -1,18 +1,18 @@
+using Domain.Auth;
 using Presentation;
 using Presentation.Extentions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.AddServices();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.MapSwagger().RequireAuthorization();
 }
 
 app.UseLogging();
@@ -20,6 +20,8 @@ app.UseLogging();
 app.UseExceptionHandling();
 
 app.UseHttpsRedirection();
+
+app.MapIdentityApi<User>();
 
 app.UseAuthorization();
 

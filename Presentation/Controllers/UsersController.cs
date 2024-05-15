@@ -1,22 +1,31 @@
 ﻿using Application.App.Queries;
 using Application.App.Users.Commands;
 using Application.App.Users.Responses;
+using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Common.Abstractions;
+using Presentation.Common.Models.Users;
 
 namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UsersController : ControllerBase
+[Authorize]
+public class UsersController : AppBaseController
 {
     private readonly IMediator _mediator;
 
-    public UsersController(IMediator mediator)
+    private readonly IMapper _mapper;
+
+    public UsersController(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
+        _mapper = mapper;
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserDto>> GetUser(int id)
     {
@@ -25,26 +34,30 @@ public class UsersController : ControllerBase
         return Ok(userDto);
     }
 
-    [HttpPost]
-    public async Task<ActionResult<UserDto>> CreateUser(CreateUserCommand createUserCommand)
-    {
-        var userDto = await _mediator.Send(createUserCommand);
-
-        return Ok(userDto);
-    }
-
     [HttpPost("add-balance")]
-    public async Task<ActionResult> AddUserBalance(AddUserBalanceCommand addUserBalanceCommand)
+    public async Task<ActionResult> AddUserBalance(AddUserBalanceRequest addUserBalanceRequest)
     {
-        await _mediator.Send(addUserBalanceCommand);
+        var userId = GetUserId();
+
+        var userCommand = _mapper.Map<AddUserBalanceRequest, AddUserBalanceCommand>(addUserBalanceRequest);
+
+        userCommand.Id = userId;
+
+        await _mediator.Send(userCommand);
 
         return Ok();
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<UserDto>> UpdateUser(UpdateUserCommand updateUserCommand)
+    public async Task<ActionResult<UserDto>> UpdateUser(int id, UpdateUserRequest updateUserRequest)
     {
-        var userDto = await _mediator.Send(updateUserCommand);
+        var userId = GetUserId();
+
+        var userCommand = _mapper.Map<UpdateUserRequest, UpdateUserCommand>(updateUserRequest);
+
+        userCommand.Id = userId;
+
+        var userDto = await _mediator.Send(userCommand);
 
         return Ok(userDto);
     }
@@ -52,7 +65,9 @@ public class UsersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUser(int id)
     {
-        await _mediator.Send(new DeleteUserCommand() { Id = id });
+        var userId = GetUserId();
+
+        await _mediator.Send(new DeleteUserCommand() { Id = userId });
 
         return Ok();
     }

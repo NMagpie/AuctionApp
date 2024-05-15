@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 
 namespace Application.Common.Abstractions;
-public interface IRepository
+public interface IEntityRepository
 {
     Task<T?> GetById<T>(int id) where T : Entity;
 

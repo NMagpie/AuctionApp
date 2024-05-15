@@ -1,4 +1,5 @@
 ﻿using AuctionApp.Domain.Models;
+using Domain.Auth;
 using EntityFramework.Domain.Models;
 using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
@@ -209,7 +210,7 @@ public class DataContextBuilder : IDisposable
             var user = new User
             {
                 Id = id,
-                Username = $"User-{id}",
+                UserName = $"User-{id}",
                 Balance = new decimal(rnd.NextDouble() * 100),
             };
 

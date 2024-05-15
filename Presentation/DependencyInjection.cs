@@ -1,5 +1,8 @@
 ﻿using Application;
-using Infrastructure.Persistance;
+using Infrastructure;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
+using System.Reflection;
 
 namespace Presentation;
 public static class DependencyInjection
@@ -12,6 +15,19 @@ public static class DependencyInjection
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+
+        builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        builder.Services.AddSwaggerGen(option =>
+        {
+            option.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Name = "Authorization",
+                BearerFormat = "Bearer",
+                Type = SecuritySchemeType.ApiKey,
+            });
+            option.OperationFilter<SecurityRequirementsOperationFilter>();
+        });
     }
 }

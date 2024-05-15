@@ -17,15 +17,18 @@ public class CreateUserWatchlistCommand : IRequest<UserWatchlistDto>
 
 public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatchlistCommand, UserWatchlistDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
+
+    private readonly IUserRepository _userRepository;
 
     private readonly CreateUserWatchlistCommandValidator _validator;
 
     private readonly IMapper _mapper;
 
-    public CreateUserWatchlistCommandHandler(IRepository repository, IMapper mapper)
+    public CreateUserWatchlistCommandHandler(IEntityRepository repository, IUserRepository userRepository, IMapper mapper)
     {
         _repository = repository;
+        _userRepository = userRepository;
         _validator = new CreateUserWatchlistCommandValidator();
         _mapper = mapper;
     }
@@ -34,7 +37,7 @@ public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatch
     {
         _validator.ValidateAndThrow(request);
 
-        var user = await _repository.GetById<User>(request.UserId)
+        var user = await _userRepository.GetById(request.UserId)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         var auction = await _repository.GetById<Auction>(request.AuctionId)

@@ -49,7 +49,7 @@ public class CreateLotCommandTests
             InitialPrice = lot.InitialPrice,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -95,7 +95,7 @@ public class CreateLotCommandTests
             InitialPrice = 1,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -158,7 +158,7 @@ public class CreateLotCommandTests
             InitialPrice = lot.InitialPrice,
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 

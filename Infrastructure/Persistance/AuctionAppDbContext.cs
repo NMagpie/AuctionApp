@@ -1,15 +1,14 @@
 ﻿using AuctionApp.Domain.Models;
+using Domain.Auth;
 using EntityFramework.Domain.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistance;
-public class AuctionAppDbContext : DbContext
+public class AuctionAppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
-
-    public AuctionAppDbContext(DbContextOptions<AuctionAppDbContext> options) : base(options)
-    {
-
-    }
+    public AuctionAppDbContext(DbContextOptions<AuctionAppDbContext> options) : base(options) { }
 
     public DbSet<Auction> Auctions { get; set; } = default!;
 
@@ -21,12 +20,14 @@ public class AuctionAppDbContext : DbContext
 
     public DbSet<Lot> Lots { get; set; } = default!;
 
-    public DbSet<User> Users { get; set; } = default!;
-
     public DbSet<UserWatchlist> UserWatchlists { get; set; } = default!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuctionAppDbContext).Assembly);
+
+        modelBuilder.Entity<User>().ToTable("Users", "Auth");
+
+        base.OnModelCreating(modelBuilder);
     }
 }

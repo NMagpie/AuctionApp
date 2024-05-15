@@ -19,13 +19,13 @@ public class CreateBidCommand : IRequest<BidDto>
 
 public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly CreateBidCommandValidator _validator;
 
     private readonly IMapper _mapper;
 
-    public CreateBidCommandHandler(IRepository repository, IMapper mapper)
+    public CreateBidCommandHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _validator = new CreateBidCommandValidator();

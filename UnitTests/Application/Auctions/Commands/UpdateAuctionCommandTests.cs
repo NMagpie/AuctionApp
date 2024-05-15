@@ -48,7 +48,7 @@ public class UpdateAuctionCommandTests
             LotIds = auction.Lots.Select(lot => lot.Id).ToHashSet(),
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -90,7 +90,7 @@ public class UpdateAuctionCommandTests
             EndTime = DateTimeOffset.UtcNow + TimeSpan.FromDays(3)
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 
@@ -141,7 +141,7 @@ public class UpdateAuctionCommandTests
             EndTime = DateTimeOffset.UtcNow + TimeSpan.FromDays(2)
         };
 
-        var repositoryMock = new Mock<IRepository>();
+        var repositoryMock = new Mock<IEntityRepository>();
 
         var mapperMock = new Mock<IMapper>();
 

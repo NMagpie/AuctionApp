@@ -2,15 +2,17 @@
 using Application.App.UserWatchlists.Commands;
 using Application.App.UserWatchlists.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.Common.Abstractions;
 
 namespace Presentation.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class UserWatchlistsController : ControllerBase
+[Authorize]
+public class UserWatchlistsController : AppBaseController
 {
-
     private readonly IMediator _mediator;
 
     public UserWatchlistsController(IMediator mediator)
@@ -18,6 +20,7 @@ public class UserWatchlistsController : ControllerBase
         _mediator = mediator;
     }
 
+    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserWatchlistDto>> GetUserWatchlist(int id)
     {
@@ -37,7 +40,9 @@ public class UserWatchlistsController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteUserWatchlist(int id)
     {
-        await _mediator.Send(new DeleteUserWatchlistCommand() { Id = id });
+        var userId = GetUserId();
+
+        await _mediator.Send(new DeleteUserWatchlistCommand() { Id = id, UserId = userId });
 
         return Ok();
     }

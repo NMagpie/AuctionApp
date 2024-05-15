@@ -13,6 +13,8 @@ public class UpdateAuctionCommand : IRequest<AuctionDto>
 {
     public int Id { get; set; }
 
+    public int CreatorId { get; set; }
+
     public string Title { get; set; }
 
     public DateTimeOffset StartTime { get; set; }
@@ -22,7 +24,7 @@ public class UpdateAuctionCommand : IRequest<AuctionDto>
 
 public class UpdateAuctionCommandHandler : IRequestHandler<UpdateAuctionCommand, AuctionDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly UpdateAuctionCommandValidator _validator;
 
@@ -30,7 +32,7 @@ public class UpdateAuctionCommandHandler : IRequestHandler<UpdateAuctionCommand,
 
     private readonly IMapper _mapper;
 
-    public UpdateAuctionCommandHandler(IRepository repository, ILogger<UpdateAuctionCommandHandler> logger, IMapper mapper)
+    public UpdateAuctionCommandHandler(IEntityRepository repository, ILogger<UpdateAuctionCommandHandler> logger, IMapper mapper)
     {
         _repository = repository;
         _validator = new UpdateAuctionCommandValidator();
@@ -44,6 +46,11 @@ public class UpdateAuctionCommandHandler : IRequestHandler<UpdateAuctionCommand,
 
         var auction = await _repository.GetById<Auction>(request.Id)
             ?? throw new EntityNotFoundException("Auction cannot be found");
+
+        if (auction.CreatorId != request.CreatorId)
+        {
+            throw new InvalidUserException("You do not have permission to modify this data");
+        }
 
         if (auction.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
         {

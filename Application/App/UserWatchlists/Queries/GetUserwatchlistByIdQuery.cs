@@ -13,11 +13,11 @@ public class GetUserWatchlistByIdQuery : IRequest<UserWatchlistDto>
 
 public class GetUserWatchlistByIdQueryHandler : IRequestHandler<GetUserWatchlistByIdQuery, UserWatchlistDto>
 {
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public GetUserWatchlistByIdQueryHandler(IRepository repository, IMapper mapper)
+    public GetUserWatchlistByIdQueryHandler(IEntityRepository repository, IMapper mapper)
     {
         _repository = repository;
         _mapper = mapper;

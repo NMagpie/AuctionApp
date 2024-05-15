@@ -9,11 +9,11 @@ public class TimedBackgroundService : BackgroundService
 {
     private readonly ILogger<TimedBackgroundService> _logger;
 
-    private readonly IRepository _repository;
+    private readonly IEntityRepository _repository;
 
     private TimeSpan _timeout;
 
-    public TimedBackgroundService(ILogger<TimedBackgroundService> logger, IRepository repository)
+    public TimedBackgroundService(ILogger<TimedBackgroundService> logger, IEntityRepository repository)
     {
         _logger = logger;
         _repository = repository;
