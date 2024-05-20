@@ -2,6 +2,7 @@
 using Domain.Auth;
 using Infrastructure.Persistance;
 using Infrastructure.Persistance.Repositories;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,10 @@ public static class DependencyInjection
             })
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<AuctionAppDbContext>();
+
+        services.ConfigureAll<BearerTokenOptions>(option => {
+            option.BearerTokenExpiration = TimeSpan.FromMinutes(15);
+        });
 
         services
             .AddScoped<IEntityRepository, EntityRepository>()

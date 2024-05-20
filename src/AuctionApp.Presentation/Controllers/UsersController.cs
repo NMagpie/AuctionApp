@@ -34,7 +34,17 @@ public class UsersController : AppBaseController
         return Ok(userDto);
     }
 
-    [HttpPost("add-balance")]
+    [HttpGet("current_user")]
+    public async Task<ActionResult<UserDto>> GetCurrentUser(int id)
+    {
+        var userId = GetUserId();
+
+        var userDto = await _mediator.Send(new GetUserByIdQuery() { Id = userId });
+
+        return Ok(userDto);
+    }
+
+    [HttpPost("current_user/add-balance")]
     public async Task<ActionResult> AddUserBalance(AddUserBalanceRequest addUserBalanceRequest)
     {
         var userId = GetUserId();
