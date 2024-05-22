@@ -5,39 +5,25 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { ApiContext, ApiProvider } from './contexts/ApiContext';
-import { useContext, useEffect, useState } from 'react';
-import { AuctionDto } from './api';
+import { ApiProvider } from './contexts/ApiContext';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import NoPage from './components/NoPage';
+import Layout from './components/Layout';
+import Home from './components/Home';
 
 function App() {
 
   return (
     <ApiProvider>
-      <AuctionInfo />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="*" element={<NoPage />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ApiProvider>
-  )
-}
-
-function AuctionInfo() {
-
-  const [auction, setAuction] = useState<AuctionDto | null>(null);
-
-  const apiProvider = useContext(ApiContext);
-
-  const getAuction = async () => {
-    let result = await apiProvider.auctions.auctionsIdGet({ id: 1 });
-
-    setAuction(result.data)
-  };
-
-  useEffect(() => {
-    getAuction();
-  }, []);
-
-  return (
-    <h1 className="text-3xl font-bold underline">
-      <p>{JSON.stringify(auction)}</p>
-    </h1>
   )
 }
 

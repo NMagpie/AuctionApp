@@ -1,8 +1,9 @@
 import { createContext, ReactNode } from 'react';
-import { AccessTokenResponse, AuctionReviewsApi, AuctionsApi, BidsApi, Configuration, IdentityApi, LotsApi, UserWatchlistsApi, UsersApi } from '../api';
-import axios, { AxiosInstance } from 'axios';
+import { AccessTokenResponse, AuctionReviewsApi, AuctionsApi, BidsApi, Configuration, IdentityApi, LotsApi, UserDto, UserWatchlistsApi, UsersApi } from '../api';
+import axios, { AxiosError, AxiosInstance } from 'axios';
+import { RequiredError } from '../api/base';
 
-class UserManager {
+class UserIdentity {
 
     constructor() {
         this.accessToken = localStorage.getItem('accessToken');
@@ -18,9 +19,24 @@ class UserManager {
 
     expireDate: Date | null;
 
-    public isExpired = () => {
-        return this.expireDate ? this.expireDate <= new Date() : true;
+    public isViable = () => {
+        return this.expireDate ? this.expireDate >= new Date() : false;
     }
+}
+
+export class User {
+
+    constructor() {
+        this.id = Number.parseInt(localStorage.getItem('userId') ?? "");
+        this.userName = localStorage.getItem('userName');
+        this.balance = Number.parseFloat(localStorage.getItem('userBalance') ?? "");
+    }
+
+    id: number | null;
+
+    userName: string | null;
+
+    balance: number | null;
 }
 
 class ApiManager {
@@ -36,7 +52,7 @@ class ApiManager {
         this.axios.interceptors.response.use(
             (response) => response,
             async (error) => {
-                if (error.response && error.response.status === 401 && this?.user?.refreshToken) {
+                if (error.response && error.response.status === 401 && this?.userIdentity?.refreshToken) {
                     try {
                         const newAccessToken = await this.refreshAccessToken();
                         error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
@@ -63,10 +79,16 @@ class ApiManager {
 
         this.userWatchlsits = new UserWatchlistsApi(configuration, undefined, this.axios);
 
-        this.user = new UserManager();
+        if (localStorage.getItem('refreshToken')) {
+            this.userIdentity = new UserIdentity();
+            this.user = new User();
+        } else {
+            this.userIdentity = null;
+            this.user = null;
+        }
 
-        if (this.user.accessToken && !this.user.isExpired()) {
-            this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.user.accessToken}`;
+        if (this?.userIdentity?.accessToken && this?.userIdentity.isViable()) {
+            this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.userIdentity.accessToken}`;
         }
     }
 
@@ -84,35 +106,44 @@ class ApiManager {
 
     userWatchlsits: UserWatchlistsApi;
 
-    user: UserManager | null;
+    private userIdentity: UserIdentity | null;
+
+    user: User | null;
 
     private axios: AxiosInstance;
 
     private refreshAccessToken = async () => {
-        const { data } = await this.identity.identityRefreshPost({ refreshRequest: { refreshToken: this.user!.refreshToken } });
+        const { data } = await this.identity.identityRefreshPost({ refreshRequest: { refreshToken: this.userIdentity!.refreshToken } });
 
-        this.assignUser(data);
+        this.assignUserIdentity(data);
 
         return data.accessToken;
     }
 
     public login = async (email: string, password: string) => {
-        const { data } = await this.identity.identityLoginPost({ loginRequest: { email, password } });
 
-        this.assignUser(data);
+            const { data } = await this.identity.identityLoginPost({ loginRequest: { email, password } });
 
-        this.axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+            this.assignUserIdentity(data);
+
+            this.axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+
+            const user = (await this.users.usersCurrentUserGet()).data;
+
+            this.assignUser(user);
     }
 
     public logout = () => {
+        this.assignUserIdentity(null);
+
         this.assignUser(null);
 
         this.axios.defaults.headers.common['Authorization'] = "";
     }
 
-    private assignUser = (data: AccessTokenResponse | null) => {
+    private assignUserIdentity = (data: AccessTokenResponse | null) => {
         if (!data) {
-            this.user = null;
+            this.userIdentity = null;
 
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
@@ -121,20 +152,36 @@ class ApiManager {
             return;
         }
 
-        const {
-            accessToken = null,
-            refreshToken = null,
-            expiresIn = null,
-        } = data
+        this.userIdentity = new UserIdentity();
+        this.userIdentity.accessToken = data.accessToken!;
+        this.userIdentity.refreshToken = data.refreshToken!;
+        this.userIdentity.expireDate = new Date(Date.now() + data.expiresIn! * 1000);
 
-        this.user = new UserManager();
-        this.user.accessToken = accessToken;
-        this.user.refreshToken = refreshToken;
-        this.user.expireDate = expiresIn ? new Date(Date.now() + expiresIn * 1000) : null;
+        localStorage.setItem('accessToken', data.accessToken!);
+        localStorage.setItem('refreshToken', data.refreshToken!);
+        localStorage.setItem('expireDate', this.userIdentity.expireDate!.toString());
+    }
 
-        localStorage.setItem('accessToken', accessToken!);
-        localStorage.setItem('refreshToken', refreshToken!);
-        localStorage.setItem('expireDate', this.user.expireDate!.toString());
+    private assignUser = (data: UserDto | null) => {
+        if (!data) {
+            this.user = null;
+
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            localStorage.removeItem('userBalance');
+
+            return;
+        }
+
+        this.user = new User();
+
+        this.user.id = data.id!;
+        this.user.userName = data.userName!;
+        this.user.balance = data.balance!;
+
+        localStorage.setItem('userId', data.id!.toString());
+        localStorage.setItem('userName', data.userName!);
+        localStorage.setItem('userBalance', data.balance!.toString());
     }
 }
 
