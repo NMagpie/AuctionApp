@@ -1,0 +1,10 @@
+.guest-panel {
+    @apply flex gap-1 md:gap-4;
+
+    a,
+    a:hover,
+    a:visited {
+
+        @apply font-mono bg-white text-black no-underline font-bold;
+    }
+}

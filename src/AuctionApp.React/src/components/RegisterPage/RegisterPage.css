@@ -1,0 +1,17 @@
+.user-register {
+    color: #1976d2;
+
+    @apply bg-white w-[50vw] h-fit overflow-y-auto rounded-lg;
+}
+
+.user-register-content {
+    @apply flex flex-col items-center m-5;
+}
+
+.error-message {
+    @apply text-red-600;
+}
+
+.submit-button {
+    @apply mt-5;
+}

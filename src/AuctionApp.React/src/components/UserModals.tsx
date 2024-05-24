@@ -2,6 +2,7 @@ import { FC, useContext, useState } from "react";
 import { ApiContext, User } from "../contexts/ApiContext";
 import { Button, Modal, Stack, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 interface UserInfoModalProps {
     isOpen: boolean;
@@ -36,6 +37,8 @@ interface UserRegisterModalProps {
     handleOpenLogin: () => void;
 }
 
+const passwordRegex = new RegExp('^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z])(?=.*[\W_]).{8,}$');
+
 export const UserRegisterModal: FC<UserRegisterModalProps> = ({
     isOpen,
     handleClose,
@@ -50,14 +53,59 @@ export const UserRegisterModal: FC<UserRegisterModalProps> = ({
 
     const apiProvider = useContext(ApiContext);
 
-    // const [userName, setUserName] = useState('')
     const [email, setEmail] = useState('')
+
+    const [emailError, setEmailError] = useState(false)
+
     const [password, setPassword] = useState('')
+
+    const [passwordErrorText, setPasswordErrorText] = useState("")
+
+    const [passwordError, setPasswordError] = useState(false)
+
+    const setPasswordErrorMessage = (msg: string) => {
+        setPasswordError(!!msg);
+        setPasswordErrorText(msg);
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        await apiProvider.identity.identityRegisterPost({ registerRequest: { email: email, password: password } });
+        setEmailError(false)
+        setPasswordError(false)
+
+        if (email == '') {
+            setEmailError(true)
+        }
+
+        switch (true) {
+            case (password == ''):
+                setPasswordError(true);
+                return;
+            case (password.length < 8):
+                setPasswordErrorMessage('Password cannot be less than 8 characters long');
+                return;
+            case (password == password.toLowerCase() || password == password.toUpperCase()):
+                setPasswordErrorMessage('Password must contain at least one uppercase and one lowercase letter');
+                return;
+            case (!passwordRegex.test(password)):
+                setPasswordErrorMessage('Password must contain at least one number and one special character');
+                return;
+            default:
+                setPasswordErrorMessage('');
+        }
+
+        if (email && password) {
+            apiProvider.identity.identityRegisterPost({ registerRequest: { email: email, password: password } })
+                .then((x) => {
+                    handleClose();
+                    refreshPage();
+                })
+                .catch(error => {
+
+                    console.log(error);
+                });
+        }
     }
 
     return (
@@ -91,6 +139,7 @@ export const UserRegisterModal: FC<UserRegisterModalProps> = ({
                         label="Email"
                         onChange={e => setEmail(e.target.value)}
                         value={email}
+                        error={emailError}
                         fullWidth
                         required
                         sx={{ mb: 4 }}
@@ -103,6 +152,8 @@ export const UserRegisterModal: FC<UserRegisterModalProps> = ({
                         label="Password"
                         onChange={e => setPassword(e.target.value)}
                         value={password}
+                        error={passwordError}
+                        helperText={passwordErrorText}
                         required
                         fullWidth
                         sx={{ mb: 4 }}
@@ -142,8 +193,11 @@ export const UserLoginModal: FC<UserLoginModalProps> = ({
     const apiProvider = useContext(ApiContext);
 
     const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
+
     const [emailError, setEmailError] = useState(false)
+
+    const [password, setPassword] = useState("")
+
     const [passwordError, setPasswordError] = useState(false)
 
     const handleSubmit = async (event) => {
@@ -155,8 +209,9 @@ export const UserLoginModal: FC<UserLoginModalProps> = ({
         if (email == '') {
             setEmailError(true)
         }
+
         if (password == '') {
-            setPasswordError(true)
+            setPasswordError(true);
         }
 
         if (email && password) {
@@ -166,7 +221,7 @@ export const UserLoginModal: FC<UserLoginModalProps> = ({
                     refreshPage();
                 })
                 .catch(error => {
-
+                    console.log(error);
                 });
         }
     }

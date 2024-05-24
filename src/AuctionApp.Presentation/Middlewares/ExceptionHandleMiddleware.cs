@@ -26,21 +26,13 @@ public class ExceptionHandleMiddleware
         }
         catch (Exception ex)
         {
-            switch (ex)
+            ctx.Response.StatusCode = ex switch
             {
-                case ValidationException _:
-                    ctx.Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    break;
-                case EntityNotFoundException _:
-                    ctx.Response.StatusCode = (int)HttpStatusCode.NotFound;
-                    break;
-                case InvalidUserException _:
-                    ctx.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                    break;
-                default:
-                    ctx.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                    break;
-            }
+                ValidationException _ => (int)HttpStatusCode.BadRequest,
+                EntityNotFoundException _ => (int)HttpStatusCode.NotFound,
+                InvalidUserException _ => (int)HttpStatusCode.Forbidden,
+                _ => (int)HttpStatusCode.InternalServerError,
+            };
             await CreateExceptionResponseAsync(ctx, ex);
 
         }

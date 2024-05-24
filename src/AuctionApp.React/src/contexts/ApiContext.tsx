@@ -1,7 +1,6 @@
 import { createContext, ReactNode } from 'react';
 import { AccessTokenResponse, AuctionReviewsApi, AuctionsApi, BidsApi, Configuration, IdentityApi, LotsApi, UserDto, UserWatchlistsApi, UsersApi } from '../api';
-import axios, { AxiosError, AxiosInstance } from 'axios';
-import { RequiredError } from '../api/base';
+import axios, { AxiosInstance } from 'axios';
 
 class UserIdentity {
 
@@ -122,15 +121,22 @@ class ApiManager {
 
     public login = async (email: string, password: string) => {
 
-            const { data } = await this.identity.identityLoginPost({ loginRequest: { email, password } });
+        const { data } = await this.identity.identityLoginPost({ loginRequest: { email, password } });
 
-            this.assignUserIdentity(data);
+        this.assignUserIdentity(data);
 
-            this.axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+        this.axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
 
-            const user = (await this.users.usersCurrentUserGet()).data;
+        const user = (await this.users.usersCurrentUserGet()).data;
 
-            this.assignUser(user);
+        this.assignUser(user);
+    }
+
+    public register = async (email: string, password: string) => {
+
+        await this.identity.identityRegisterPost({ registerRequest: { email, password } });
+
+        await this.login(email, password);
     }
 
     public logout = () => {

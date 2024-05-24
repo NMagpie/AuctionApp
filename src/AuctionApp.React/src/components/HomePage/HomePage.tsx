@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
-import { AuctionDto } from "../api";
-import { ApiContext } from "../contexts/ApiContext";
+import { AuctionDto } from "../../api";
+import { ApiContext } from "../../contexts/ApiContext";
 
-const Home = () => {
+const HomePage = () => {
 
     const apiProvider = useContext(ApiContext);
 
@@ -14,7 +14,7 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default HomePage;
 
 function AuctionInfo() {
 

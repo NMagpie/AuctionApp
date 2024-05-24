@@ -1,0 +1,12 @@
+.search-bar {
+    @apply flex w-3/4 mx-auto bg-slate-200 transition-colors rounded-md;
+
+    button {
+        @apply text-black my-auto mx-2;
+    }
+}
+
+.search-bar:hover,
+.search-bar-active {
+    @apply bg-white;
+}
