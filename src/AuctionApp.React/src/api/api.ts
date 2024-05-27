@@ -85,10 +85,10 @@ export interface AuctionDto {
     'title'?: string | null;
     /**
      * 
-     * @type {number}
+     * @type {UserDto}
      * @memberof AuctionDto
      */
-    'creatorId'?: number | null;
+    'creator'?: UserDto;
     /**
      * 
      * @type {string}
@@ -103,10 +103,10 @@ export interface AuctionDto {
     'endTime'?: string | null;
     /**
      * 
-     * @type {Set<number>}
+     * @type {Array<LotDto>}
      * @memberof AuctionDto
      */
-    'lotIds'?: Set<number> | null;
+    'lots'?: Array<LotDto> | null;
 }
 /**
  * 
@@ -356,6 +356,31 @@ export interface CreateUserWatchlistCommand {
      * @memberof CreateUserWatchlistCommand
      */
     'auctionId'?: number;
+}
+/**
+ * 
+ * @export
+ * @interface CurrentUserDto
+ */
+export interface CurrentUserDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrentUserDto
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CurrentUserDto
+     */
+    'userName'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrentUserDto
+     */
+    'balance'?: number;
 }
 /**
  * 
@@ -832,12 +857,6 @@ export interface UserDto {
      * @memberof UserDto
      */
     'userName'?: string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof UserDto
-     */
-    'balance'?: number;
 }
 /**
  * 
@@ -889,7 +908,7 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -898,10 +917,10 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -926,15 +945,15 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -960,7 +979,7 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -969,12 +988,12 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateAuctionReviewRequest, localVarRequestOptions, configuration)
 
             return {
@@ -997,7 +1016,7 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1006,12 +1025,12 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createAuctionReviewRequest, localVarRequestOptions, configuration)
 
             return {
@@ -1026,7 +1045,7 @@ export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Conf
  * AuctionReviewsApi - functional programming interface
  * @export
  */
-export const AuctionReviewsApiFp = function (configuration?: Configuration) {
+export const AuctionReviewsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AuctionReviewsApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1260,7 +1279,7 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1269,10 +1288,10 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1297,15 +1316,15 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1331,7 +1350,7 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1340,12 +1359,12 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateAuctionRequest, localVarRequestOptions, configuration)
 
             return {
@@ -1368,7 +1387,7 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1377,12 +1396,12 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createAuctionRequest, localVarRequestOptions, configuration)
 
             return {
@@ -1397,7 +1416,7 @@ export const AuctionsApiAxiosParamCreator = function (configuration?: Configurat
  * AuctionsApi - functional programming interface
  * @export
  */
-export const AuctionsApiFp = function (configuration?: Configuration) {
+export const AuctionsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = AuctionsApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1631,7 +1650,7 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1640,10 +1659,10 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1668,15 +1687,15 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -1698,7 +1717,7 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1707,12 +1726,12 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createBidCommand, localVarRequestOptions, configuration)
 
             return {
@@ -1727,7 +1746,7 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
  * BidsApi - functional programming interface
  * @export
  */
-export const BidsApiFp = function (configuration?: Configuration) {
+export const BidsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = BidsApiAxiosParamCreator(configuration)
     return {
         /**
@@ -1885,6 +1904,326 @@ export class BidsApi extends BaseAPI {
 
 
 /**
+ * CurrentUserApi - axios parameter creator
+ * @export
+ */
+export const CurrentUserApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {AddUserBalanceRequest} [addUserBalanceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        meAddBalancePost: async (addUserBalanceRequest?: AddUserBalanceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Me/add-balance`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(addUserBalanceRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        meDelete: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        meGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdateUserRequest} [updateUserRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mePut: async (updateUserRequest?: UpdateUserRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Me`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateUserRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * CurrentUserApi - functional programming interface
+ * @export
+ */
+export const CurrentUserApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = CurrentUserApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {AddUserBalanceRequest} [addUserBalanceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async meAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.meAddBalancePost(addUserBalanceRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async meDelete(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.meDelete(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async meGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.meGet(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {UpdateUserRequest} [updateUserRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async mePut(updateUserRequest?: UpdateUserRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.mePut(updateUserRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * CurrentUserApi - factory interface
+ * @export
+ */
+export const CurrentUserApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = CurrentUserApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {AddUserBalanceRequest} [addUserBalanceRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        meAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.meAddBalancePost(addUserBalanceRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        meDelete(options?: any): AxiosPromise<void> {
+            return localVarFp.meDelete(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        meGet(options?: any): AxiosPromise<CurrentUserDto> {
+            return localVarFp.meGet(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdateUserRequest} [updateUserRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        mePut(updateUserRequest?: UpdateUserRequest, options?: any): AxiosPromise<UserDto> {
+            return localVarFp.mePut(updateUserRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for meAddBalancePost operation in CurrentUserApi.
+ * @export
+ * @interface CurrentUserApiMeAddBalancePostRequest
+ */
+export interface CurrentUserApiMeAddBalancePostRequest {
+    /**
+     * 
+     * @type {AddUserBalanceRequest}
+     * @memberof CurrentUserApiMeAddBalancePost
+     */
+    readonly addUserBalanceRequest?: AddUserBalanceRequest
+}
+
+/**
+ * Request parameters for mePut operation in CurrentUserApi.
+ * @export
+ * @interface CurrentUserApiMePutRequest
+ */
+export interface CurrentUserApiMePutRequest {
+    /**
+     * 
+     * @type {UpdateUserRequest}
+     * @memberof CurrentUserApiMePut
+     */
+    readonly updateUserRequest?: UpdateUserRequest
+}
+
+/**
+ * CurrentUserApi - object-oriented interface
+ * @export
+ * @class CurrentUserApi
+ * @extends {BaseAPI}
+ */
+export class CurrentUserApi extends BaseAPI {
+    /**
+     * 
+     * @param {CurrentUserApiMeAddBalancePostRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CurrentUserApi
+     */
+    public meAddBalancePost(requestParameters: CurrentUserApiMeAddBalancePostRequest = {}, options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).meAddBalancePost(requestParameters.addUserBalanceRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CurrentUserApi
+     */
+    public meDelete(options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).meDelete(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CurrentUserApi
+     */
+    public meGet(options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).meGet(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {CurrentUserApiMePutRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CurrentUserApi
+     */
+    public mePut(requestParameters: CurrentUserApiMePutRequest = {}, options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).mePut(requestParameters.updateUserRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
  * IdentityApi - axios parameter creator
  * @export
  */
@@ -1905,17 +2244,17 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(forgotPasswordRequest, localVarRequestOptions, configuration)
 
             return {
@@ -1940,7 +2279,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1953,12 +2292,12 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(loginRequest, localVarRequestOptions, configuration)
 
             return {
@@ -1981,7 +2320,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -1990,12 +2329,12 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(twoFactorRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2017,7 +2356,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2026,10 +2365,10 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2051,7 +2390,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2060,12 +2399,12 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(infoRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2088,17 +2427,17 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(refreshRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2121,17 +2460,17 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(registerRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2154,17 +2493,17 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(resendConfirmationEmailRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2187,17 +2526,17 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(resetPasswordRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2222,7 +2561,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2239,10 +2578,10 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
             }
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2256,7 +2595,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
  * IdentityApi - functional programming interface
  * @export
  */
-export const IdentityApiFp = function (configuration?: Configuration) {
+export const IdentityApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = IdentityApiAxiosParamCreator(configuration)
     return {
         /**
@@ -2764,7 +3103,7 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2773,10 +3112,10 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2801,15 +3140,15 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2835,7 +3174,7 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2844,12 +3183,12 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(updateLotRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2872,7 +3211,7 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -2881,12 +3220,12 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createLotRequest, localVarRequestOptions, configuration)
 
             return {
@@ -2901,7 +3240,7 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
  * LotsApi - functional programming interface
  * @export
  */
-export const LotsApiFp = function (configuration?: Configuration) {
+export const LotsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = LotsApiAxiosParamCreator(configuration)
     return {
         /**
@@ -3135,7 +3474,7 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -3144,10 +3483,10 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3172,15 +3511,15 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3202,7 +3541,7 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -3211,12 +3550,12 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
             await setBearerAuthToObject(localVarHeaderParameter, configuration)
 
 
-
+    
             localVarHeaderParameter['Content-Type'] = 'application/json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
             localVarRequestOptions.data = serializeDataIfNeeded(createUserWatchlistCommand, localVarRequestOptions, configuration)
 
             return {
@@ -3231,7 +3570,7 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
  * UserWatchlistsApi - functional programming interface
  * @export
  */
-export const UserWatchlistsApiFp = function (configuration?: Configuration) {
+export const UserWatchlistsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserWatchlistsApiAxiosParamCreator(configuration)
     return {
         /**
@@ -3396,118 +3735,6 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
     return {
         /**
          * 
-         * @param {AddUserBalanceRequest} [addUserBalanceRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCurrentUserAddBalancePost: async (addUserBalanceRequest?: AddUserBalanceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Users/current_user/add-balance`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(addUserBalanceRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} [id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCurrentUserGet: async (id?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Users/current_user`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-            if (id !== undefined) {
-                localVarQueryParameter['id'] = id;
-            }
-
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('usersIdDelete', 'id', id)
-            const localVarPath = `/Users/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3524,56 +3751,15 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
                 baseOptions = configuration.baseOptions;
             }
 
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options };
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
 
-
+    
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateUserRequest} [updateUserRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersIdPut: async (id: number, updateUserRequest?: UpdateUserRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('usersIdPut', 'id', id)
-            const localVarPath = `/Users/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options };
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = { ...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers };
-            localVarRequestOptions.data = serializeDataIfNeeded(updateUserRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3587,39 +3773,9 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
  * UsersApi - functional programming interface
  * @export
  */
-export const UsersApiFp = function (configuration?: Configuration) {
+export const UsersApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UsersApiAxiosParamCreator(configuration)
     return {
-        /**
-         * 
-         * @param {AddUserBalanceRequest} [addUserBalanceRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async usersCurrentUserAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersCurrentUserAddBalancePost(addUserBalanceRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} [id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async usersCurrentUserGet(id?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersCurrentUserGet(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async usersIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdDelete(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
         /**
          * 
          * @param {number} id 
@@ -3628,17 +3784,6 @@ export const UsersApiFp = function (configuration?: Configuration) {
          */
         async usersIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdGet(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateUserRequest} [updateUserRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async usersIdPut(id: number, updateUserRequest?: UpdateUserRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.usersIdPut(id, updateUserRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -3653,33 +3798,6 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
     return {
         /**
          * 
-         * @param {AddUserBalanceRequest} [addUserBalanceRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCurrentUserAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.usersCurrentUserAddBalancePost(addUserBalanceRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} [id] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersCurrentUserGet(id?: number, options?: any): AxiosPromise<UserDto> {
-            return localVarFp.usersCurrentUserGet(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersIdDelete(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.usersIdDelete(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3687,60 +3805,8 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         usersIdGet(id: number, options?: any): AxiosPromise<UserDto> {
             return localVarFp.usersIdGet(id, options).then((request) => request(axios, basePath));
         },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateUserRequest} [updateUserRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        usersIdPut(id: number, updateUserRequest?: UpdateUserRequest, options?: any): AxiosPromise<UserDto> {
-            return localVarFp.usersIdPut(id, updateUserRequest, options).then((request) => request(axios, basePath));
-        },
     };
 };
-
-/**
- * Request parameters for usersCurrentUserAddBalancePost operation in UsersApi.
- * @export
- * @interface UsersApiUsersCurrentUserAddBalancePostRequest
- */
-export interface UsersApiUsersCurrentUserAddBalancePostRequest {
-    /**
-     * 
-     * @type {AddUserBalanceRequest}
-     * @memberof UsersApiUsersCurrentUserAddBalancePost
-     */
-    readonly addUserBalanceRequest?: AddUserBalanceRequest
-}
-
-/**
- * Request parameters for usersCurrentUserGet operation in UsersApi.
- * @export
- * @interface UsersApiUsersCurrentUserGetRequest
- */
-export interface UsersApiUsersCurrentUserGetRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof UsersApiUsersCurrentUserGet
-     */
-    readonly id?: number
-}
-
-/**
- * Request parameters for usersIdDelete operation in UsersApi.
- * @export
- * @interface UsersApiUsersIdDeleteRequest
- */
-export interface UsersApiUsersIdDeleteRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof UsersApiUsersIdDelete
-     */
-    readonly id: number
-}
 
 /**
  * Request parameters for usersIdGet operation in UsersApi.
@@ -3757,66 +3823,12 @@ export interface UsersApiUsersIdGetRequest {
 }
 
 /**
- * Request parameters for usersIdPut operation in UsersApi.
- * @export
- * @interface UsersApiUsersIdPutRequest
- */
-export interface UsersApiUsersIdPutRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof UsersApiUsersIdPut
-     */
-    readonly id: number
-
-    /**
-     * 
-     * @type {UpdateUserRequest}
-     * @memberof UsersApiUsersIdPut
-     */
-    readonly updateUserRequest?: UpdateUserRequest
-}
-
-/**
  * UsersApi - object-oriented interface
  * @export
  * @class UsersApi
  * @extends {BaseAPI}
  */
 export class UsersApi extends BaseAPI {
-    /**
-     * 
-     * @param {UsersApiUsersCurrentUserAddBalancePostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public usersCurrentUserAddBalancePost(requestParameters: UsersApiUsersCurrentUserAddBalancePostRequest = {}, options?: AxiosRequestConfig) {
-        return UsersApiFp(this.configuration).usersCurrentUserAddBalancePost(requestParameters.addUserBalanceRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {UsersApiUsersCurrentUserGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public usersCurrentUserGet(requestParameters: UsersApiUsersCurrentUserGetRequest = {}, options?: AxiosRequestConfig) {
-        return UsersApiFp(this.configuration).usersCurrentUserGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {UsersApiUsersIdDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public usersIdDelete(requestParameters: UsersApiUsersIdDeleteRequest, options?: AxiosRequestConfig) {
-        return UsersApiFp(this.configuration).usersIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @param {UsersApiUsersIdGetRequest} requestParameters Request parameters.
@@ -3826,17 +3838,6 @@ export class UsersApi extends BaseAPI {
      */
     public usersIdGet(requestParameters: UsersApiUsersIdGetRequest, options?: AxiosRequestConfig) {
         return UsersApiFp(this.configuration).usersIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {UsersApiUsersIdPutRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof UsersApi
-     */
-    public usersIdPut(requestParameters: UsersApiUsersIdPutRequest, options?: AxiosRequestConfig) {
-        return UsersApiFp(this.configuration).usersIdPut(requestParameters.id, requestParameters.updateUserRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

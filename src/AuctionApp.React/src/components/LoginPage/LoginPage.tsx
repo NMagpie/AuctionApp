@@ -1,19 +1,18 @@
 import { Button } from "@mui/material";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ApiContext } from "../../contexts/ApiContext";
-
-import './LoginPage.css';
+import { useApi } from "../../contexts/ApiContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema } from "./LoginFormTypes";
 import LoginFormField from "./LoginFormField";
 import { AxiosError } from "axios";
 
+import './LoginPage.css';
+
 export default function LoginPage() {
     const navigate = useNavigate();
 
-    const apiProvider = useContext(ApiContext);
+    const api = useApi().api;
 
     const {
         register,
@@ -26,7 +25,7 @@ export default function LoginPage() {
 
     const onSubmit = async (data: FormData) => {
 
-        apiProvider.login(data.email, data.password)
+        api.login(data.email, data.password)
             .then(() => navigate("/"))
             .catch((error) => {
 

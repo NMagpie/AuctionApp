@@ -8,7 +8,7 @@ import UserInfo from "./UserInfo";
 
 export default function NavBar() {
     return (
-        <AppBar className='navbar'>
+        <AppBar className='navbar' position="sticky">
             <Container>
                 <Toolbar>
 

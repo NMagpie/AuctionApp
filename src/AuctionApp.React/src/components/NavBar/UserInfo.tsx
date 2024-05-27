@@ -1,6 +1,6 @@
 import { Box, Typography, Tooltip, IconButton, Avatar, Menu, MenuItem, Button } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { ApiContext, User } from "../../contexts/ApiContext";
+import { useEffect, useState } from "react";
+import { User, useApi } from "../../contexts/ApiContext";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import { useNavigate } from "react-router-dom";
 
@@ -10,13 +10,13 @@ export default function UserInfo() {
 
     const navigate = useNavigate();
 
-    const apiProvider = useContext(ApiContext);
+    const {api, didUserLoad} = useApi();
 
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(api.user);
 
     useEffect(() => {
-        setUser(apiProvider.user);
-    }, [apiProvider.user]);
+        setUser(api.user);
+    }, [didUserLoad, api.user]);
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -26,7 +26,7 @@ export default function UserInfo() {
 
     const settings = [
         { title: 'Profile', action: () => { } },
-        { title: 'Logout', action: () => { apiProvider.logout(); navigate(0); } }
+        { title: 'Logout', action: () => { api.logout(); navigate(0); } }
     ];
 
     return (

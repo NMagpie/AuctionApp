@@ -1,41 +1,24 @@
-import { createContext, ReactNode } from 'react';
-import { AccessTokenResponse, AuctionReviewsApi, AuctionsApi, BidsApi, Configuration, IdentityApi, LotsApi, UserDto, UserWatchlistsApi, UsersApi } from '../api';
+import { createContext, useContext, useEffect, useState } from 'react';
+import { AccessTokenResponse, AuctionReviewsApi, AuctionsApi, BidsApi, Configuration, CurrentUserApi, CurrentUserDto, IdentityApi, LotsApi, UserDto, UserWatchlistsApi, UsersApi } from '../api';
 import axios, { AxiosInstance } from 'axios';
 
 class UserIdentity {
 
-    constructor() {
-        this.accessToken = localStorage.getItem('accessToken');
-        this.refreshToken = localStorage.getItem('refreshToken');
-        const expireDate = localStorage.getItem('expireDate');
+    accessToken: string | null | undefined;
 
-        this.expireDate = expireDate ? new Date(expireDate) : null;
-    }
+    refreshToken: string | null | undefined;
 
-    accessToken: string | null;
+    expireDate: Date | null | undefined;
 
-    refreshToken: string | null;
-
-    expireDate: Date | null;
-
-    public isViable = () => {
-        return this.expireDate ? this.expireDate >= new Date() : false;
-    }
+    public isViable = () => this.expireDate ? this.expireDate >= new Date() : false
 }
 
 export class User {
+    id: number | null | undefined;
 
-    constructor() {
-        this.id = Number.parseInt(localStorage.getItem('userId') ?? "");
-        this.userName = localStorage.getItem('userName');
-        this.balance = Number.parseFloat(localStorage.getItem('userBalance') ?? "");
-    }
+    userName: string | null | undefined;
 
-    id: number | null;
-
-    userName: string | null;
-
-    balance: number | null;
+    balance: number | null | undefined;
 }
 
 class ApiManager {
@@ -76,17 +59,17 @@ class ApiManager {
 
         this.users = new UsersApi(configuration, undefined, this.axios);
 
+        this.currentUser = new CurrentUserApi(configuration, undefined, this.axios);
+
         this.userWatchlsits = new UserWatchlistsApi(configuration, undefined, this.axios);
 
-        if (localStorage.getItem('refreshToken')) {
-            this.userIdentity = new UserIdentity();
-            this.user = new User();
-        } else {
-            this.userIdentity = null;
-            this.user = null;
-        }
+        const userIdentityString = localStorage.getItem('userIdentity');
 
-        if (this?.userIdentity?.accessToken && this?.userIdentity.isViable()) {
+        this.userIdentity = userIdentityString ? JSON.parse(userIdentityString) : null;
+
+        this.user = null;
+
+        if (this?.userIdentity?.accessToken) {
             this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.userIdentity.accessToken}`;
         }
     }
@@ -103,9 +86,11 @@ class ApiManager {
 
     users: UsersApi;
 
+    currentUser: CurrentUserApi;
+
     userWatchlsits: UserWatchlistsApi;
 
-    private userIdentity: UserIdentity | null;
+    userIdentity: UserIdentity | null;
 
     user: User | null;
 
@@ -127,7 +112,7 @@ class ApiManager {
 
         this.axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
 
-        const user = (await this.users.usersCurrentUserGet()).data;
+        const user = (await this.currentUser.meGet()).data;
 
         this.assignUser(user);
     }
@@ -147,13 +132,19 @@ class ApiManager {
         this.axios.defaults.headers.common['Authorization'] = "";
     }
 
+    public getCurrentUser = async () => {
+
+        const userValue = this.userIdentity ? (await this.currentUser.meGet()).data : null;
+
+        this.assignUser(userValue);
+
+    }
+
     private assignUserIdentity = (data: AccessTokenResponse | null) => {
         if (!data) {
             this.userIdentity = null;
 
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
-            localStorage.removeItem('expireDate');
+            localStorage.removeItem('userIdentity');
 
             return;
         }
@@ -163,50 +154,53 @@ class ApiManager {
         this.userIdentity.refreshToken = data.refreshToken!;
         this.userIdentity.expireDate = new Date(Date.now() + data.expiresIn! * 1000);
 
-        localStorage.setItem('accessToken', data.accessToken!);
-        localStorage.setItem('refreshToken', data.refreshToken!);
-        localStorage.setItem('expireDate', this.userIdentity.expireDate!.toString());
+        localStorage.setItem('userIdentity', JSON.stringify(this.userIdentity));
     }
 
-    private assignUser = (data: UserDto | null) => {
+    private assignUser = (data: CurrentUserDto | null) => {
         if (!data) {
             this.user = null;
-
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userName');
-            localStorage.removeItem('userBalance');
 
             return;
         }
 
         this.user = new User();
-
         this.user.id = data.id!;
         this.user.userName = data.userName!;
         this.user.balance = data.balance!;
-
-        localStorage.setItem('userId', data.id!.toString());
-        localStorage.setItem('userName', data.userName!);
-        localStorage.setItem('userBalance', data.balance!.toString());
     }
-}
-
-export interface Props {
-    children: ReactNode | ReactNode[];
 }
 
 const baseUrl: string = process.env.REACT_APP_BASE_URL;
 
 const apiManager = new ApiManager(baseUrl);
 
-const ApiContext = createContext(apiManager);
+interface ApiContextType {
+    api: ApiManager;
+    didUserLoad: boolean;
+}
 
-const ApiProvider = ({ children }: Props) => {
+const ApiContext = createContext<ApiContextType>({ api: apiManager, didUserLoad: false });
+
+export const ApiProvider = ({ children }: { children: React.ReactNode | React.ReactNode[] }) => {
+
+    const [didUserLoad, setDidLoad] = useState(false);
+
+    useEffect(() => {
+        const getCurrentUser = async () => {
+            await apiManager.getCurrentUser();
+
+            setDidLoad(true);
+        };
+
+        getCurrentUser();
+    }, [didUserLoad, apiManager.userIdentity]);
+
     return (
-        <ApiContext.Provider value={apiManager}>
+        <ApiContext.Provider value={{ api: apiManager, didUserLoad }}>
             {children}
         </ApiContext.Provider>
     );
 }
 
-export { ApiContext, ApiProvider };
+export const useApi = () => useContext(ApiContext);

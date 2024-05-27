@@ -1,7 +1,7 @@
 .user-login {
     color: #1976d2;
 
-    @apply bg-white w-[50vw] h-fit overflow-y-auto rounded-lg;
+    @apply bg-white w-full h-full overflow-y-auto rounded-lg flex flex-col justify-center;
 }
 
 .user-login-content {

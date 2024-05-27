@@ -29,7 +29,7 @@ public class GetAuctionByIdQueryHandler : IRequestHandler<GetAuctionByIdQuery, A
 
     public async Task<AuctionDto> Handle(GetAuctionByIdQuery request, CancellationToken cancellationToken)
     {
-        var auction = await _repository.GetByIdWithInclude<Auction>(request.Id, auction => auction.Lots)
+        var auction = await _repository.GetByIdWithInclude<Auction>(request.Id, auction => auction.Lots, auction => auction.Creator)
             ?? throw new EntityNotFoundException("Auction cannot be found");
 
         var auctionDto = _mapper.Map<Auction, AuctionDto>(auction);

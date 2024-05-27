@@ -1,7 +1,6 @@
 import { Button } from "@mui/material";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { ApiContext } from "../../contexts/ApiContext";
+import { useApi } from "../../contexts/ApiContext";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RegisterSchema } from "./RegisterFormTypes";
@@ -14,7 +13,7 @@ export default function RegisterPage() {
 
     const navigate = useNavigate();
 
-    const apiProvider = useContext(ApiContext);
+    const api = useApi().api;
 
     const {
         register,
@@ -27,7 +26,7 @@ export default function RegisterPage() {
 
     const onSubmit = async (data: FormData) => {
 
-        apiProvider.register(data.email, data.password)
+        api.register(data.email, data.password)
             .then(() => navigate("/"))
             .catch((error) => {
 
