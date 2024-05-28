@@ -1,4 +1,4 @@
-﻿namespace Presentation.Middlewares;
+﻿namespace AuctionApp.Presentation.Middlewares;
 public class LoggingMiddleware
 {
     private readonly ILogger _logger;

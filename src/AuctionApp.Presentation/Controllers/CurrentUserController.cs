@@ -50,7 +50,7 @@ public class CurrentUserController : AppBaseController
     }
 
     [HttpPut()]
-    public async Task<ActionResult<UserDto>> UpdateUser(UpdateUserRequest updateUserRequest)
+    public async Task<ActionResult<CurrentUserDto>> UpdateUser(UpdateUserRequest updateUserRequest)
     {
         var userId = GetUserId();
 

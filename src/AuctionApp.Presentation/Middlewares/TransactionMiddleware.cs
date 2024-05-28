@@ -1,6 +1,6 @@
 ﻿using Infrastructure.Persistance;
 
-namespace Presentation.Middlewares;
+namespace AuctionApp.Presentation.Middlewares;
 public class TransactionMiddleware
 {
     private readonly RequestDelegate _next;

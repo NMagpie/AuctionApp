@@ -279,31 +279,6 @@ export interface CreateAuctionReviewRequest {
 /**
  * 
  * @export
- * @interface CreateBidCommand
- */
-export interface CreateBidCommand {
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateBidCommand
-     */
-    'lotId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateBidCommand
-     */
-    'userId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateBidCommand
-     */
-    'amount'?: number;
-}
-/**
- * 
- * @export
  * @interface CreateLotRequest
  */
 export interface CreateLotRequest {
@@ -375,6 +350,18 @@ export interface CurrentUserDto {
      * @memberof CurrentUserDto
      */
     'userName'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CurrentUserDto
+     */
+    'email'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CurrentUserDto
+     */
+    'phoneNumber'?: string | null;
     /**
      * 
      * @type {number}
@@ -1638,43 +1625,6 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        bidsIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('bidsIdDelete', 'id', id)
-            const localVarPath = `/Bids/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         bidsIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             assertParamExists('bidsIdGet', 'id', id)
@@ -1702,43 +1652,6 @@ export const BidsApiAxiosParamCreator = function (configuration?: Configuration)
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {CreateBidCommand} [createBidCommand] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        bidsPost: async (createBidCommand?: CreateBidCommand, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Bids`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createBidCommand, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
@@ -1755,28 +1668,8 @@ export const BidsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async bidsIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.bidsIdDelete(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         async bidsIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BidDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.bidsIdGet(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {CreateBidCommand} [createBidCommand] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async bidsPost(createBidCommand?: CreateBidCommand, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<BidDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.bidsPost(createBidCommand, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1795,43 +1688,11 @@ export const BidsApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        bidsIdDelete(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.bidsIdDelete(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
         bidsIdGet(id: number, options?: any): AxiosPromise<BidDto> {
             return localVarFp.bidsIdGet(id, options).then((request) => request(axios, basePath));
         },
-        /**
-         * 
-         * @param {CreateBidCommand} [createBidCommand] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        bidsPost(createBidCommand?: CreateBidCommand, options?: any): AxiosPromise<BidDto> {
-            return localVarFp.bidsPost(createBidCommand, options).then((request) => request(axios, basePath));
-        },
     };
 };
-
-/**
- * Request parameters for bidsIdDelete operation in BidsApi.
- * @export
- * @interface BidsApiBidsIdDeleteRequest
- */
-export interface BidsApiBidsIdDeleteRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof BidsApiBidsIdDelete
-     */
-    readonly id: number
-}
 
 /**
  * Request parameters for bidsIdGet operation in BidsApi.
@@ -1848,37 +1709,12 @@ export interface BidsApiBidsIdGetRequest {
 }
 
 /**
- * Request parameters for bidsPost operation in BidsApi.
- * @export
- * @interface BidsApiBidsPostRequest
- */
-export interface BidsApiBidsPostRequest {
-    /**
-     * 
-     * @type {CreateBidCommand}
-     * @memberof BidsApiBidsPost
-     */
-    readonly createBidCommand?: CreateBidCommand
-}
-
-/**
  * BidsApi - object-oriented interface
  * @export
  * @class BidsApi
  * @extends {BaseAPI}
  */
 export class BidsApi extends BaseAPI {
-    /**
-     * 
-     * @param {BidsApiBidsIdDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BidsApi
-     */
-    public bidsIdDelete(requestParameters: BidsApiBidsIdDeleteRequest, options?: AxiosRequestConfig) {
-        return BidsApiFp(this.configuration).bidsIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
     /**
      * 
      * @param {BidsApiBidsIdGetRequest} requestParameters Request parameters.
@@ -1888,17 +1724,6 @@ export class BidsApi extends BaseAPI {
      */
     public bidsIdGet(requestParameters: BidsApiBidsIdGetRequest, options?: AxiosRequestConfig) {
         return BidsApiFp(this.configuration).bidsIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {BidsApiBidsPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof BidsApi
-     */
-    public bidsPost(requestParameters: BidsApiBidsPostRequest = {}, options?: AxiosRequestConfig) {
-        return BidsApiFp(this.configuration).bidsPost(requestParameters.createBidCommand, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2093,7 +1918,7 @@ export const CurrentUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async mePut(updateUserRequest?: UpdateUserRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
+        async mePut(updateUserRequest?: UpdateUserRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.mePut(updateUserRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -2138,7 +1963,7 @@ export const CurrentUserApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mePut(updateUserRequest?: UpdateUserRequest, options?: any): AxiosPromise<UserDto> {
+        mePut(updateUserRequest?: UpdateUserRequest, options?: any): AxiosPromise<CurrentUserDto> {
             return localVarFp.mePut(updateUserRequest, options).then((request) => request(axios, basePath));
         },
     };

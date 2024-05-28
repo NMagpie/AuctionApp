@@ -1,4 +1,4 @@
-﻿using Presentation.Middlewares;
+﻿using AuctionApp.Presentation.Middlewares;
 
 namespace Presentation.Extentions;
 public static class MiddlewareExtentions

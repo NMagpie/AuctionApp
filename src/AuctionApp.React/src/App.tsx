@@ -15,6 +15,7 @@ import RegisterPage from './components/RegisterPage/RegisterPage';
 import React, { useEffect, useState } from 'react';
 import AuctionPage from './components/AuctionPage/AuctionPage';
 import UserPage from './components/UserPage/UserPage';
+import BidsTestPage from './components/BidsTest';
 
 function App() {
 
@@ -32,6 +33,8 @@ function App() {
             <Route path="/auctions/:id" element={<AuctionPage />} />
 
             <Route path="/users/:id" element={<UserPage />} />
+
+            <Route path="/bidTest" element={<BidsTestPage/>}/>
 
           </Route>
         </Routes>

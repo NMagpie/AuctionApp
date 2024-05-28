@@ -15,8 +15,5 @@ public class UpdateUserCommandValidator : BaseValidator<UpdateUserCommand>
 
         RuleFor(x => x.Email)
             .NotEmpty();
-
-        RuleFor(x => x.Password)
-            .NotEmpty();
     }
 }

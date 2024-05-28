@@ -38,6 +38,11 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
             throw new BusinessValidationException("Cannot place bid: Auction Time is out");
         }
 
+        if (lot.Bids.DefaultIfEmpty().Max(bid => bid.Amount) >= request.Amount)
+        {
+            throw new BusinessValidationException("Cannot place bid: someone placed greater bid");
+        }
+
         var bid = _mapper.Map<CreateBidCommand, Bid>(request);
 
         bid.CreateTime = DateTimeOffset.UtcNow;

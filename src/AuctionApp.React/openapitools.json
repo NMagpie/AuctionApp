@@ -6,7 +6,7 @@
     "generators": {
       "v1.0": {
         "generatorName": "typescript-axios",
-        "output": "./src/api",
+        "output": "./src/api/openapi-generated",
         "skipValidateSpec": true,
         "inputSpec": "./swagger.json",
         "additionalProperties": {

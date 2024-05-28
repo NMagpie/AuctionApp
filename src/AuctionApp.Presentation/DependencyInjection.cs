@@ -1,6 +1,8 @@
 ﻿using Application;
 using AuctionApp.Presentation.Common.Configurations;
+using AuctionApp.Presentation.SignalR;
 using Infrastructure;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
@@ -27,12 +29,18 @@ public static class DependencyInjection
                     builder
                         .WithOrigins(corsSettings.AllowedOrigin)
                         .AllowAnyMethod()
-                        .AllowAnyHeader();
+                        .AllowAnyHeader()
+                        .AllowCredentials();
                 });
             })
             .AddControllers();
 
         builder.Services.AddEndpointsApiExplorer();
+
+        builder.Services.AddSingleton<ExceptionHandlingHubFilter>();
+
+        builder.Services
+            .AddSignalR(options => options.AddFilter<ExceptionHandlingHubFilter>());
 
         builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

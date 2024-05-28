@@ -1,3 +1,4 @@
+using AuctionApp.Presentation.SignalR;
 using Domain.Auth;
 using Presentation;
 using Presentation.Extentions;
@@ -21,9 +22,11 @@ app.UseExceptionHandling();
 
 app.UseHttpsRedirection();
 
-app.UseCors("ReactAppPolicy");
-
 app.MapGroup("/identity").WithTags("Identity").MapIdentityApi<User>();
+
+app.MapHub<BidHub>("/BidsHub");
+
+app.UseCors("ReactAppPolicy");
 
 app.UseAuthorization();
 

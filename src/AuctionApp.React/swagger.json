@@ -441,97 +441,6 @@
             }
           }
         }
-      },
-      "delete": {
-        "tags": [
-          "Bids"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      }
-    },
-    "/Bids": {
-      "post": {
-        "tags": [
-          "Bids"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBidCommand"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBidCommand"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateBidCommand"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/BidDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BidDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BidDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
       }
     },
     "/Me": {
@@ -602,17 +511,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/CurrentUserDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/CurrentUserDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserDto"
+                  "$ref": "#/components/schemas/CurrentUserDto"
                 }
               }
             }
@@ -1624,24 +1533,6 @@
         },
         "additionalProperties": false
       },
-      "CreateBidCommand": {
-        "type": "object",
-        "properties": {
-          "lotId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "amount": {
-            "type": "number",
-            "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
       "CreateLotRequest": {
         "type": "object",
         "properties": {
@@ -1694,6 +1585,14 @@
             "format": "int32"
           },
           "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "phoneNumber": {
             "type": "string",
             "nullable": true
           },
