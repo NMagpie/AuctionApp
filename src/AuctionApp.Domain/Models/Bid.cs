@@ -4,9 +4,9 @@ using EntityFramework.Domain.Abstractions;
 namespace AuctionApp.Domain.Models;
 public class Bid : Entity
 {
-    public int LotId { get; set; }
+    public int ProductId { get; set; }
 
-    public Lot? Lot { get; set; }
+    public Product? Product { get; set; }
 
     public int UserId { get; set; }
 

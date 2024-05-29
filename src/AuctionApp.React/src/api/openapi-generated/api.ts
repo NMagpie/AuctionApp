@@ -68,86 +68,6 @@ export interface AddUserBalanceRequest {
 /**
  * 
  * @export
- * @interface AuctionDto
- */
-export interface AuctionDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionDto
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuctionDto
-     */
-    'title'?: string | null;
-    /**
-     * 
-     * @type {UserDto}
-     * @memberof AuctionDto
-     */
-    'creator'?: UserDto;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuctionDto
-     */
-    'startTime'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuctionDto
-     */
-    'endTime'?: string | null;
-    /**
-     * 
-     * @type {Array<LotDto>}
-     * @memberof AuctionDto
-     */
-    'lots'?: Array<LotDto> | null;
-}
-/**
- * 
- * @export
- * @interface AuctionReviewDto
- */
-export interface AuctionReviewDto {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionReviewDto
-     */
-    'id'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionReviewDto
-     */
-    'userId'?: number | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionReviewDto
-     */
-    'auctionId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof AuctionReviewDto
-     */
-    'reviewText'?: string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionReviewDto
-     */
-    'rating'?: number;
-}
-/**
- * 
- * @export
  * @interface BidDto
  */
 export interface BidDto {
@@ -162,7 +82,7 @@ export interface BidDto {
      * @type {number}
      * @memberof BidDto
      */
-    'lotId'?: number;
+    'productId'?: number;
     /**
      * 
      * @type {number}
@@ -210,108 +130,70 @@ export interface CategoryDto {
 /**
  * 
  * @export
- * @interface CategoryInLotDto
+ * @interface CreateProductRequest
  */
-export interface CategoryInLotDto {
+export interface CreateProductRequest {
     /**
      * 
      * @type {string}
-     * @memberof CategoryInLotDto
-     */
-    'name'?: string | null;
-}
-/**
- * 
- * @export
- * @interface CreateAuctionRequest
- */
-export interface CreateAuctionRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateAuctionRequest
+     * @memberof CreateProductRequest
      */
     'title'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof CreateAuctionRequest
-     */
-    'startTime'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateAuctionRequest
-     */
-    'endTime'?: string;
-    /**
-     * 
-     * @type {Array<LotInAuctionDto>}
-     * @memberof CreateAuctionRequest
-     */
-    'lots'?: Array<LotInAuctionDto> | null;
-}
-/**
- * 
- * @export
- * @interface CreateAuctionReviewRequest
- */
-export interface CreateAuctionReviewRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateAuctionReviewRequest
-     */
-    'auctionId'?: number;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateAuctionReviewRequest
-     */
-    'reviewText'?: string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateAuctionReviewRequest
-     */
-    'rating'?: number;
-}
-/**
- * 
- * @export
- * @interface CreateLotRequest
- */
-export interface CreateLotRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateLotRequest
-     */
-    'title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof CreateLotRequest
+     * @memberof CreateProductRequest
      */
     'description'?: string | null;
     /**
      * 
-     * @type {number}
-     * @memberof CreateLotRequest
+     * @type {string}
+     * @memberof CreateProductRequest
      */
-    'auctionId'?: number;
+    'startTime'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProductRequest
+     */
+    'endTime'?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof CreateLotRequest
+     * @memberof CreateProductRequest
      */
     'initialPrice'?: number;
     /**
      * 
      * @type {Set<string>}
-     * @memberof CreateLotRequest
+     * @memberof CreateProductRequest
      */
     'categories'?: Set<string> | null;
+}
+/**
+ * 
+ * @export
+ * @interface CreateProductReviewRequest
+ */
+export interface CreateProductReviewRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProductReviewRequest
+     */
+    'productId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProductReviewRequest
+     */
+    'reviewText'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof CreateProductReviewRequest
+     */
+    'rating'?: number;
 }
 /**
  * 
@@ -330,7 +212,7 @@ export interface CreateUserWatchlistCommand {
      * @type {number}
      * @memberof CreateUserWatchlistCommand
      */
-    'auctionId'?: number;
+    'productId'?: number;
 }
 /**
  * 
@@ -505,82 +387,106 @@ export interface LoginRequest {
 /**
  * 
  * @export
- * @interface LotDto
+ * @interface ProductDto
  */
-export interface LotDto {
+export interface ProductDto {
     /**
      * 
      * @type {number}
-     * @memberof LotDto
+     * @memberof ProductDto
      */
     'id'?: number;
     /**
      * 
      * @type {string}
-     * @memberof LotDto
+     * @memberof ProductDto
      */
     'title'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof LotDto
+     * @memberof ProductDto
      */
     'description'?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof LotDto
+     * @memberof ProductDto
      */
-    'auctionId'?: number | null;
+    'creatorId'?: number | null;
+    /**
+     * 
+     * @type {UserDto}
+     * @memberof ProductDto
+     */
+    'creator'?: UserDto;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductDto
+     */
+    'startTime'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductDto
+     */
+    'endTime'?: string | null;
     /**
      * 
      * @type {number}
-     * @memberof LotDto
+     * @memberof ProductDto
      */
     'initialPrice'?: number | null;
     /**
      * 
      * @type {Set<number>}
-     * @memberof LotDto
+     * @memberof ProductDto
      */
     'bidIds'?: Set<number> | null;
     /**
      * 
      * @type {Set<CategoryDto>}
-     * @memberof LotDto
+     * @memberof ProductDto
      */
     'categories'?: Set<CategoryDto> | null;
 }
 /**
  * 
  * @export
- * @interface LotInAuctionDto
+ * @interface ProductReviewDto
  */
-export interface LotInAuctionDto {
-    /**
-     * 
-     * @type {string}
-     * @memberof LotInAuctionDto
-     */
-    'title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof LotInAuctionDto
-     */
-    'description'?: string | null;
+export interface ProductReviewDto {
     /**
      * 
      * @type {number}
-     * @memberof LotInAuctionDto
+     * @memberof ProductReviewDto
      */
-    'initialPrice'?: number;
+    'id'?: number;
     /**
      * 
-     * @type {Set<CategoryInLotDto>}
-     * @memberof LotInAuctionDto
+     * @type {number}
+     * @memberof ProductReviewDto
      */
-    'categories'?: Set<CategoryInLotDto> | null;
+    'userId'?: number | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductReviewDto
+     */
+    'productId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductReviewDto
+     */
+    'reviewText'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductReviewDto
+     */
+    'rating'?: number;
 }
 /**
  * 
@@ -729,77 +635,64 @@ export interface TwoFactorResponse {
 /**
  * 
  * @export
- * @interface UpdateAuctionRequest
+ * @interface UpdateProductRequest
  */
-export interface UpdateAuctionRequest {
+export interface UpdateProductRequest {
     /**
      * 
      * @type {string}
-     * @memberof UpdateAuctionRequest
+     * @memberof UpdateProductRequest
      */
     'title'?: string | null;
     /**
      * 
      * @type {string}
-     * @memberof UpdateAuctionRequest
-     */
-    'startTime'?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAuctionRequest
-     */
-    'endTime'?: string;
-}
-/**
- * 
- * @export
- * @interface UpdateAuctionReviewRequest
- */
-export interface UpdateAuctionReviewRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateAuctionReviewRequest
-     */
-    'reviewText'?: string | null;
-    /**
-     * 
-     * @type {number}
-     * @memberof UpdateAuctionReviewRequest
-     */
-    'rating'?: number;
-}
-/**
- * 
- * @export
- * @interface UpdateLotRequest
- */
-export interface UpdateLotRequest {
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateLotRequest
-     */
-    'title'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateLotRequest
+     * @memberof UpdateProductRequest
      */
     'description'?: string | null;
     /**
      * 
+     * @type {string}
+     * @memberof UpdateProductRequest
+     */
+    'startTime'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProductRequest
+     */
+    'endTime'?: string | null;
+    /**
+     * 
      * @type {number}
-     * @memberof UpdateLotRequest
+     * @memberof UpdateProductRequest
      */
     'initialPrice'?: number;
     /**
      * 
      * @type {Set<string>}
-     * @memberof UpdateLotRequest
+     * @memberof UpdateProductRequest
      */
     'categories'?: Set<string> | null;
+}
+/**
+ * 
+ * @export
+ * @interface UpdateProductReviewRequest
+ */
+export interface UpdateProductReviewRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof UpdateProductReviewRequest
+     */
+    'reviewText'?: string | null;
+    /**
+     * 
+     * @type {number}
+     * @memberof UpdateProductReviewRequest
+     */
+    'rating'?: number;
 }
 /**
  * 
@@ -819,12 +712,6 @@ export interface UpdateUserRequest {
      * @memberof UpdateUserRequest
      */
     'email'?: string | null;
-    /**
-     * 
-     * @type {string}
-     * @memberof UpdateUserRequest
-     */
-    'password'?: string | null;
 }
 /**
  * 
@@ -868,750 +755,8 @@ export interface UserWatchlistDto {
      * @type {number}
      * @memberof UserWatchlistDto
      */
-    'auctionId'?: number | null;
+    'productId'?: number | null;
 }
-
-/**
- * AuctionReviewsApi - axios parameter creator
- * @export
- */
-export const AuctionReviewsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('auctionReviewsIdDelete', 'id', id)
-            const localVarPath = `/AuctionReviews/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('auctionReviewsIdGet', 'id', id)
-            const localVarPath = `/AuctionReviews/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateAuctionReviewRequest} [updateAuctionReviewRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsIdPut: async (id: number, updateAuctionReviewRequest?: UpdateAuctionReviewRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('auctionReviewsIdPut', 'id', id)
-            const localVarPath = `/AuctionReviews/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateAuctionReviewRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {CreateAuctionReviewRequest} [createAuctionReviewRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsPost: async (createAuctionReviewRequest?: CreateAuctionReviewRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/AuctionReviews`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createAuctionReviewRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * AuctionReviewsApi - functional programming interface
- * @export
- */
-export const AuctionReviewsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = AuctionReviewsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionReviewsIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionReviewsIdDelete(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionReviewsIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuctionReviewDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionReviewsIdGet(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateAuctionReviewRequest} [updateAuctionReviewRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionReviewsIdPut(id: number, updateAuctionReviewRequest?: UpdateAuctionReviewRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuctionReviewDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionReviewsIdPut(id, updateAuctionReviewRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {CreateAuctionReviewRequest} [createAuctionReviewRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionReviewsPost(createAuctionReviewRequest?: CreateAuctionReviewRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuctionReviewDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionReviewsPost(createAuctionReviewRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * AuctionReviewsApi - factory interface
- * @export
- */
-export const AuctionReviewsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = AuctionReviewsApiFp(configuration)
-    return {
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsIdDelete(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.auctionReviewsIdDelete(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsIdGet(id: number, options?: any): AxiosPromise<AuctionReviewDto> {
-            return localVarFp.auctionReviewsIdGet(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateAuctionReviewRequest} [updateAuctionReviewRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsIdPut(id: number, updateAuctionReviewRequest?: UpdateAuctionReviewRequest, options?: any): AxiosPromise<AuctionReviewDto> {
-            return localVarFp.auctionReviewsIdPut(id, updateAuctionReviewRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {CreateAuctionReviewRequest} [createAuctionReviewRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionReviewsPost(createAuctionReviewRequest?: CreateAuctionReviewRequest, options?: any): AxiosPromise<AuctionReviewDto> {
-            return localVarFp.auctionReviewsPost(createAuctionReviewRequest, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for auctionReviewsIdDelete operation in AuctionReviewsApi.
- * @export
- * @interface AuctionReviewsApiAuctionReviewsIdDeleteRequest
- */
-export interface AuctionReviewsApiAuctionReviewsIdDeleteRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionReviewsApiAuctionReviewsIdDelete
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for auctionReviewsIdGet operation in AuctionReviewsApi.
- * @export
- * @interface AuctionReviewsApiAuctionReviewsIdGetRequest
- */
-export interface AuctionReviewsApiAuctionReviewsIdGetRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionReviewsApiAuctionReviewsIdGet
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for auctionReviewsIdPut operation in AuctionReviewsApi.
- * @export
- * @interface AuctionReviewsApiAuctionReviewsIdPutRequest
- */
-export interface AuctionReviewsApiAuctionReviewsIdPutRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionReviewsApiAuctionReviewsIdPut
-     */
-    readonly id: number
-
-    /**
-     * 
-     * @type {UpdateAuctionReviewRequest}
-     * @memberof AuctionReviewsApiAuctionReviewsIdPut
-     */
-    readonly updateAuctionReviewRequest?: UpdateAuctionReviewRequest
-}
-
-/**
- * Request parameters for auctionReviewsPost operation in AuctionReviewsApi.
- * @export
- * @interface AuctionReviewsApiAuctionReviewsPostRequest
- */
-export interface AuctionReviewsApiAuctionReviewsPostRequest {
-    /**
-     * 
-     * @type {CreateAuctionReviewRequest}
-     * @memberof AuctionReviewsApiAuctionReviewsPost
-     */
-    readonly createAuctionReviewRequest?: CreateAuctionReviewRequest
-}
-
-/**
- * AuctionReviewsApi - object-oriented interface
- * @export
- * @class AuctionReviewsApi
- * @extends {BaseAPI}
- */
-export class AuctionReviewsApi extends BaseAPI {
-    /**
-     * 
-     * @param {AuctionReviewsApiAuctionReviewsIdDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionReviewsApi
-     */
-    public auctionReviewsIdDelete(requestParameters: AuctionReviewsApiAuctionReviewsIdDeleteRequest, options?: AxiosRequestConfig) {
-        return AuctionReviewsApiFp(this.configuration).auctionReviewsIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {AuctionReviewsApiAuctionReviewsIdGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionReviewsApi
-     */
-    public auctionReviewsIdGet(requestParameters: AuctionReviewsApiAuctionReviewsIdGetRequest, options?: AxiosRequestConfig) {
-        return AuctionReviewsApiFp(this.configuration).auctionReviewsIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {AuctionReviewsApiAuctionReviewsIdPutRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionReviewsApi
-     */
-    public auctionReviewsIdPut(requestParameters: AuctionReviewsApiAuctionReviewsIdPutRequest, options?: AxiosRequestConfig) {
-        return AuctionReviewsApiFp(this.configuration).auctionReviewsIdPut(requestParameters.id, requestParameters.updateAuctionReviewRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {AuctionReviewsApiAuctionReviewsPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionReviewsApi
-     */
-    public auctionReviewsPost(requestParameters: AuctionReviewsApiAuctionReviewsPostRequest = {}, options?: AxiosRequestConfig) {
-        return AuctionReviewsApiFp(this.configuration).auctionReviewsPost(requestParameters.createAuctionReviewRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
-
-/**
- * AuctionsApi - axios parameter creator
- * @export
- */
-export const AuctionsApiAxiosParamCreator = function (configuration?: Configuration) {
-    return {
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('auctionsIdDelete', 'id', id)
-            const localVarPath = `/Auctions/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('auctionsIdGet', 'id', id)
-            const localVarPath = `/Auctions/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-
-    
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateAuctionRequest} [updateAuctionRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsIdPut: async (id: number, updateAuctionRequest?: UpdateAuctionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            assertParamExists('auctionsIdPut', 'id', id)
-            const localVarPath = `/Auctions/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateAuctionRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {CreateAuctionRequest} [createAuctionRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsPost: async (createAuctionRequest?: CreateAuctionRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Auctions`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-
-            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            // authentication oauth2 required
-            // http bearer authentication required
-            await setBearerAuthToObject(localVarHeaderParameter, configuration)
-
-
-    
-            localVarHeaderParameter['Content-Type'] = 'application/json';
-
-            setSearchParams(localVarUrlObj, localVarQueryParameter);
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createAuctionRequest, localVarRequestOptions, configuration)
-
-            return {
-                url: toPathString(localVarUrlObj),
-                options: localVarRequestOptions,
-            };
-        },
-    }
-};
-
-/**
- * AuctionsApi - functional programming interface
- * @export
- */
-export const AuctionsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = AuctionsApiAxiosParamCreator(configuration)
-    return {
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionsIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionsIdDelete(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionsIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuctionDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionsIdGet(id, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateAuctionRequest} [updateAuctionRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionsIdPut(id: number, updateAuctionRequest?: UpdateAuctionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuctionDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionsIdPut(id, updateAuctionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-        /**
-         * 
-         * @param {CreateAuctionRequest} [createAuctionRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async auctionsPost(createAuctionRequest?: CreateAuctionRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<AuctionDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.auctionsPost(createAuctionRequest, options);
-            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
-        },
-    }
-};
-
-/**
- * AuctionsApi - factory interface
- * @export
- */
-export const AuctionsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = AuctionsApiFp(configuration)
-    return {
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsIdDelete(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.auctionsIdDelete(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsIdGet(id: number, options?: any): AxiosPromise<AuctionDto> {
-            return localVarFp.auctionsIdGet(id, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {number} id 
-         * @param {UpdateAuctionRequest} [updateAuctionRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsIdPut(id: number, updateAuctionRequest?: UpdateAuctionRequest, options?: any): AxiosPromise<AuctionDto> {
-            return localVarFp.auctionsIdPut(id, updateAuctionRequest, options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {CreateAuctionRequest} [createAuctionRequest] 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        auctionsPost(createAuctionRequest?: CreateAuctionRequest, options?: any): AxiosPromise<AuctionDto> {
-            return localVarFp.auctionsPost(createAuctionRequest, options).then((request) => request(axios, basePath));
-        },
-    };
-};
-
-/**
- * Request parameters for auctionsIdDelete operation in AuctionsApi.
- * @export
- * @interface AuctionsApiAuctionsIdDeleteRequest
- */
-export interface AuctionsApiAuctionsIdDeleteRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionsApiAuctionsIdDelete
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for auctionsIdGet operation in AuctionsApi.
- * @export
- * @interface AuctionsApiAuctionsIdGetRequest
- */
-export interface AuctionsApiAuctionsIdGetRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionsApiAuctionsIdGet
-     */
-    readonly id: number
-}
-
-/**
- * Request parameters for auctionsIdPut operation in AuctionsApi.
- * @export
- * @interface AuctionsApiAuctionsIdPutRequest
- */
-export interface AuctionsApiAuctionsIdPutRequest {
-    /**
-     * 
-     * @type {number}
-     * @memberof AuctionsApiAuctionsIdPut
-     */
-    readonly id: number
-
-    /**
-     * 
-     * @type {UpdateAuctionRequest}
-     * @memberof AuctionsApiAuctionsIdPut
-     */
-    readonly updateAuctionRequest?: UpdateAuctionRequest
-}
-
-/**
- * Request parameters for auctionsPost operation in AuctionsApi.
- * @export
- * @interface AuctionsApiAuctionsPostRequest
- */
-export interface AuctionsApiAuctionsPostRequest {
-    /**
-     * 
-     * @type {CreateAuctionRequest}
-     * @memberof AuctionsApiAuctionsPost
-     */
-    readonly createAuctionRequest?: CreateAuctionRequest
-}
-
-/**
- * AuctionsApi - object-oriented interface
- * @export
- * @class AuctionsApi
- * @extends {BaseAPI}
- */
-export class AuctionsApi extends BaseAPI {
-    /**
-     * 
-     * @param {AuctionsApiAuctionsIdDeleteRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionsApi
-     */
-    public auctionsIdDelete(requestParameters: AuctionsApiAuctionsIdDeleteRequest, options?: AxiosRequestConfig) {
-        return AuctionsApiFp(this.configuration).auctionsIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {AuctionsApiAuctionsIdGetRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionsApi
-     */
-    public auctionsIdGet(requestParameters: AuctionsApiAuctionsIdGetRequest, options?: AxiosRequestConfig) {
-        return AuctionsApiFp(this.configuration).auctionsIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {AuctionsApiAuctionsIdPutRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionsApi
-     */
-    public auctionsIdPut(requestParameters: AuctionsApiAuctionsIdPutRequest, options?: AxiosRequestConfig) {
-        return AuctionsApiFp(this.configuration).auctionsIdPut(requestParameters.id, requestParameters.updateAuctionRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-
-    /**
-     * 
-     * @param {AuctionsApiAuctionsPostRequest} requestParameters Request parameters.
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof AuctionsApi
-     */
-    public auctionsPost(requestParameters: AuctionsApiAuctionsPostRequest = {}, options?: AxiosRequestConfig) {
-        return AuctionsApiFp(this.configuration).auctionsPost(requestParameters.createAuctionRequest, options).then((request) => request(this.axios, this.basePath));
-    }
-}
-
 
 /**
  * BidsApi - axios parameter creator
@@ -1740,8 +885,8 @@ export const CurrentUserApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meAddBalancePost: async (addUserBalanceRequest?: AddUserBalanceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Me/add-balance`;
+        usersMeAddBalancePost: async (addUserBalanceRequest?: AddUserBalanceRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Users/Me/add-balance`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1776,8 +921,8 @@ export const CurrentUserApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meDelete: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Me`;
+        usersMeDelete: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Users/Me`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1809,8 +954,8 @@ export const CurrentUserApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Me`;
+        usersMeGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Users/Me`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1843,8 +988,8 @@ export const CurrentUserApiAxiosParamCreator = function (configuration?: Configu
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mePut: async (updateUserRequest?: UpdateUserRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Me`;
+        usersMePut: async (updateUserRequest?: UpdateUserRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Users/Me`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -1890,8 +1035,8 @@ export const CurrentUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async meAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.meAddBalancePost(addUserBalanceRequest, options);
+        async usersMeAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersMeAddBalancePost(addUserBalanceRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1899,8 +1044,8 @@ export const CurrentUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async meDelete(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.meDelete(options);
+        async usersMeDelete(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersMeDelete(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1908,8 +1053,8 @@ export const CurrentUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async meGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.meGet(options);
+        async usersMeGet(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersMeGet(options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1918,8 +1063,8 @@ export const CurrentUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async mePut(updateUserRequest?: UpdateUserRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.mePut(updateUserRequest, options);
+        async usersMePut(updateUserRequest?: UpdateUserRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.usersMePut(updateUserRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -1938,24 +1083,24 @@ export const CurrentUserApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: any): AxiosPromise<void> {
-            return localVarFp.meAddBalancePost(addUserBalanceRequest, options).then((request) => request(axios, basePath));
+        usersMeAddBalancePost(addUserBalanceRequest?: AddUserBalanceRequest, options?: any): AxiosPromise<void> {
+            return localVarFp.usersMeAddBalancePost(addUserBalanceRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meDelete(options?: any): AxiosPromise<void> {
-            return localVarFp.meDelete(options).then((request) => request(axios, basePath));
+        usersMeDelete(options?: any): AxiosPromise<void> {
+            return localVarFp.usersMeDelete(options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        meGet(options?: any): AxiosPromise<CurrentUserDto> {
-            return localVarFp.meGet(options).then((request) => request(axios, basePath));
+        usersMeGet(options?: any): AxiosPromise<CurrentUserDto> {
+            return localVarFp.usersMeGet(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1963,36 +1108,36 @@ export const CurrentUserApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        mePut(updateUserRequest?: UpdateUserRequest, options?: any): AxiosPromise<CurrentUserDto> {
-            return localVarFp.mePut(updateUserRequest, options).then((request) => request(axios, basePath));
+        usersMePut(updateUserRequest?: UpdateUserRequest, options?: any): AxiosPromise<CurrentUserDto> {
+            return localVarFp.usersMePut(updateUserRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * Request parameters for meAddBalancePost operation in CurrentUserApi.
+ * Request parameters for usersMeAddBalancePost operation in CurrentUserApi.
  * @export
- * @interface CurrentUserApiMeAddBalancePostRequest
+ * @interface CurrentUserApiUsersMeAddBalancePostRequest
  */
-export interface CurrentUserApiMeAddBalancePostRequest {
+export interface CurrentUserApiUsersMeAddBalancePostRequest {
     /**
      * 
      * @type {AddUserBalanceRequest}
-     * @memberof CurrentUserApiMeAddBalancePost
+     * @memberof CurrentUserApiUsersMeAddBalancePost
      */
     readonly addUserBalanceRequest?: AddUserBalanceRequest
 }
 
 /**
- * Request parameters for mePut operation in CurrentUserApi.
+ * Request parameters for usersMePut operation in CurrentUserApi.
  * @export
- * @interface CurrentUserApiMePutRequest
+ * @interface CurrentUserApiUsersMePutRequest
  */
-export interface CurrentUserApiMePutRequest {
+export interface CurrentUserApiUsersMePutRequest {
     /**
      * 
      * @type {UpdateUserRequest}
-     * @memberof CurrentUserApiMePut
+     * @memberof CurrentUserApiUsersMePut
      */
     readonly updateUserRequest?: UpdateUserRequest
 }
@@ -2006,13 +1151,13 @@ export interface CurrentUserApiMePutRequest {
 export class CurrentUserApi extends BaseAPI {
     /**
      * 
-     * @param {CurrentUserApiMeAddBalancePostRequest} requestParameters Request parameters.
+     * @param {CurrentUserApiUsersMeAddBalancePostRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CurrentUserApi
      */
-    public meAddBalancePost(requestParameters: CurrentUserApiMeAddBalancePostRequest = {}, options?: AxiosRequestConfig) {
-        return CurrentUserApiFp(this.configuration).meAddBalancePost(requestParameters.addUserBalanceRequest, options).then((request) => request(this.axios, this.basePath));
+    public usersMeAddBalancePost(requestParameters: CurrentUserApiUsersMeAddBalancePostRequest = {}, options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).usersMeAddBalancePost(requestParameters.addUserBalanceRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2021,8 +1166,8 @@ export class CurrentUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CurrentUserApi
      */
-    public meDelete(options?: AxiosRequestConfig) {
-        return CurrentUserApiFp(this.configuration).meDelete(options).then((request) => request(this.axios, this.basePath));
+    public usersMeDelete(options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).usersMeDelete(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2031,19 +1176,19 @@ export class CurrentUserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CurrentUserApi
      */
-    public meGet(options?: AxiosRequestConfig) {
-        return CurrentUserApiFp(this.configuration).meGet(options).then((request) => request(this.axios, this.basePath));
+    public usersMeGet(options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).usersMeGet(options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {CurrentUserApiMePutRequest} requestParameters Request parameters.
+     * @param {CurrentUserApiUsersMePutRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CurrentUserApi
      */
-    public mePut(requestParameters: CurrentUserApiMePutRequest = {}, options?: AxiosRequestConfig) {
-        return CurrentUserApiFp(this.configuration).mePut(requestParameters.updateUserRequest, options).then((request) => request(this.axios, this.basePath));
+    public usersMePut(requestParameters: CurrentUserApiUsersMePutRequest = {}, options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).usersMePut(requestParameters.updateUserRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 
@@ -2061,7 +1206,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityForgotPasswordPost: async (forgotPasswordRequest?: ForgotPasswordRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/forgotPassword`;
+            const localVarPath = `/Identity/forgotPassword`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2096,7 +1241,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityLoginPost: async (useCookies?: boolean, useSessionCookies?: boolean, loginRequest?: LoginRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/login`;
+            const localVarPath = `/Identity/login`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2137,7 +1282,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityManage2faPost: async (twoFactorRequest?: TwoFactorRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/manage/2fa`;
+            const localVarPath = `/Identity/manage/2fa`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2173,7 +1318,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityManageInfoGet: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/manage/info`;
+            const localVarPath = `/Identity/manage/info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2207,7 +1352,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityManageInfoPost: async (infoRequest?: InfoRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/manage/info`;
+            const localVarPath = `/Identity/manage/info`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2244,7 +1389,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityRefreshPost: async (refreshRequest?: RefreshRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/refresh`;
+            const localVarPath = `/Identity/refresh`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2277,7 +1422,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityRegisterPost: async (registerRequest?: RegisterRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/register`;
+            const localVarPath = `/Identity/register`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2310,7 +1455,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityResendConfirmationEmailPost: async (resendConfirmationEmailRequest?: ResendConfirmationEmailRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/resendConfirmationEmail`;
+            const localVarPath = `/Identity/resendConfirmationEmail`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2343,7 +1488,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         identityResetPasswordPost: async (resetPasswordRequest?: ResetPasswordRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/resetPassword`;
+            const localVarPath = `/Identity/resetPassword`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2378,7 +1523,7 @@ export const IdentityApiAxiosParamCreator = function (configuration?: Configurat
          * @throws {RequiredError}
          */
         mapIdentityApiIdentityConfirmEmail: async (userId?: string, code?: string, changedEmail?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/identity/confirmEmail`;
+            const localVarPath = `/Identity/confirmEmail`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -2905,10 +2050,10 @@ export class IdentityApi extends BaseAPI {
 
 
 /**
- * LotsApi - axios parameter creator
+ * ProductReviewsApi - axios parameter creator
  * @export
  */
-export const LotsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const ProductReviewsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
@@ -2916,10 +2061,10 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        productReviewsIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('lotsIdDelete', 'id', id)
-            const localVarPath = `/Lots/{id}`
+            assertParamExists('productReviewsIdDelete', 'id', id)
+            const localVarPath = `/ProductReviews/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2953,10 +2098,10 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        productReviewsIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('lotsIdGet', 'id', id)
-            const localVarPath = `/Lots/{id}`
+            assertParamExists('productReviewsIdGet', 'id', id)
+            const localVarPath = `/ProductReviews/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2983,14 +2128,14 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
         /**
          * 
          * @param {number} id 
-         * @param {UpdateLotRequest} [updateLotRequest] 
+         * @param {UpdateProductReviewRequest} [updateProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsIdPut: async (id: number, updateLotRequest?: UpdateLotRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        productReviewsIdPut: async (id: number, updateProductReviewRequest?: UpdateProductReviewRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
-            assertParamExists('lotsIdPut', 'id', id)
-            const localVarPath = `/Lots/{id}`
+            assertParamExists('productReviewsIdPut', 'id', id)
+            const localVarPath = `/ProductReviews/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -3014,7 +2159,7 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(updateLotRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(updateProductReviewRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3023,12 +2168,12 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {CreateLotRequest} [createLotRequest] 
+         * @param {CreateProductReviewRequest} [createProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsPost: async (createLotRequest?: CreateLotRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/Lots`;
+        productReviewsPost: async (createProductReviewRequest?: CreateProductReviewRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/ProductReviews`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
             let baseOptions;
@@ -3051,7 +2196,7 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createLotRequest, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createProductReviewRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -3062,11 +2207,11 @@ export const LotsApiAxiosParamCreator = function (configuration?: Configuration)
 };
 
 /**
- * LotsApi - functional programming interface
+ * ProductReviewsApi - functional programming interface
  * @export
  */
-export const LotsApiFp = function(configuration?: Configuration) {
-    const localVarAxiosParamCreator = LotsApiAxiosParamCreator(configuration)
+export const ProductReviewsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProductReviewsApiAxiosParamCreator(configuration)
     return {
         /**
          * 
@@ -3074,8 +2219,8 @@ export const LotsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lotsIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lotsIdDelete(id, options);
+        async productReviewsIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productReviewsIdDelete(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3084,40 +2229,40 @@ export const LotsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lotsIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LotDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lotsIdGet(id, options);
+        async productReviewsIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductReviewDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productReviewsIdGet(id, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
          * @param {number} id 
-         * @param {UpdateLotRequest} [updateLotRequest] 
+         * @param {UpdateProductReviewRequest} [updateProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lotsIdPut(id: number, updateLotRequest?: UpdateLotRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LotDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lotsIdPut(id, updateLotRequest, options);
+        async productReviewsIdPut(id: number, updateProductReviewRequest?: UpdateProductReviewRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductReviewDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productReviewsIdPut(id, updateProductReviewRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
          * 
-         * @param {CreateLotRequest} [createLotRequest] 
+         * @param {CreateProductReviewRequest} [createProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async lotsPost(createLotRequest?: CreateLotRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<LotDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.lotsPost(createLotRequest, options);
+        async productReviewsPost(createProductReviewRequest?: CreateProductReviewRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductReviewDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productReviewsPost(createProductReviewRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
 };
 
 /**
- * LotsApi - factory interface
+ * ProductReviewsApi - factory interface
  * @export
  */
-export const LotsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
-    const localVarFp = LotsApiFp(configuration)
+export const ProductReviewsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProductReviewsApiFp(configuration)
     return {
         /**
          * 
@@ -3125,8 +2270,8 @@ export const LotsApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsIdDelete(id: number, options?: any): AxiosPromise<void> {
-            return localVarFp.lotsIdDelete(id, options).then((request) => request(axios, basePath));
+        productReviewsIdDelete(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.productReviewsIdDelete(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3134,143 +2279,514 @@ export const LotsApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsIdGet(id: number, options?: any): AxiosPromise<LotDto> {
-            return localVarFp.lotsIdGet(id, options).then((request) => request(axios, basePath));
+        productReviewsIdGet(id: number, options?: any): AxiosPromise<ProductReviewDto> {
+            return localVarFp.productReviewsIdGet(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {number} id 
-         * @param {UpdateLotRequest} [updateLotRequest] 
+         * @param {UpdateProductReviewRequest} [updateProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsIdPut(id: number, updateLotRequest?: UpdateLotRequest, options?: any): AxiosPromise<LotDto> {
-            return localVarFp.lotsIdPut(id, updateLotRequest, options).then((request) => request(axios, basePath));
+        productReviewsIdPut(id: number, updateProductReviewRequest?: UpdateProductReviewRequest, options?: any): AxiosPromise<ProductReviewDto> {
+            return localVarFp.productReviewsIdPut(id, updateProductReviewRequest, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {CreateLotRequest} [createLotRequest] 
+         * @param {CreateProductReviewRequest} [createProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        lotsPost(createLotRequest?: CreateLotRequest, options?: any): AxiosPromise<LotDto> {
-            return localVarFp.lotsPost(createLotRequest, options).then((request) => request(axios, basePath));
+        productReviewsPost(createProductReviewRequest?: CreateProductReviewRequest, options?: any): AxiosPromise<ProductReviewDto> {
+            return localVarFp.productReviewsPost(createProductReviewRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * Request parameters for lotsIdDelete operation in LotsApi.
+ * Request parameters for productReviewsIdDelete operation in ProductReviewsApi.
  * @export
- * @interface LotsApiLotsIdDeleteRequest
+ * @interface ProductReviewsApiProductReviewsIdDeleteRequest
  */
-export interface LotsApiLotsIdDeleteRequest {
+export interface ProductReviewsApiProductReviewsIdDeleteRequest {
     /**
      * 
      * @type {number}
-     * @memberof LotsApiLotsIdDelete
+     * @memberof ProductReviewsApiProductReviewsIdDelete
      */
     readonly id: number
 }
 
 /**
- * Request parameters for lotsIdGet operation in LotsApi.
+ * Request parameters for productReviewsIdGet operation in ProductReviewsApi.
  * @export
- * @interface LotsApiLotsIdGetRequest
+ * @interface ProductReviewsApiProductReviewsIdGetRequest
  */
-export interface LotsApiLotsIdGetRequest {
+export interface ProductReviewsApiProductReviewsIdGetRequest {
     /**
      * 
      * @type {number}
-     * @memberof LotsApiLotsIdGet
+     * @memberof ProductReviewsApiProductReviewsIdGet
      */
     readonly id: number
 }
 
 /**
- * Request parameters for lotsIdPut operation in LotsApi.
+ * Request parameters for productReviewsIdPut operation in ProductReviewsApi.
  * @export
- * @interface LotsApiLotsIdPutRequest
+ * @interface ProductReviewsApiProductReviewsIdPutRequest
  */
-export interface LotsApiLotsIdPutRequest {
+export interface ProductReviewsApiProductReviewsIdPutRequest {
     /**
      * 
      * @type {number}
-     * @memberof LotsApiLotsIdPut
+     * @memberof ProductReviewsApiProductReviewsIdPut
      */
     readonly id: number
 
     /**
      * 
-     * @type {UpdateLotRequest}
-     * @memberof LotsApiLotsIdPut
+     * @type {UpdateProductReviewRequest}
+     * @memberof ProductReviewsApiProductReviewsIdPut
      */
-    readonly updateLotRequest?: UpdateLotRequest
+    readonly updateProductReviewRequest?: UpdateProductReviewRequest
 }
 
 /**
- * Request parameters for lotsPost operation in LotsApi.
+ * Request parameters for productReviewsPost operation in ProductReviewsApi.
  * @export
- * @interface LotsApiLotsPostRequest
+ * @interface ProductReviewsApiProductReviewsPostRequest
  */
-export interface LotsApiLotsPostRequest {
+export interface ProductReviewsApiProductReviewsPostRequest {
     /**
      * 
-     * @type {CreateLotRequest}
-     * @memberof LotsApiLotsPost
+     * @type {CreateProductReviewRequest}
+     * @memberof ProductReviewsApiProductReviewsPost
      */
-    readonly createLotRequest?: CreateLotRequest
+    readonly createProductReviewRequest?: CreateProductReviewRequest
 }
 
 /**
- * LotsApi - object-oriented interface
+ * ProductReviewsApi - object-oriented interface
  * @export
- * @class LotsApi
+ * @class ProductReviewsApi
  * @extends {BaseAPI}
  */
-export class LotsApi extends BaseAPI {
+export class ProductReviewsApi extends BaseAPI {
     /**
      * 
-     * @param {LotsApiLotsIdDeleteRequest} requestParameters Request parameters.
+     * @param {ProductReviewsApiProductReviewsIdDeleteRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof LotsApi
+     * @memberof ProductReviewsApi
      */
-    public lotsIdDelete(requestParameters: LotsApiLotsIdDeleteRequest, options?: AxiosRequestConfig) {
-        return LotsApiFp(this.configuration).lotsIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public productReviewsIdDelete(requestParameters: ProductReviewsApiProductReviewsIdDeleteRequest, options?: AxiosRequestConfig) {
+        return ProductReviewsApiFp(this.configuration).productReviewsIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {LotsApiLotsIdGetRequest} requestParameters Request parameters.
+     * @param {ProductReviewsApiProductReviewsIdGetRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof LotsApi
+     * @memberof ProductReviewsApi
      */
-    public lotsIdGet(requestParameters: LotsApiLotsIdGetRequest, options?: AxiosRequestConfig) {
-        return LotsApiFp(this.configuration).lotsIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    public productReviewsIdGet(requestParameters: ProductReviewsApiProductReviewsIdGetRequest, options?: AxiosRequestConfig) {
+        return ProductReviewsApiFp(this.configuration).productReviewsIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {LotsApiLotsIdPutRequest} requestParameters Request parameters.
+     * @param {ProductReviewsApiProductReviewsIdPutRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof LotsApi
+     * @memberof ProductReviewsApi
      */
-    public lotsIdPut(requestParameters: LotsApiLotsIdPutRequest, options?: AxiosRequestConfig) {
-        return LotsApiFp(this.configuration).lotsIdPut(requestParameters.id, requestParameters.updateLotRequest, options).then((request) => request(this.axios, this.basePath));
+    public productReviewsIdPut(requestParameters: ProductReviewsApiProductReviewsIdPutRequest, options?: AxiosRequestConfig) {
+        return ProductReviewsApiFp(this.configuration).productReviewsIdPut(requestParameters.id, requestParameters.updateProductReviewRequest, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
      * 
-     * @param {LotsApiLotsPostRequest} requestParameters Request parameters.
+     * @param {ProductReviewsApiProductReviewsPostRequest} requestParameters Request parameters.
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof LotsApi
+     * @memberof ProductReviewsApi
      */
-    public lotsPost(requestParameters: LotsApiLotsPostRequest = {}, options?: AxiosRequestConfig) {
-        return LotsApiFp(this.configuration).lotsPost(requestParameters.createLotRequest, options).then((request) => request(this.axios, this.basePath));
+    public productReviewsPost(requestParameters: ProductReviewsApiProductReviewsPostRequest = {}, options?: AxiosRequestConfig) {
+        return ProductReviewsApiFp(this.configuration).productReviewsPost(requestParameters.createProductReviewRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * ProductsApi - axios parameter creator
+ * @export
+ */
+export const ProductsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsIdDelete: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsIdDelete', 'id', id)
+            const localVarPath = `/Products/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsIdGet: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsIdGet', 'id', id)
+            const localVarPath = `/Products/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {UpdateProductRequest} [updateProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsIdPut: async (id: number, updateProductRequest?: UpdateProductRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('productsIdPut', 'id', id)
+            const localVarPath = `/Products/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'PUT', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(updateProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {CreateProductRequest} [createProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsPost: async (createProductRequest?: CreateProductRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Products`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'POST', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            localVarRequestOptions.data = serializeDataIfNeeded(createProductRequest, localVarRequestOptions, configuration)
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * ProductsApi - functional programming interface
+ * @export
+ */
+export const ProductsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = ProductsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsIdDelete(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsIdDelete(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsIdGet(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsIdGet(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {UpdateProductRequest} [updateProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsIdPut(id: number, updateProductRequest?: UpdateProductRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsIdPut(id, updateProductRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {CreateProductRequest} [createProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async productsPost(createProductRequest?: CreateProductRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.productsPost(createProductRequest, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * ProductsApi - factory interface
+ * @export
+ */
+export const ProductsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = ProductsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsIdDelete(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.productsIdDelete(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsIdGet(id: number, options?: any): AxiosPromise<ProductDto> {
+            return localVarFp.productsIdGet(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {UpdateProductRequest} [updateProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsIdPut(id: number, updateProductRequest?: UpdateProductRequest, options?: any): AxiosPromise<ProductDto> {
+            return localVarFp.productsIdPut(id, updateProductRequest, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {CreateProductRequest} [createProductRequest] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        productsPost(createProductRequest?: CreateProductRequest, options?: any): AxiosPromise<ProductDto> {
+            return localVarFp.productsPost(createProductRequest, options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for productsIdDelete operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsIdDeleteRequest
+ */
+export interface ProductsApiProductsIdDeleteRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiProductsIdDelete
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for productsIdGet operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsIdGetRequest
+ */
+export interface ProductsApiProductsIdGetRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiProductsIdGet
+     */
+    readonly id: number
+}
+
+/**
+ * Request parameters for productsIdPut operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsIdPutRequest
+ */
+export interface ProductsApiProductsIdPutRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiProductsIdPut
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {UpdateProductRequest}
+     * @memberof ProductsApiProductsIdPut
+     */
+    readonly updateProductRequest?: UpdateProductRequest
+}
+
+/**
+ * Request parameters for productsPost operation in ProductsApi.
+ * @export
+ * @interface ProductsApiProductsPostRequest
+ */
+export interface ProductsApiProductsPostRequest {
+    /**
+     * 
+     * @type {CreateProductRequest}
+     * @memberof ProductsApiProductsPost
+     */
+    readonly createProductRequest?: CreateProductRequest
+}
+
+/**
+ * ProductsApi - object-oriented interface
+ * @export
+ * @class ProductsApi
+ * @extends {BaseAPI}
+ */
+export class ProductsApi extends BaseAPI {
+    /**
+     * 
+     * @param {ProductsApiProductsIdDeleteRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsIdDelete(requestParameters: ProductsApiProductsIdDeleteRequest, options?: AxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsIdDelete(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {ProductsApiProductsIdGetRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsIdGet(requestParameters: ProductsApiProductsIdGetRequest, options?: AxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsIdGet(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {ProductsApiProductsIdPutRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsIdPut(requestParameters: ProductsApiProductsIdPutRequest, options?: AxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsIdPut(requestParameters.id, requestParameters.updateProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {ProductsApiProductsPostRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public productsPost(requestParameters: ProductsApiProductsPostRequest = {}, options?: AxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).productsPost(requestParameters.createProductRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

@@ -22,7 +22,7 @@ app.UseExceptionHandling();
 
 app.UseHttpsRedirection();
 
-app.MapGroup("/identity").WithTags("Identity").MapIdentityApi<User>();
+app.MapGroup("/Identity").WithTags("Identity").MapIdentityApi<User>();
 
 app.MapHub<BidHub>("/BidsHub");
 

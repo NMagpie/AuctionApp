@@ -6,5 +6,5 @@ public class Category : Entity
 {
     public string Name { get; set; }
 
-    public ICollection<Lot>? Lots { get; set; } = [];
+    public ICollection<Product>? Lots { get; set; } = [];
 }

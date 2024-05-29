@@ -10,15 +10,13 @@ public class AuctionAppDbContext : IdentityDbContext<User, IdentityRole<int>, in
 {
     public AuctionAppDbContext(DbContextOptions<AuctionAppDbContext> options) : base(options) { }
 
-    public DbSet<Auction> Auctions { get; set; } = default!;
-
-    public DbSet<AuctionReview> AuctionReviews { get; set; } = default!;
+    public DbSet<ProductReview> ProductReview { get; set; } = default!;
 
     public DbSet<Bid> Bids { get; set; } = default!;
 
     public DbSet<Category> Categories { get; set; } = default!;
 
-    public DbSet<Lot> Lots { get; set; } = default!;
+    public DbSet<Product> Products { get; set; } = default!;
 
     public DbSet<UserWatchlist> UserWatchlists { get; set; } = default!;
 

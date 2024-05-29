@@ -9,7 +9,7 @@ namespace Application.App.Bids.Commands;
 
 public class CreateBidCommand : IRequest<BidDto>
 {
-    public required int LotId { get; set; }
+    public required int ProductId { get; set; }
 
     public required int UserId { get; set; }
 
@@ -30,15 +30,15 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
 
     public async Task<BidDto> Handle(CreateBidCommand request, CancellationToken cancellationToken)
     {
-        var lot = await _repository.GetByIdWithInclude<Lot>(request.LotId, lot => lot.Auction)
-            ?? throw new EntityNotFoundException("Lot cannot be found");
+        var product = await _repository.GetById<Product>(request.ProductId)
+            ?? throw new EntityNotFoundException("Product cannot be found");
 
-        if (lot.Auction.EndTime <= DateTimeOffset.UtcNow)
+        if (product.EndTime <= DateTimeOffset.UtcNow)
         {
             throw new BusinessValidationException("Cannot place bid: Auction Time is out");
         }
 
-        if (lot.Bids.DefaultIfEmpty().Max(bid => bid.Amount) >= request.Amount)
+        if (product.Bids.DefaultIfEmpty().Max(bid => bid.Amount) >= request.Amount)
         {
             throw new BusinessValidationException("Cannot place bid: someone placed greater bid");
         }

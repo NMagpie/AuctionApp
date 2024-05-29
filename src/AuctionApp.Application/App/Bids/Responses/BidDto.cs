@@ -3,7 +3,7 @@ public class BidDto
 {
     public int Id { get; set; }
 
-    public required int LotId { get; set; }
+    public required int ProductId { get; set; }
 
     public int UserId { get; set; }
 

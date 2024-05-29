@@ -22,65 +22,6 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AuctionApp.Domain.Models.Auction", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("CreatorId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset?>("EndTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<DateTimeOffset?>("StartTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatorId");
-
-                    b.ToTable("Auctions");
-                });
-
-            modelBuilder.Entity("AuctionApp.Domain.Models.AuctionReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AuctionId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Rating")
-                        .HasColumnType("real");
-
-                    b.Property<string>("ReviewText")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuctionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AuctionReviews");
-                });
-
             modelBuilder.Entity("AuctionApp.Domain.Models.Bid", b =>
                 {
                     b.Property<int>("Id")
@@ -100,7 +41,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<int>("LotId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -108,14 +49,14 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LotId");
+                    b.HasIndex("ProductId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Bids");
                 });
 
-            modelBuilder.Entity("AuctionApp.Domain.Models.Lot", b =>
+            modelBuilder.Entity("AuctionApp.Domain.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,15 +64,21 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuctionId")
+                    b.Property<int?>("CreatorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
 
+                    b.Property<DateTimeOffset?>("EndTime")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<decimal>("InitialPrice")
                         .HasColumnType("money");
+
+                    b.Property<DateTimeOffset?>("StartTime")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -140,9 +87,39 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuctionId");
+                    b.HasIndex("CreatorId");
 
-                    b.ToTable("Lots");
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("AuctionApp.Domain.Models.ProductReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<float>("Rating")
+                        .HasColumnType("real");
+
+                    b.Property<string>("ReviewText")
+                        .HasMaxLength(2048)
+                        .HasColumnType("nvarchar(2048)");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductReview");
                 });
 
             modelBuilder.Entity("AuctionApp.Domain.Models.UserWatchlist", b =>
@@ -153,7 +130,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuctionId")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("UserId")
@@ -161,15 +138,15 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuctionId");
+                    b.HasIndex("ProductId");
 
-                    b.HasIndex("UserId", "AuctionId")
+                    b.HasIndex("UserId", "ProductId")
                         .IsUnique();
 
                     b.ToTable("UserWatchlists");
                 });
 
-            modelBuilder.Entity("CategoryLot", b =>
+            modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.Property<int>("CategoriesId")
                         .HasColumnType("int");
@@ -181,7 +158,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("LotsId");
 
-                    b.ToTable("CategoryLot");
+                    b.ToTable("CategoryProduct");
                 });
 
             modelBuilder.Entity("Domain.Auth.User", b =>
@@ -412,7 +389,26 @@ namespace Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("AuctionApp.Domain.Models.Auction", b =>
+            modelBuilder.Entity("AuctionApp.Domain.Models.Bid", b =>
+                {
+                    b.HasOne("AuctionApp.Domain.Models.Product", "Product")
+                        .WithMany("Bids")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Auth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AuctionApp.Domain.Models.Product", b =>
                 {
                     b.HasOne("Domain.Auth.User", "Creator")
                         .WithMany()
@@ -421,11 +417,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Creator");
                 });
 
-            modelBuilder.Entity("AuctionApp.Domain.Models.AuctionReview", b =>
+            modelBuilder.Entity("AuctionApp.Domain.Models.ProductReview", b =>
                 {
-                    b.HasOne("AuctionApp.Domain.Models.Auction", "Auction")
+                    b.HasOne("AuctionApp.Domain.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("AuctionId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -433,46 +429,16 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("UserId");
 
-                    b.Navigation("Auction");
+                    b.Navigation("Product");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AuctionApp.Domain.Models.Bid", b =>
-                {
-                    b.HasOne("AuctionApp.Domain.Models.Lot", "Lot")
-                        .WithMany("Bids")
-                        .HasForeignKey("LotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Auth.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lot");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("AuctionApp.Domain.Models.Lot", b =>
-                {
-                    b.HasOne("AuctionApp.Domain.Models.Auction", "Auction")
-                        .WithMany("Lots")
-                        .HasForeignKey("AuctionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Auction");
                 });
 
             modelBuilder.Entity("AuctionApp.Domain.Models.UserWatchlist", b =>
                 {
-                    b.HasOne("AuctionApp.Domain.Models.Auction", "Auction")
+                    b.HasOne("AuctionApp.Domain.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("AuctionId")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -482,12 +448,12 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Auction");
+                    b.Navigation("Product");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("CategoryLot", b =>
+            modelBuilder.Entity("CategoryProduct", b =>
                 {
                     b.HasOne("EntityFramework.Domain.Models.Category", null)
                         .WithMany()
@@ -495,7 +461,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("AuctionApp.Domain.Models.Lot", null)
+                    b.HasOne("AuctionApp.Domain.Models.Product", null)
                         .WithMany()
                         .HasForeignKey("LotsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -553,12 +519,7 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AuctionApp.Domain.Models.Auction", b =>
-                {
-                    b.Navigation("Lots");
-                });
-
-            modelBuilder.Entity("AuctionApp.Domain.Models.Lot", b =>
+            modelBuilder.Entity("AuctionApp.Domain.Models.Product", b =>
                 {
                     b.Navigation("Bids");
                 });

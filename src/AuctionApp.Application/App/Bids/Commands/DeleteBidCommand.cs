@@ -23,12 +23,12 @@ public class DeleteBidCommandHandler : IRequestHandler<DeleteBidCommand>
 
     public async Task Handle(DeleteBidCommand request, CancellationToken cancellationToken)
     {
-        var bid = await _repository.GetByIdWithInclude<Bid>(request.Id, bid => bid.Lot, bid => bid.Lot.Auction)
+        var bid = await _repository.GetByIdWithInclude<Bid>(request.Id, bid => bid.Product)
             ?? throw new EntityNotFoundException("Bid cannot be found");
 
-        if (bid.Lot.Auction.EndTime <= DateTimeOffset.UtcNow)
+        if (bid.Product.EndTime <= DateTimeOffset.UtcNow)
         {
-            throw new BusinessValidationException("Cannot remove bid: Auction Time is out");
+            throw new BusinessValidationException("Cannot remove bid: Product Time is out");
         }
 
         await _repository.Remove<Bid>(request.Id);

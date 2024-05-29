@@ -34,16 +34,16 @@ public class BidHub : Hub
 
         await _mediator.Send(command);
 
-        await Clients.Group(command.LotId.ToString()).SendAsync("BidNotify", $"{userName} puts bid: {command.Amount}");
+        await Clients.Group(command.ProductId.ToString()).SendAsync("BidNotify", $"{userName} puts bid: {command.Amount}");
     }
 
-    public async Task AddToLotGroup(string lotId)
+    public async Task AddToProductGroup(string productId)
     {
-        await Groups.AddToGroupAsync(Context.ConnectionId, lotId);
+        await Groups.AddToGroupAsync(Context.ConnectionId, productId);
     }
 
-    public async Task RemoveFromLotGroup(string lotId)
+    public async Task RemoveFromProductGroup(string productId)
     {
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, lotId);
+        await Groups.RemoveFromGroupAsync(Context.ConnectionId, productId);
     }
 }

@@ -11,7 +11,7 @@ using Presentation.Common.Models.Users;
 namespace Presentation.Controllers;
 
 [ApiController]
-[Route("Me")]
+[Route("Users/Me")]
 [Authorize]
 public class CurrentUserController : AppBaseController
 {

@@ -43,22 +43,19 @@ public class TimedBackgroundService : BackgroundService
 
     private async Task DoWork()
     {
-        Func<Auction, bool> predicate = auction =>
+        Func<Product, bool> predicate = product =>
         {
-            if (auction.EndTime > DateTimeOffset.UtcNow)
+            if (product.EndTime > DateTimeOffset.UtcNow)
                 return false;
 
-            return auction.Lots.Any(lot => lot.Bids.All(bid => !bid.IsWon));
+            return product.Bids.All(bid => !bid.IsWon);
         };
 
-        var finishedAuctions = await _repository.GetByPredicate<Auction>(predicate, x => x.Lots, x => x.Lots.Select(l => l.Bids));
+        var finishedProducts = await _repository.GetByPredicate<Product>(predicate);
 
-        foreach (Auction auction in finishedAuctions)
+        foreach (Product product in finishedProducts)
         {
-            foreach (Lot lot in auction.Lots)
-            {
                 //think about further logic and implement
-            }
         }
     }
 }

@@ -6,9 +6,9 @@ public class CreateBidCommandValidator : BaseValidator<CreateBidCommand>
 {
     public CreateBidCommandValidator()
     {
-        RuleFor(x => x.LotId)
+        RuleFor(x => x.ProductId)
             .NotEmpty()
-            .WithMessage("Invalid lot");
+            .WithMessage("Invalid product");
 
         RuleFor(x => x.Amount)
             .GreaterThan(0);

@@ -5,5 +5,5 @@ public class UserWatchlistDto
 
     public required int UserId { get; set; }
 
-    public int? AuctionId { get; set; }
+    public int? ProductId { get; set; }
 }

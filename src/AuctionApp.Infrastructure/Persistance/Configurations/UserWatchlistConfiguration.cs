@@ -8,7 +8,7 @@ public class UserWatchlistConfiguration : IEntityTypeConfiguration<UserWatchlist
     public void Configure(EntityTypeBuilder<UserWatchlist> builder)
     {
         builder
-            .HasIndex(x => new { x.UserId, x.AuctionId })
+            .HasIndex(x => new { x.UserId, x.ProductId })
             .IsUnique();
     }
 }

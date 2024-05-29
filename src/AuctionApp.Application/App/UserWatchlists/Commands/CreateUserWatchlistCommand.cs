@@ -11,7 +11,7 @@ public class CreateUserWatchlistCommand : IRequest<UserWatchlistDto>
 {
     public int UserId { get; set; }
 
-    public int AuctionId { get; set; }
+    public int ProductId { get; set; }
 }
 
 public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatchlistCommand, UserWatchlistDto>
@@ -34,8 +34,8 @@ public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatch
         var user = await _userRepository.GetById(request.UserId)
             ?? throw new EntityNotFoundException("User cannot be found");
 
-        var auction = await _repository.GetById<Auction>(request.AuctionId)
-            ?? throw new EntityNotFoundException("Auction cannot be found");
+        var product = await _repository.GetById<Product>(request.ProductId)
+            ?? throw new EntityNotFoundException("Product cannot be found");
 
         var userWatchlist = _mapper.Map<CreateUserWatchlistCommand, UserWatchlist>(request);
 

@@ -5,404 +5,6 @@
     "version": "1.0"
   },
   "paths": {
-    "/AuctionReviews/{id}": {
-      "get": {
-        "tags": [
-          "AuctionReviews"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "AuctionReviews"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAuctionReviewRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAuctionReviewRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAuctionReviewRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "AuctionReviews"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      }
-    },
-    "/AuctionReviews": {
-      "post": {
-        "tags": [
-          "AuctionReviews"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuctionReviewRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuctionReviewRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuctionReviewRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionReviewDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      }
-    },
-    "/Auctions/{id}": {
-      "get": {
-        "tags": [
-          "Auctions"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Auctions"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAuctionRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAuctionRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateAuctionRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      },
-      "delete": {
-        "tags": [
-          "Auctions"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Success"
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      }
-    },
-    "/Auctions": {
-      "post": {
-        "tags": [
-          "Auctions"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuctionRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuctionRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateAuctionRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "text/plain": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              },
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              },
-              "text/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AuctionDto"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized"
-          },
-          "403": {
-            "description": "Forbidden"
-          }
-        },
-        "security": [
-          {
-            "oauth2": [ ]
-          }
-        ]
-      }
-    },
     "/Bids/{id}": {
       "get": {
         "tags": [
@@ -443,7 +45,7 @@
         }
       }
     },
-    "/Me": {
+    "/Users/Me": {
       "get": {
         "tags": [
           "CurrentUser"
@@ -561,7 +163,7 @@
         ]
       }
     },
-    "/Me/add-balance": {
+    "/Users/Me/add-balance": {
       "post": {
         "tags": [
           "CurrentUser"
@@ -603,7 +205,7 @@
         ]
       }
     },
-    "/identity/register": {
+    "/Identity/register": {
       "post": {
         "tags": [
           "Identity"
@@ -634,7 +236,7 @@
         }
       }
     },
-    "/identity/login": {
+    "/Identity/login": {
       "post": {
         "tags": [
           "Identity"
@@ -678,7 +280,7 @@
         }
       }
     },
-    "/identity/refresh": {
+    "/Identity/refresh": {
       "post": {
         "tags": [
           "Identity"
@@ -706,12 +308,12 @@
         }
       }
     },
-    "/identity/confirmEmail": {
+    "/Identity/confirmEmail": {
       "get": {
         "tags": [
           "Identity"
         ],
-        "operationId": "MapIdentityApi-/identity/confirmEmail",
+        "operationId": "MapIdentityApi-/Identity/confirmEmail",
         "parameters": [
           {
             "name": "userId",
@@ -742,7 +344,7 @@
         }
       }
     },
-    "/identity/resendConfirmationEmail": {
+    "/Identity/resendConfirmationEmail": {
       "post": {
         "tags": [
           "Identity"
@@ -763,7 +365,7 @@
         }
       }
     },
-    "/identity/forgotPassword": {
+    "/Identity/forgotPassword": {
       "post": {
         "tags": [
           "Identity"
@@ -794,7 +396,7 @@
         }
       }
     },
-    "/identity/resetPassword": {
+    "/Identity/resetPassword": {
       "post": {
         "tags": [
           "Identity"
@@ -825,7 +427,7 @@
         }
       }
     },
-    "/identity/manage/2fa": {
+    "/Identity/manage/2fa": {
       "post": {
         "tags": [
           "Identity"
@@ -877,7 +479,7 @@
         ]
       }
     },
-    "/identity/manage/info": {
+    "/Identity/manage/info": {
       "get": {
         "tags": [
           "Identity"
@@ -970,10 +572,10 @@
         ]
       }
     },
-    "/Lots/{id}": {
+    "/ProductReviews/{id}": {
       "get": {
         "tags": [
-          "Lots"
+          "ProductReviews"
         ],
         "parameters": [
           {
@@ -992,17 +594,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               }
             }
@@ -1011,7 +613,7 @@
       },
       "put": {
         "tags": [
-          "Lots"
+          "ProductReviews"
         ],
         "parameters": [
           {
@@ -1028,17 +630,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateLotRequest"
+                "$ref": "#/components/schemas/UpdateProductReviewRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateLotRequest"
+                "$ref": "#/components/schemas/UpdateProductReviewRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateLotRequest"
+                "$ref": "#/components/schemas/UpdateProductReviewRequest"
               }
             }
           }
@@ -1049,17 +651,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               }
             }
@@ -1079,7 +681,7 @@
       },
       "delete": {
         "tags": [
-          "Lots"
+          "ProductReviews"
         ],
         "parameters": [
           {
@@ -1110,26 +712,26 @@
         ]
       }
     },
-    "/Lots": {
+    "/ProductReviews": {
       "post": {
         "tags": [
-          "Lots"
+          "ProductReviews"
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLotRequest"
+                "$ref": "#/components/schemas/CreateProductReviewRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLotRequest"
+                "$ref": "#/components/schemas/CreateProductReviewRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateLotRequest"
+                "$ref": "#/components/schemas/CreateProductReviewRequest"
               }
             }
           }
@@ -1140,17 +742,216 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LotDto"
+                  "$ref": "#/components/schemas/ProductReviewDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/Products/{id}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Products"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/Products": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDto"
                 }
               }
             }
@@ -1376,67 +1177,6 @@
         },
         "additionalProperties": false
       },
-      "AuctionDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "creator": {
-            "$ref": "#/components/schemas/UserDto"
-          },
-          "startTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "lots": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LotDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AuctionReviewDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
-          },
-          "auctionId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "reviewText": {
-            "type": "string",
-            "nullable": true
-          },
-          "rating": {
-            "type": "number",
-            "format": "float"
-          }
-        },
-        "additionalProperties": false
-      },
       "BidDto": {
         "type": "object",
         "properties": {
@@ -1444,7 +1184,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "lotId": {
+          "productId": {
             "type": "integer",
             "format": "int32"
           },
@@ -1480,60 +1220,7 @@
         },
         "additionalProperties": false
       },
-      "CategoryInLotDto": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateAuctionRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "lots": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/LotInAuctionDto"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateAuctionReviewRequest": {
-        "type": "object",
-        "properties": {
-          "auctionId": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "reviewText": {
-            "type": "string",
-            "nullable": true
-          },
-          "rating": {
-            "type": "number",
-            "format": "float"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CreateLotRequest": {
+      "CreateProductRequest": {
         "type": "object",
         "properties": {
           "title": {
@@ -1544,9 +1231,15 @@
             "type": "string",
             "nullable": true
           },
-          "auctionId": {
-            "type": "integer",
-            "format": "int32"
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
           },
           "initialPrice": {
             "type": "number",
@@ -1563,6 +1256,24 @@
         },
         "additionalProperties": false
       },
+      "CreateProductReviewRequest": {
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewText": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "additionalProperties": false
+      },
       "CreateUserWatchlistCommand": {
         "type": "object",
         "properties": {
@@ -1570,7 +1281,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "auctionId": {
+          "productId": {
             "type": "integer",
             "format": "int32"
           }
@@ -1703,7 +1414,7 @@
         },
         "additionalProperties": false
       },
-      "LotDto": {
+      "ProductDto": {
         "type": "object",
         "properties": {
           "id": {
@@ -1718,9 +1429,22 @@
             "type": "string",
             "nullable": true
           },
-          "auctionId": {
+          "creatorId": {
             "type": "integer",
             "format": "int32",
+            "nullable": true
+          },
+          "creator": {
+            "$ref": "#/components/schemas/UserDto"
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "initialPrice": {
@@ -1748,28 +1472,29 @@
         },
         "additionalProperties": false
       },
-      "LotInAuctionDto": {
+      "ProductReviewDto": {
         "type": "object",
         "properties": {
-          "title": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "reviewText": {
             "type": "string",
             "nullable": true
           },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "initialPrice": {
+          "rating": {
             "type": "number",
-            "format": "double"
-          },
-          "categories": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CategoryInLotDto"
-            },
-            "nullable": true
+            "format": "float"
           }
         },
         "additionalProperties": false
@@ -1876,39 +1601,7 @@
         },
         "additionalProperties": false
       },
-      "UpdateAuctionRequest": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "startTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "endTime": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateAuctionReviewRequest": {
-        "type": "object",
-        "properties": {
-          "reviewText": {
-            "type": "string",
-            "nullable": true
-          },
-          "rating": {
-            "type": "number",
-            "format": "float"
-          }
-        },
-        "additionalProperties": false
-      },
-      "UpdateLotRequest": {
+      "UpdateProductRequest": {
         "type": "object",
         "properties": {
           "title": {
@@ -1917,6 +1610,16 @@
           },
           "description": {
             "type": "string",
+            "nullable": true
+          },
+          "startTime": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endTime": {
+            "type": "string",
+            "format": "date-time",
             "nullable": true
           },
           "initialPrice": {
@@ -1934,6 +1637,20 @@
         },
         "additionalProperties": false
       },
+      "UpdateProductReviewRequest": {
+        "type": "object",
+        "properties": {
+          "reviewText": {
+            "type": "string",
+            "nullable": true
+          },
+          "rating": {
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "additionalProperties": false
+      },
       "UpdateUserRequest": {
         "type": "object",
         "properties": {
@@ -1942,10 +1659,6 @@
             "nullable": true
           },
           "email": {
-            "type": "string",
-            "nullable": true
-          },
-          "password": {
             "type": "string",
             "nullable": true
           }
@@ -1977,7 +1690,7 @@
             "type": "integer",
             "format": "int32"
           },
-          "auctionId": {
+          "productId": {
             "type": "integer",
             "format": "int32",
             "nullable": true

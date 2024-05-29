@@ -5,7 +5,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
-import { ApiProvider, User, useApi } from './contexts/ApiContext';
+import { ApiProvider, useApi } from './contexts/ApiContext';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NoPage from './components/NoPage/NoPage';
 import Layout from './components/NavBar/Layout';
@@ -16,6 +16,7 @@ import React, { useEffect, useState } from 'react';
 import AuctionPage from './components/AuctionPage/AuctionPage';
 import UserPage from './components/UserPage/UserPage';
 import BidsTestPage from './components/BidsTest';
+import { User } from './api/ApiManager';
 
 function App() {
 
@@ -53,7 +54,7 @@ function RequireAuth({ children }: { children: React.ReactNode | React.ReactNode
     setUser(api.user);
   }, [api.user]);
 
-  return !!user ? children : <Navigate to="/login" />;
+  return user ? children : <Navigate to="/login" />;
 }
 
 function RequireGuest({ children }: { children: React.ReactNode | React.ReactNode[] }) {

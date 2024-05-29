@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { Configuration, AuctionReviewsApi, AuctionsApi, BidsApi, IdentityApi, LotsApi, UsersApi, CurrentUserApi, UserWatchlistsApi, AccessTokenResponse, CurrentUserDto } from "../api/openapi-generated";
+import { Configuration, BidsApi, IdentityApi, UsersApi, CurrentUserApi, UserWatchlistsApi, AccessTokenResponse, CurrentUserDto, ProductReviewsApi, ProductsApi } from "../api/openapi-generated";
 
 export const baseUrl: string = process.env.REACT_APP_BASE_URL;
 
@@ -14,7 +14,7 @@ class UserIdentity {
     public isViable = () => this.expireDate ? this.expireDate >= new Date() : false
 }
 
-class User {
+export class User {
     id: number | null | undefined;
 
     userName: string | null | undefined;
@@ -48,15 +48,13 @@ export default class ApiManager {
             }
         );
 
-        this.auctionReviews = new AuctionReviewsApi(configuration, undefined, this.axios);
+        this.productReviews = new ProductReviewsApi(configuration, undefined, this.axios);
 
-        this.auctions = new AuctionsApi(configuration, undefined, this.axios);
+        this.products = new ProductsApi(configuration, undefined, this.axios);
 
         this.bids = new BidsApi(configuration, undefined, this.axios);
 
         this.identity = new IdentityApi(configuration, undefined, this.axios);
-
-        this.lots = new LotsApi(configuration, undefined, this.axios);
 
         this.users = new UsersApi(configuration, undefined, this.axios);
 
@@ -75,15 +73,13 @@ export default class ApiManager {
         }
     }
 
-    auctionReviews: AuctionReviewsApi;
+    productReviews: ProductReviewsApi;
 
-    auctions: AuctionsApi;
+    products: ProductsApi;
 
     bids: BidsApi;
 
     identity: IdentityApi;
-
-    lots: LotsApi;
 
     users: UsersApi;
 
@@ -113,7 +109,7 @@ export default class ApiManager {
 
         this.axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
 
-        const user = (await this.currentUser.meGet()).data;
+        const user = (await this.currentUser.usersMeGet()).data;
 
         this.assignUser(user);
     }
@@ -135,7 +131,7 @@ export default class ApiManager {
 
     public getCurrentUser = async () => {
 
-        const userValue = this.userIdentity ? (await this.currentUser.meGet()).data : null;
+        const userValue = this.userIdentity ? (await this.currentUser.usersMeGet()).data : null;
 
         this.assignUser(userValue);
 

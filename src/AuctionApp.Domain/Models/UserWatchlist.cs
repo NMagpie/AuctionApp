@@ -9,8 +9,8 @@ namespace AuctionApp.Domain.Models
 
         public User? User { get; set; }
 
-        public int AuctionId { get; set; }
+        public int ProductId { get; set; }
 
-        public Auction? Auction { get; set; }
+        public Product? Product { get; set; }
     }
 }

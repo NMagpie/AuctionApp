@@ -10,8 +10,8 @@ public class CreateUserWatchlistCommandValidator : BaseValidator<CreateUserWatch
             .NotEmpty()
             .WithMessage("Invalid user");
 
-        RuleFor(x => x.AuctionId)
+        RuleFor(x => x.ProductId)
             .NotEmpty()
-            .WithMessage("Invalid auction");
+            .WithMessage("Invalid product");
     }
 }
