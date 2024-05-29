@@ -1,11 +1,13 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 
+import './Layout.css';
+
 const Layout = () => {
     return (
-        <div className="h-full w-full flex flex-col">
+        <div className="full-page">
             <NavBar />
-            <div className="grow">
+            <div className="outlet">
                 <Outlet />
             </div>
         </div>

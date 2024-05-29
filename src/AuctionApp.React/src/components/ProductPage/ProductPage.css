@@ -1,0 +1,19 @@
+.product-info {
+    @apply flex flex-col gap-5 bg-white text-slate-800 p-10 rounded-lg;
+
+    a,
+    a:hover,
+    a:visited {
+        @apply font-mono mr-4 flex text-slate-800 no-underline tracking-widest font-bold items-center;
+    }
+
+    .product-image {
+
+        @apply flex items-center w-3/4;
+
+        img {
+            @apply bg-cover object-cover;
+        }
+
+    }
+}

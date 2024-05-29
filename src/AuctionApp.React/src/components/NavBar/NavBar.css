@@ -3,6 +3,6 @@
     a.logo,
     a.logo:hover,
     a.logo:visited {
-        @apply font-mono mr-4 flex text-white no-underline tracking-widest font-bold items-center;
+        @apply sm:grow-0 grow font-mono mr-4 flex text-white no-underline tracking-widest font-bold items-center;
     }
 }

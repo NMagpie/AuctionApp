@@ -1,5 +1,5 @@
 .guest-panel {
-    @apply flex gap-1 md:gap-4;
+    @apply hidden md:flex gap-1 md:gap-4;
 
     a,
     a:hover,

@@ -1,7 +1,7 @@
 .user-register {
     color: #1976d2;
 
-    @apply bg-white w-full h-full overflow-y-auto rounded-lg flex flex-col justify-center;
+    @apply h-full flex flex-col justify-center;
 }
 
 .user-register-content {

@@ -37,8 +37,20 @@ export default class ApiManager {
             async (error) => {
                 if (error.response && error.response.status === 401 && this?.userIdentity?.refreshToken) {
                     try {
+                        this.connectionRetries++;
+
+                        if (this.connectionRetries > 10) {
+                            this.logout();
+                            window.location.reload();
+                            this.connectionRetries = 0;
+                            return;
+                        }
+
                         const newAccessToken = await this.refreshAccessToken();
                         error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
+
+                        this.connectionRetries = 0;
+
                         return this.axios(error.config);
                     } catch (refreshError) {
                         throw refreshError;
@@ -72,6 +84,8 @@ export default class ApiManager {
             this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.userIdentity.accessToken}`;
         }
     }
+
+    private connectionRetries: number = 0;
 
     productReviews: ProductReviewsApi;
 

@@ -1,8 +1,9 @@
 import { Box, Typography, Tooltip, IconButton, Avatar, Menu, MenuItem, Button } from "@mui/material";
 import { useEffect, useState } from "react";
-import { User, useApi } from "../../contexts/ApiContext";
+import { useApi } from "../../contexts/ApiContext";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import { useNavigate } from "react-router-dom";
+import { User } from "../../api/ApiManager";
 
 import './UserInfo.css';
 
@@ -10,7 +11,7 @@ export default function UserInfo() {
 
     const navigate = useNavigate();
 
-    const {api, didUserLoad} = useApi();
+    const { api, didUserLoad } = useApi();
 
     const [user, setUser] = useState<User | null>(api.user);
 
@@ -84,21 +85,27 @@ export default function UserInfo() {
 
                     </Box>
                     :
-                    <div className='guest-panel'>
+                    <>
+                        <IconButton className="flex md:hidden" onClick={() => navigate("/login")}>
+                            <Avatar alt={""} src="./src" />
+                        </IconButton>
 
-                        <Button
-                            href="/login"
-                        >
-                            Sign In
-                        </Button>
+                        <div className='guest-panel'>
 
-                        <Button
-                            href="/register"
-                        >
-                            Sign Up
-                        </Button>
+                            <Button
+                                href="/login"
+                            >
+                                Sign In
+                            </Button>
 
-                    </div>
+                            <Button
+                                href="/register"
+                            >
+                                Sign Up
+                            </Button>
+
+                        </div>
+                    </>
             }
         </div>
 

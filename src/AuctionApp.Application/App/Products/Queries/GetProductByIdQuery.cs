@@ -25,7 +25,7 @@ public class GetProductByIdQueryHandler : IRequestHandler<GetProductByIdQuery, P
 
     public async Task<ProductDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        var lot = await _repository.GetById<Product>(request.Id)
+        var lot = await _repository.GetByIdWithInclude<Product>(request.Id, product => product.Creator)
             ?? throw new EntityNotFoundException("Product cannot be found");
 
         var lotDto = _mapper.Map<Product, ProductDto>(lot);

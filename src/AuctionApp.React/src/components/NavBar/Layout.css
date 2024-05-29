@@ -1,0 +1,7 @@
+.full-page {
+    @apply h-full w-full flex flex-col;
+}
+
+.outlet {
+    @apply grow bg-white w-full h-full overflow-y-auto;
+}

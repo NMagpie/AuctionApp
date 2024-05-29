@@ -1,5 +1,3 @@
-import './App.css'
-
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -13,10 +11,12 @@ import Home from './components/HomePage/HomePage';
 import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import React, { useEffect, useState } from 'react';
-import AuctionPage from './components/AuctionPage/AuctionPage';
 import UserPage from './components/UserPage/UserPage';
 import BidsTestPage from './components/BidsTest';
 import { User } from './api/ApiManager';
+import ProductPage from './components/ProductPage/ProductPage';
+
+import './App.css'
 
 function App() {
 
@@ -31,11 +31,11 @@ function App() {
             <Route path="/login" element={<RequireGuest> <LoginPage /> </RequireGuest>} />
             <Route path="/register" element={<RequireGuest> <RegisterPage /> </RequireGuest>} />
 
-            <Route path="/auctions/:id" element={<AuctionPage />} />
-
             <Route path="/users/:id" element={<UserPage />} />
 
             <Route path="/bidTest" element={<BidsTestPage/>}/>
+
+            <Route path="/products/:id" element={<ProductPage/>}/>
 
           </Route>
         </Routes>
