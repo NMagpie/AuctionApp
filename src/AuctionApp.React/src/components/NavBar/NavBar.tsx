@@ -12,9 +12,9 @@ export default function NavBar() {
     const [isSearchBarOpen, setSearchBarOpen] = useState(false);
 
     return (
-        <AppBar className='navbar' position="sticky">
+        <AppBar className='navbar bg-slate-600' position="sticky">
             <Container>
-                <Toolbar>
+                <Toolbar className="bg-slate-600">
 
                     <Link className={`logo ${isSearchBarOpen ? 'hidden' : ''} sm:flex`} to={"/"}>
                         <AccountBalance className='mr-2' />

@@ -3,5 +3,5 @@
 }
 
 .outlet {
-    @apply grow bg-white w-full h-full overflow-y-auto;
+    @apply grow bg-white w-full h-full;
 }

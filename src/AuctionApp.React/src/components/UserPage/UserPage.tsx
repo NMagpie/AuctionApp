@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useApi } from "../../contexts/ApiContext";
 import { Avatar, Typography } from "@mui/material";
-import { UserDto } from "../../api";
 import Divider from '@mui/material/Divider';
 
 import './UserPage.css';
+import { UserDto } from "../../api/openapi-generated";
 
 export default function UserPage() {
 

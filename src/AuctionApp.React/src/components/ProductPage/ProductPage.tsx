@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useApi } from "../../contexts/ApiContext";
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Divider, Typography } from "@mui/material";
+import { UserDto } from "../../api/openapi-generated";
+import AuctionTimers from "./AuctionTimers";
 
 import './ProductPage.css';
-import { UserDto } from "../../api/openapi-generated";
 
-type Product = {
+export type Product = {
     id: number;
     title: string;
     description: string;
@@ -19,7 +20,7 @@ export default function ProductPage() {
 
     const { id } = useParams();
 
-    const [Product, setProduct] = useState<Product | null>(null);
+    const [product, setProduct] = useState<Product | null>(null);
 
     const api = useApi().api;
 
@@ -35,37 +36,50 @@ export default function ProductPage() {
             endTime: data.endTime ? new Date(data.endTime) : null,
         };
 
+        const date = new Date();
+
+        date.setDate(date.getDate() + 2);
+
+        product.endTime = date;
+
         setProduct(product);
     };
-
-    console.log();
 
     useEffect(() => {
         getProduct();
     }, []);
 
     return (
-        <div className="product-info">
-            <div className="product-image">
-                <img src="../../public/a.png" alt="placeholder"></img>
+        <div className="product-card">
+
+            <div className="product-info">
+                <img src="https://bidpro.webdevia.com/wp-content/uploads/2018/05/alexander-andrews-BX4Q0gojWAs-unsplash.jpg" alt={`product-${product?.id}-img`}></img>
+
+                <Typography className="product-title hidden lg:inline" variant="h2">{product?.title}</Typography>
+                <Typography className="product-title lg:hidden" variant="h3">{product?.title}</Typography>
+
+                <Typography className="font-bold">{product?.description}</Typography>
             </div>
 
-            <Typography className="font-bold" variant="h2">{Product?.title}</Typography>
+            <div className="product-brief">
+                <Typography className="product-brief-title hidden lg:block" variant="h3">{product?.title?.substring(0, 50)}</Typography>
+                <Typography className="product-brief-title lg:hidden" variant="h4">{product?.title?.substring(0, 50)}</Typography>
 
-            <Typography className="font-bold" variant="h4">{Product?.description}</Typography>
+                <div className="flex flex-row items-baseline">
+                    <Typography variant="h6" className="mr-3">Creator:</Typography>
 
-            <div className="flex flex-row items-center">
-                <Typography variant="h6" className="mr-5">Creator:</Typography>
+                    <Link className="flex flex-row" to={`/users/${product?.creator?.id}`}>
+                        <Avatar className="mr-2" alt={product?.creator?.userName?.charAt(0)} src="./src" />
+                        <Typography variant="h6">{product?.creator?.userName}</Typography>
+                    </Link>
+                </div>
 
-                <Link className="flex flex-row items-center" to={`/users/${Product?.creator?.id}`}>
-                    <Avatar className="mr-2" alt={Product?.creator?.userName?.charAt(0)} src="./src" />
-                    <Typography variant="h6">{Product?.creator?.userName}</Typography>
-                </Link>
+                <div className="product-brief-divider"/>
+
+                <AuctionTimers product={product} />
 
             </div>
 
-            <Typography variant="h6">Start Time: {Product?.startTime?.toLocaleString()}</Typography>
-            <Typography variant="h6">End Time: {Product?.endTime?.toLocaleString()}</Typography>
         </div>
     )
 }
