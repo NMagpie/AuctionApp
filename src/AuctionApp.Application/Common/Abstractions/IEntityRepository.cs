@@ -10,7 +10,7 @@ public interface IEntityRepository
 
     Task<List<T>> GetByIds<T>(List<int> ids) where T : Entity;
 
-    Task<List<T>> GetByPredicate<T>(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties) where T : Entity;
+    Task<List<T>> GetByPredicate<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties) where T : Entity;
 
     Task<List<T>> GetAll<T>() where T : Entity;
 

@@ -1,7 +1,8 @@
 ﻿namespace AuctionApp.Presentation.SignalR;
 
 using Application.App.Bids.Commands;
-using AuctionApp.Presentation.Common.Requests.Bids;
+using Application.App.Queries;
+using AuctionApp.Presentation.SignalR.Dtos;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -32,9 +33,18 @@ public class BidHub : Hub
 
         command.UserId = userId;
 
-        await _mediator.Send(command);
+        var result = await _mediator.Send(command);
 
-        await Clients.Group(command.ProductId.ToString()).SendAsync("BidNotify", $"{userName} puts bid: {command.Amount}");
+        await Clients.Group(command.ProductId.ToString()).SendAsync("BidNotify", result);
+    }
+
+    public async Task GetLatestPrice(int productId)
+    {
+        var command = new GetLatestProductPriceByIdQuery { Id = productId };
+
+        var result = await _mediator.Send(command);
+
+        await Clients.Caller.SendAsync("GetLatestPrice", result);
     }
 
     public async Task AddToProductGroup(string productId)

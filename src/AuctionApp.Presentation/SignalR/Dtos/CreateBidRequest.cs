@@ -1,4 +1,4 @@
-﻿namespace AuctionApp.Presentation.Common.Requests.Bids;
+﻿namespace AuctionApp.Presentation.SignalR.Dtos;
 public class CreateBidRequest
 {
     public required int ProductId { get; set; }

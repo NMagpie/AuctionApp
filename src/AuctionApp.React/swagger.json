@@ -1046,8 +1046,19 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           }
-        }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -1083,6 +1094,54 @@
       }
     },
     "/UserWatchlists": {
+      "get": {
+        "tags": [
+          "UserWatchlists"
+        ],
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWatchlistDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWatchlistDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWatchlistDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
       "post": {
         "tags": [
           "UserWatchlists"
@@ -1091,17 +1150,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserWatchlistCommand"
+                "$ref": "#/components/schemas/CreateUserWatchlistRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserWatchlistCommand"
+                "$ref": "#/components/schemas/CreateUserWatchlistRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUserWatchlistCommand"
+                "$ref": "#/components/schemas/CreateUserWatchlistRequest"
               }
             }
           }
@@ -1274,13 +1333,9 @@
         },
         "additionalProperties": false
       },
-      "CreateUserWatchlistCommand": {
+      "CreateUserWatchlistRequest": {
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int32"
-          },
           "productId": {
             "type": "integer",
             "format": "int32"
@@ -1452,12 +1507,11 @@
             "format": "double",
             "nullable": true
           },
-          "bidIds": {
+          "bids": {
             "uniqueItems": true,
             "type": "array",
             "items": {
-              "type": "integer",
-              "format": "int32"
+              "$ref": "#/components/schemas/BidDto"
             },
             "nullable": true
           },

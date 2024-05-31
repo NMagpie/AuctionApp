@@ -36,10 +36,10 @@ public class EntityRepository : IEntityRepository
         return query.ToListAsync();
     }
 
-    public Task<List<T>> GetByPredicate<T>(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties) where T : Entity
+    public Task<List<T>> GetByPredicate<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties) where T : Entity
     {
         IQueryable<T> query = IncludeProperties(includeProperties)
-            .Where(e => predicate(e));
+            .Where(predicate);
 
         return query.ToListAsync();
     }

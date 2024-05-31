@@ -9,6 +9,8 @@ namespace Application.App.Queries;
 public class GetUserWatchlistByIdQuery : IRequest<UserWatchlistDto>
 {
     public int Id { get; set; }
+
+    public int UserId { get; set; }
 }
 
 public class GetUserWatchlistByIdQueryHandler : IRequestHandler<GetUserWatchlistByIdQuery, UserWatchlistDto>
@@ -25,11 +27,16 @@ public class GetUserWatchlistByIdQueryHandler : IRequestHandler<GetUserWatchlist
 
     public async Task<UserWatchlistDto> Handle(GetUserWatchlistByIdQuery request, CancellationToken cancellationToken)
     {
-        var auction = await _repository.GetById<UserWatchlist>(request.Id)
+        var userWatchlist = await _repository.GetById<UserWatchlist>(request.Id)
             ?? throw new EntityNotFoundException("User watchlist cannot be found");
 
-        var auctionDto = _mapper.Map<UserWatchlist, UserWatchlistDto>(auction);
+        if (userWatchlist.UserId != request.UserId)
+        {
+            throw new InvalidUserException("You do not have permission to access this data");
+        }
 
-        return auctionDto;
+        var userWatchlistDto = _mapper.Map<UserWatchlist, UserWatchlistDto>(userWatchlist);
+
+        return userWatchlistDto;
     }
 }

@@ -1,6 +1,6 @@
-﻿using Application.App.Responses;
+﻿using Application.App.Bids.Responses;
+using Application.App.Responses;
 using Application.App.Users.Responses;
-using Domain.Auth;
 
 namespace Application.App.Products.Responses;
 public class ProductDto
@@ -21,7 +21,7 @@ public class ProductDto
 
     public decimal? InitialPrice { get; set; }
 
-    public HashSet<int> BidIds { get; set; } = [];
+    public HashSet<BidDto> Bids { get; set; } = [];
 
     public HashSet<CategoryDto> Categories { get; set; } = [];
 }

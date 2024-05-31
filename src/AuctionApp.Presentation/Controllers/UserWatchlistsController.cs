@@ -1,6 +1,7 @@
 ﻿using Application.App.Queries;
 using Application.App.UserWatchlists.Commands;
 using Application.App.UserWatchlists.Responses;
+using AuctionApp.Presentation.Common.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -20,19 +21,38 @@ public class UserWatchlistsController : AppBaseController
         _mediator = mediator;
     }
 
-    [AllowAnonymous]
     [HttpGet("{id}")]
     public async Task<ActionResult<UserWatchlistDto>> GetUserWatchlist(int id)
     {
-        var userWatchlistDto = await _mediator.Send(new GetUserWatchlistByIdQuery() { Id = id });
+        var userId = GetUserId();
+
+        var userWatchlistDto = await _mediator.Send(new GetUserWatchlistByIdQuery() { Id = id, UserId = userId });
+
+        return Ok(userWatchlistDto);
+    }
+
+    [HttpGet]
+    public async Task<ActionResult<UserWatchlistDto>> GetUserWatchlistByProductId([FromQuery] int productId)
+    {
+        var userId = GetUserId();
+
+        var userWatchlistDto = await _mediator.Send(new GetUserwatchlistByProductIdQuery() { ProductId = productId, UserId = userId });
 
         return Ok(userWatchlistDto);
     }
 
     [HttpPost]
-    public async Task<ActionResult<UserWatchlistDto>> CreateUserWatchlist(CreateUserWatchlistCommand createUserWatchlistCommand)
+    public async Task<ActionResult<UserWatchlistDto>> CreateUserWatchlist(CreateUserWatchlistRequest createUserWatchlistRequest)
     {
-        var userWatchlistDto = await _mediator.Send(createUserWatchlistCommand);
+        var userId = GetUserId();
+
+        var command = new CreateUserWatchlistCommand
+        {
+            UserId = userId,
+            ProductId = createUserWatchlistRequest.ProductId,
+        };
+
+        var userWatchlistDto = await _mediator.Send(command);
 
         return Ok(userWatchlistDto);
     }

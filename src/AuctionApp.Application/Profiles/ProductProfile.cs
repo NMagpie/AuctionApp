@@ -9,8 +9,7 @@ public class ProductProfile : Profile
 {
     public ProductProfile()
     {
-        CreateMap<Product, ProductDto>()
-            .ForMember(dest => dest.BidIds, src => src.MapFrom(src => src.Bids.Select(product => product.Id)));
+        CreateMap<Product, ProductDto>();
 
         CreateMap<CreateProductCommand, Product>()
             .ForMember(dest => dest.Categories,

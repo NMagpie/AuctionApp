@@ -2,6 +2,7 @@
 using AuctionApp.Domain.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace Application.App;
 
@@ -43,13 +44,8 @@ public class TimedBackgroundService : BackgroundService
 
     private async Task DoWork()
     {
-        Func<Product, bool> predicate = product =>
-        {
-            if (product.EndTime > DateTimeOffset.UtcNow)
-                return false;
-
-            return product.Bids.All(bid => !bid.IsWon);
-        };
+        Expression<Func<Product, bool>> predicate = product =>
+        (product.EndTime < DateTimeOffset.UtcNow) && product.Bids.All(bid => !bid.IsWon);
 
         var finishedProducts = await _repository.GetByPredicate<Product>(predicate);
 

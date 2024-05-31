@@ -198,19 +198,13 @@ export interface CreateProductReviewRequest {
 /**
  * 
  * @export
- * @interface CreateUserWatchlistCommand
+ * @interface CreateUserWatchlistRequest
  */
-export interface CreateUserWatchlistCommand {
+export interface CreateUserWatchlistRequest {
     /**
      * 
      * @type {number}
-     * @memberof CreateUserWatchlistCommand
-     */
-    'userId'?: number;
-    /**
-     * 
-     * @type {number}
-     * @memberof CreateUserWatchlistCommand
+     * @memberof CreateUserWatchlistRequest
      */
     'productId'?: number;
 }
@@ -440,10 +434,10 @@ export interface ProductDto {
     'initialPrice'?: number | null;
     /**
      * 
-     * @type {Set<number>}
+     * @type {Set<BidDto>}
      * @memberof ProductDto
      */
-    'bidIds'?: Set<number> | null;
+    'bids'?: Set<BidDto> | null;
     /**
      * 
      * @type {Set<CategoryDto>}
@@ -2799,6 +2793,44 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
+         * @param {number} [productId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userWatchlistsGet: async (productId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/UserWatchlists`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (productId !== undefined) {
+                localVarQueryParameter['productId'] = productId;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2856,6 +2888,10 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
 
     
             setSearchParams(localVarUrlObj, localVarQueryParameter);
@@ -2869,11 +2905,11 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
         },
         /**
          * 
-         * @param {CreateUserWatchlistCommand} [createUserWatchlistCommand] 
+         * @param {CreateUserWatchlistRequest} [createUserWatchlistRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userWatchlistsPost: async (createUserWatchlistCommand?: CreateUserWatchlistCommand, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        userWatchlistsPost: async (createUserWatchlistRequest?: CreateUserWatchlistRequest, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/UserWatchlists`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2897,7 +2933,7 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            localVarRequestOptions.data = serializeDataIfNeeded(createUserWatchlistCommand, localVarRequestOptions, configuration)
+            localVarRequestOptions.data = serializeDataIfNeeded(createUserWatchlistRequest, localVarRequestOptions, configuration)
 
             return {
                 url: toPathString(localVarUrlObj),
@@ -2914,6 +2950,16 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
 export const UserWatchlistsApiFp = function(configuration?: Configuration) {
     const localVarAxiosParamCreator = UserWatchlistsApiAxiosParamCreator(configuration)
     return {
+        /**
+         * 
+         * @param {number} [productId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async userWatchlistsGet(productId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserWatchlistDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userWatchlistsGet(productId, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
         /**
          * 
          * @param {number} id 
@@ -2936,12 +2982,12 @@ export const UserWatchlistsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {CreateUserWatchlistCommand} [createUserWatchlistCommand] 
+         * @param {CreateUserWatchlistRequest} [createUserWatchlistRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async userWatchlistsPost(createUserWatchlistCommand?: CreateUserWatchlistCommand, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserWatchlistDto>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.userWatchlistsPost(createUserWatchlistCommand, options);
+        async userWatchlistsPost(createUserWatchlistRequest?: CreateUserWatchlistRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserWatchlistDto>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.userWatchlistsPost(createUserWatchlistRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -2954,6 +3000,15 @@ export const UserWatchlistsApiFp = function(configuration?: Configuration) {
 export const UserWatchlistsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = UserWatchlistsApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {number} [productId] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        userWatchlistsGet(productId?: number, options?: any): AxiosPromise<UserWatchlistDto> {
+            return localVarFp.userWatchlistsGet(productId, options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {number} id 
@@ -2974,15 +3029,29 @@ export const UserWatchlistsApiFactory = function (configuration?: Configuration,
         },
         /**
          * 
-         * @param {CreateUserWatchlistCommand} [createUserWatchlistCommand] 
+         * @param {CreateUserWatchlistRequest} [createUserWatchlistRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        userWatchlistsPost(createUserWatchlistCommand?: CreateUserWatchlistCommand, options?: any): AxiosPromise<UserWatchlistDto> {
-            return localVarFp.userWatchlistsPost(createUserWatchlistCommand, options).then((request) => request(axios, basePath));
+        userWatchlistsPost(createUserWatchlistRequest?: CreateUserWatchlistRequest, options?: any): AxiosPromise<UserWatchlistDto> {
+            return localVarFp.userWatchlistsPost(createUserWatchlistRequest, options).then((request) => request(axios, basePath));
         },
     };
 };
+
+/**
+ * Request parameters for userWatchlistsGet operation in UserWatchlistsApi.
+ * @export
+ * @interface UserWatchlistsApiUserWatchlistsGetRequest
+ */
+export interface UserWatchlistsApiUserWatchlistsGetRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof UserWatchlistsApiUserWatchlistsGet
+     */
+    readonly productId?: number
+}
 
 /**
  * Request parameters for userWatchlistsIdDelete operation in UserWatchlistsApi.
@@ -3020,10 +3089,10 @@ export interface UserWatchlistsApiUserWatchlistsIdGetRequest {
 export interface UserWatchlistsApiUserWatchlistsPostRequest {
     /**
      * 
-     * @type {CreateUserWatchlistCommand}
+     * @type {CreateUserWatchlistRequest}
      * @memberof UserWatchlistsApiUserWatchlistsPost
      */
-    readonly createUserWatchlistCommand?: CreateUserWatchlistCommand
+    readonly createUserWatchlistRequest?: CreateUserWatchlistRequest
 }
 
 /**
@@ -3033,6 +3102,17 @@ export interface UserWatchlistsApiUserWatchlistsPostRequest {
  * @extends {BaseAPI}
  */
 export class UserWatchlistsApi extends BaseAPI {
+    /**
+     * 
+     * @param {UserWatchlistsApiUserWatchlistsGetRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserWatchlistsApi
+     */
+    public userWatchlistsGet(requestParameters: UserWatchlistsApiUserWatchlistsGetRequest = {}, options?: AxiosRequestConfig) {
+        return UserWatchlistsApiFp(this.configuration).userWatchlistsGet(requestParameters.productId, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {UserWatchlistsApiUserWatchlistsIdDeleteRequest} requestParameters Request parameters.
@@ -3063,7 +3143,7 @@ export class UserWatchlistsApi extends BaseAPI {
      * @memberof UserWatchlistsApi
      */
     public userWatchlistsPost(requestParameters: UserWatchlistsApiUserWatchlistsPostRequest = {}, options?: AxiosRequestConfig) {
-        return UserWatchlistsApiFp(this.configuration).userWatchlistsPost(requestParameters.createUserWatchlistCommand, options).then((request) => request(this.axios, this.basePath));
+        return UserWatchlistsApiFp(this.configuration).userWatchlistsPost(requestParameters.createUserWatchlistRequest, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

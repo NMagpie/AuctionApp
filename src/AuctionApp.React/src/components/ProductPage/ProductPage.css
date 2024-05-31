@@ -8,7 +8,7 @@
     }
 
     .product-brief {
-        @apply flex flex-col items-center lg:items-stretch static lg:sticky lg:top-[96px] h-fit lg:max-h-[60vh] lg:grow w-full text-inherit bg-gray-200 border-solid border border-slate-300 shadow-xl rounded-lg px-1 lg:px-5 py-4 lg:py-8;
+        @apply flex flex-col items-center lg:items-stretch static lg:sticky lg:top-[96px] h-fit lg:max-h-[65vh] lg:grow w-full text-inherit bg-gray-200 border-solid border border-slate-300 shadow-xl rounded-lg px-1 lg:px-5 py-4 lg:py-8;
 
         .product-brief-divider {
             @apply text-slate-600 border-solid border w-3/4 lg:w-full my-5;
@@ -16,6 +16,10 @@
 
         .product-brief-title {
             @apply overflow-hidden font-bold;
+        }
+
+        .watchlist-button {
+            @apply w-fit mt-5;
         }
     }
 

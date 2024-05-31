@@ -1,5 +1,5 @@
 ﻿using Application.App.Bids.Commands;
-using AuctionApp.Presentation.Common.Requests.Bids;
+using AuctionApp.Presentation.SignalR.Dtos;
 using AutoMapper;
 
 namespace AuctionApp.Presentation.Common.Profiles;

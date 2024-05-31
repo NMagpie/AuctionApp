@@ -35,7 +35,7 @@ export default class ApiManager {
         this.axios.interceptors.response.use(
             (response) => response,
             async (error) => {
-                if (error.response && error.response.status === 401 && this?.userIdentity?.refreshToken) {
+                if (error.response && (error.response.status === 401 || error.message == "Expired Token") && this?.userIdentity?.refreshToken) {
                     try {
                         this.connectionRetries++;
 
