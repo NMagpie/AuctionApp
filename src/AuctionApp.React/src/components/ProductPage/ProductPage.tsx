@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useApi } from "../../contexts/ApiContext";
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, Skeleton, Typography } from "@mui/material";
 import { BidDto, ProductDto, UserDto, UserWatchlistDto } from "../../api/openapi-generated";
 import ProductPanel from "./ProductPanel";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
@@ -44,18 +44,25 @@ export default function ProductPage() {
 
         const date = new Date();
 
-        date.setDate(date.getDate() + 1);
+        date.setHours(date.getHours() + 1);
 
         product.endTime = date;
 
+        const date1 = new Date();
+
+        date1.setSeconds(date1.getSeconds());
+
+        product.startTime = date1;
+
         setProduct(product);
+
 
         if (api.userIdentity) {
 
-        let watchlist = (await api.userWatchlsits.userWatchlistsGet({ productId: product?.id })).data;
+            let watchlist = (await api.userWatchlsits.userWatchlistsGet({ productId: product?.id })).data;
 
-        setWatchlist(watchlist);
-    }
+            setWatchlist(watchlist);
+        }
     };
 
     const addWatchlist = async () => {
@@ -80,21 +87,39 @@ export default function ProductPage() {
             <div className="product-info">
                 <img src="https://bidpro.webdevia.com/wp-content/uploads/2018/05/alexander-andrews-BX4Q0gojWAs-unsplash.jpg" alt={`product-${product?.id}-img`}></img>
 
-                <Typography className="product-title hidden lg:inline" variant="h2">{product?.title}</Typography>
-                <Typography className="product-title lg:hidden" variant="h3">{product?.title}</Typography>
+                <Typography
+                    className="product-title hidden lg:inline"
+                    variant="h2">{product?.title}</Typography>
+                <Typography
+                    className="product-title lg:hidden"
+                    variant="h3">{product?.title}</Typography>
 
-                <Typography className="font-bold">{product?.description}</Typography>
+                <Typography
+                    className="font-bold">{product?.description}</Typography>
             </div>
 
             <div className="product-brief">
-                <Typography className="product-brief-title hidden lg:block" variant="h3">{product?.title?.substring(0, 50)}</Typography>
-                <Typography className="product-brief-title lg:hidden" variant="h4">{product?.title?.substring(0, 50)}</Typography>
+                <Typography
+                    className="product-brief-title hidden lg:block"
+                    variant="h3">{product?.title?.substring(0, 50)}</Typography>
+                <Typography
+                    className="product-brief-title lg:hidden"
+                    variant="h4">{product?.title?.substring(0, 50)}</Typography>
 
                 <div className="flex flex-row items-baseline">
-                    <Typography variant="h6" className="mr-3">Creator:</Typography>
+                    <Typography
+                        variant="h6"
+                        className="mr-3"
+                    >Creator:
+                    </Typography>
 
-                    <Link className="flex flex-row" to={`/users/${product?.creator?.id}`}>
-                        <Avatar className="mr-2" alt={product?.creator?.userName?.charAt(0)} src="./src" />
+                    <Link
+                        className="flex flex-row"
+                        to={`/users/${product?.creator?.id}`}>
+                        <Avatar
+                            className="mr-2"
+                            alt={product?.creator?.userName?.charAt(0)}
+                            src="./src" />
                         <Typography variant="h6">{product?.creator?.userName}</Typography>
                     </Link>
                 </div>
@@ -113,7 +138,7 @@ export default function ProductPage() {
 
                 <div className="product-brief-divider" />
 
-                <ProductPanel product={product} />
+                {product && <ProductPanel product={product} />}
 
             </div>
 

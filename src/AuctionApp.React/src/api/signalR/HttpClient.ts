@@ -35,6 +35,7 @@ export default class HttpClient extends signalR.DefaultHttpClient {
     }
 
     private getAuthHeaders = () => {
+
         return {
             Authorization: `Bearer ${this.apiManager.userIdentity?.accessToken}`,
         };

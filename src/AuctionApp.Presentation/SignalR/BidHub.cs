@@ -10,20 +10,20 @@ using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-[Authorize]
-public class BidHub : Hub
+public class BidsHub : Hub
 {
     private readonly IMediator _mediator;
 
     private readonly IMapper _mapper;
 
-    public BidHub(IMediator mediator, IMapper mapper)
+    public BidsHub(IMediator mediator, IMapper mapper)
     {
         _mediator = mediator;
         _mapper = mapper;
     }
 
-    public async Task PutBid(CreateBidRequest request)
+    [Authorize]
+    public async Task PlaceBid(CreateBidRequest request)
     {
         var userName = Context.User?.FindFirst(ClaimTypes.Name)?.Value;
 

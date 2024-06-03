@@ -1,11 +1,25 @@
 import { useCountdown } from "./useCountDown";
 import { Typography } from "@mui/material";
 
-import './Countdown.css';
+import './SellingCountdown.css';
+import { useEffect } from "react";
+import { ProductStatus } from "./ProductPanel";
 
-export default function Countdown({ targetDate }: { targetDate: Date }) {
+type SellingCountdownProps = {
+    targetDate: Date,
+    productStatus: ProductStatus,
+    setProductStatus: () => void,
+};
+
+export default function SellingCountdown({ targetDate, setProductStatus }: SellingCountdownProps) {
 
     const countDown = useCountdown(targetDate);
+
+    useEffect(() => {
+        if (countDown.every(e => e === 0)) {
+            setProductStatus();
+        }
+    }, [countDown]);
 
     const unitList = [
         'Days',

@@ -12,7 +12,6 @@ import LoginPage from './components/LoginPage/LoginPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import React, { useEffect, useState } from 'react';
 import UserPage from './components/UserPage/UserPage';
-import BidsTestPage from './components/BidsTest';
 import { User } from './api/ApiManager';
 import ProductPage from './components/ProductPage/ProductPage';
 
@@ -32,8 +31,6 @@ function App() {
             <Route path="/register" element={<RequireGuest> <RegisterPage /> </RequireGuest>} />
 
             <Route path="/users/:id" element={<UserPage />} />
-
-            <Route path="/bidTest" element={<BidsTestPage/>}/>
 
             <Route path="/products/:id" element={<ProductPage/>}/>
 

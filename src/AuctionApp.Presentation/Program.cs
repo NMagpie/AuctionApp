@@ -1,5 +1,6 @@
 using AuctionApp.Presentation.SignalR;
 using Domain.Auth;
+using Microsoft.AspNetCore.Http.Connections;
 using Presentation;
 using Presentation.Extentions;
 
@@ -24,7 +25,7 @@ app.UseHttpsRedirection();
 
 app.MapGroup("/Identity").WithTags("Identity").MapIdentityApi<User>();
 
-app.MapHub<BidHub>("/BidsHub");
+app.MapHub<BidsHub>("/BidsHub");
 
 app.UseCors("ReactAppPolicy");
 
