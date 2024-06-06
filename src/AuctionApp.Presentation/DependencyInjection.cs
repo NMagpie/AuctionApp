@@ -55,6 +55,8 @@ public static class DependencyInjection
             });
 
             option.OperationFilter<SecurityRequirementsOperationFilter>();
+
+            option.EnableAnnotations();
         });
     }
 }

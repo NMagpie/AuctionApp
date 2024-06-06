@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Abstractions;
 using Presentation.Common.Models.ProductReviews;
 using Presentation.Common.Requests.ProductReviews;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Presentation.Controllers;
 
@@ -28,6 +29,7 @@ public class ProductReviewsController : AppBaseController
 
     [AllowAnonymous]
     [HttpGet("{id}")]
+    [SwaggerOperation(OperationId = nameof(GetProductReview))]
     public async Task<ActionResult<ProductReviewDto>> GetProductReview(int id)
     {
         var productReviewDto = await _mediator.Send(new GetProductReviewByIdQuery() { Id = id });
@@ -36,6 +38,7 @@ public class ProductReviewsController : AppBaseController
     }
 
     [HttpPost]
+    [SwaggerOperation(OperationId = nameof(CreateProductReview))]
     public async Task<ActionResult<ProductReviewDto>> CreateProductReview(CreateProductReviewRequest createProductReviewRequest)
     {
         var userId = GetUserId();
@@ -50,6 +53,7 @@ public class ProductReviewsController : AppBaseController
     }
 
     [HttpPut("{id}")]
+    [SwaggerOperation(OperationId = nameof(UpdateProductReview))]
     public async Task<ActionResult<ProductReviewDto>> UpdateProductReview(int id, UpdateProductReviewRequest updateProductReviewRequest)
     {
         var userId = GetUserId();
@@ -66,6 +70,7 @@ public class ProductReviewsController : AppBaseController
     }
 
     [HttpDelete("{id}")]
+    [SwaggerOperation(OperationId = nameof(DeleteProductReview))]
     public async Task<ActionResult> DeleteProductReview(int id)
     {
         var userId = GetUserId();

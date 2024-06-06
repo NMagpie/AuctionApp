@@ -13,19 +13,19 @@ public class GetCurrentUserQuery : IRequest<CurrentUserDto>
 
 public class GetCurrentUserHandler : IRequestHandler<GetCurrentUserQuery, CurrentUserDto>
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public GetCurrentUserHandler(IUserRepository userRepository, IMapper mapper)
+    public GetCurrentUserHandler(IEntityRepository repository, IMapper mapper)
     {
-        _userRepository = userRepository;
+        _repository = repository;
         _mapper = mapper;
     }
 
     public async Task<CurrentUserDto> Handle(GetCurrentUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetById(request.Id)
+        var user = await _repository.GetById<User>(request.Id)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         var userDto = _mapper.Map<User, CurrentUserDto>(user);

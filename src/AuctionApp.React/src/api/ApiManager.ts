@@ -24,69 +24,6 @@ export class User {
 
 export default class ApiManager {
 
-    constructor(baseUrl: string) {
-
-        this.axios = axios.create();
-
-        const configuration = new Configuration({
-            basePath: baseUrl,
-        });
-
-        this.axios.interceptors.response.use(
-            (response) => response,
-            async (error) => {
-                if (error.response && (error.response.status === 401 || error.message == "Expired Token") && this?.userIdentity?.refreshToken) {
-                    try {
-                        this.connectionRetries++;
-
-                        if (this.connectionRetries > 10) {
-                            this.logout();
-                            window.location.reload();
-                            this.connectionRetries = 0;
-                            return;
-                        }
-
-                        const newAccessToken = await this.refreshAccessToken();
-                        error.config.headers['Authorization'] = `Bearer ${newAccessToken}`;
-
-                        this.connectionRetries = 0;
-
-                        return this.axios(error.config);
-                    } catch (refreshError) {
-                        throw refreshError;
-                    }
-                }
-                return Promise.reject(error);
-            }
-        );
-
-        this.productReviews = new ProductReviewsApi(configuration, undefined, this.axios);
-
-        this.products = new ProductsApi(configuration, undefined, this.axios);
-
-        this.bids = new BidsApi(configuration, undefined, this.axios);
-
-        this.identity = new IdentityApi(configuration, undefined, this.axios);
-
-        this.users = new UsersApi(configuration, undefined, this.axios);
-
-        this.currentUser = new CurrentUserApi(configuration, undefined, this.axios);
-
-        this.userWatchlsits = new UserWatchlistsApi(configuration, undefined, this.axios);
-
-        const userIdentityString = localStorage.getItem('userIdentity');
-
-        this.userIdentity = userIdentityString ? JSON.parse(userIdentityString) : null;
-
-        this.user = null;
-
-        if (this?.userIdentity?.accessToken) {
-            this.axios.defaults.headers.common['Authorization'] = `Bearer ${this.userIdentity.accessToken}`;
-        }
-    }
-
-    private connectionRetries: number = 0;
-
     productReviews: ProductReviewsApi;
 
     products: ProductsApi;
@@ -107,23 +44,69 @@ export default class ApiManager {
 
     axios: AxiosInstance;
 
-    public refreshAccessToken = async () => {
-        const { data } = await this.identity.identityRefreshPost({ refreshRequest: { refreshToken: this.userIdentity!.refreshToken } });
+    constructor(baseUrl: string) {
 
-        this.assignUserIdentity(data);
+        this.axios = axios.create();
 
-        return data.accessToken;
+        // this.axios.interceptors.request.use(async (config) => {
+
+        //     const token = await this.retrieveAccessToken();
+
+        //     if (token) {
+        //         config.headers["Authorization"] = `Bearer ${token}`;
+        //     }
+
+        //     return config;
+        // });
+
+        const configuration = new Configuration({
+            basePath: baseUrl,
+            accessToken: () => this.retrieveAccessToken()
+        });
+
+        this.productReviews = new ProductReviewsApi(configuration, undefined, this.axios);
+
+        this.products = new ProductsApi(configuration, undefined, this.axios);
+
+        this.bids = new BidsApi(configuration, undefined, this.axios);
+
+        this.identity = new IdentityApi(configuration, undefined, this.axios);
+
+        this.users = new UsersApi(configuration, undefined, this.axios);
+
+        this.currentUser = new CurrentUserApi(configuration, undefined, this.axios);
+
+        this.userWatchlsits = new UserWatchlistsApi(configuration, undefined, this.axios);
+
+        const userIdentityString = localStorage.getItem('userIdentity');
+
+        this.userIdentity = userIdentityString ? JSON.parse(userIdentityString) : null;
+
+        this.user = null;
+    }
+
+    public retrieveAccessToken = async () => {
+
+        if (!this.userIdentity) {
+            return null;
+        }
+
+        if (this.userIdentity.expireDate <= new Date()) {
+            await this.refreshAccessToken();
+        }
+
+        return this.userIdentity.accessToken;
     }
 
     public login = async (email: string, password: string) => {
 
+        const requestTime = Date.now();
+
         const { data } = await this.identity.identityLoginPost({ loginRequest: { email, password } });
 
-        this.assignUserIdentity(data);
+        this.assignUserIdentity(data, requestTime);
 
-        this.axios.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
-
-        const user = (await this.currentUser.usersMeGet()).data;
+        const user = (await this.currentUser.getCurrentUser()).data;
 
         this.assignUser(user);
     }
@@ -139,19 +122,28 @@ export default class ApiManager {
         this.assignUserIdentity(null);
 
         this.assignUser(null);
-
-        this.axios.defaults.headers.common['Authorization'] = "";
     }
 
     public getCurrentUser = async () => {
 
-        const userValue = this.userIdentity ? (await this.currentUser.usersMeGet()).data : null;
+        const userValue = this.userIdentity ? (await this.currentUser.getCurrentUser()).data : null;
 
         this.assignUser(userValue);
 
     }
 
-    private assignUserIdentity = (data: AccessTokenResponse | null) => {
+    private refreshAccessToken = async () => {
+
+        const requestTime = Date.now();
+
+        const { data } = await this.identity.identityRefreshPost({ refreshRequest: { refreshToken: this.userIdentity!.refreshToken } });
+
+        this.assignUserIdentity(data, requestTime);
+
+        return data.accessToken;
+    }
+
+    private assignUserIdentity = (data: AccessTokenResponse | null, requestTime: number | null = null) => {
         if (!data) {
             this.userIdentity = null;
 
@@ -163,7 +155,7 @@ export default class ApiManager {
         this.userIdentity = new UserIdentity();
         this.userIdentity.accessToken = data.accessToken!;
         this.userIdentity.refreshToken = data.refreshToken!;
-        this.userIdentity.expireDate = new Date(Date.now() + data.expiresIn! * 1000);
+        this.userIdentity.expireDate = new Date((requestTime ?? Date.now()) + data.expiresIn! * 1000);
 
         localStorage.setItem('userIdentity', JSON.stringify(this.userIdentity));
     }

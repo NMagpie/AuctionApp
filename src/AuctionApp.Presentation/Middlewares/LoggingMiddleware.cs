@@ -15,6 +15,6 @@ public class LoggingMiddleware
     {
         var startTime = DateTime.UtcNow;
         await _next.Invoke(ctx);
-        //_logger.LogInformation($"The request {ctx.Connection.Id}: {(DateTime.UtcNow - startTime).TotalMilliseconds} ms");
+        _logger.LogInformation($"The request {ctx.Connection.Id}: {(DateTime.UtcNow - startTime).TotalMilliseconds} ms");
     }
 }

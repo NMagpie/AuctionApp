@@ -1,10 +1,12 @@
-﻿using Domain.Auth;
-using EntityFramework.Domain.Abstractions;
+﻿using AuctionApp.Domain.Abstractions;
+using Domain.Auth;
 
 namespace AuctionApp.Domain.Models
 {
-    public class ProductReview : Entity
+    public class ProductReview : IEntity
     {
+        public int Id { get; set; }
+
         public int? UserId { get; set; }
 
         public User? User { get; set; }

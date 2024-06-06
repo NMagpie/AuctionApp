@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Abstractions;
 using Presentation.Common.Models.Products;
 using Presentation.Common.Requests.Products;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Presentation.Controllers;
 
@@ -28,6 +29,7 @@ public class ProductsController : AppBaseController
 
     [AllowAnonymous]
     [HttpGet("{id}")]
+    [SwaggerOperation(OperationId = nameof(GetProduct))]
     public async Task<ActionResult<ProductDto>> GetProduct(int id)
     {
         var productDto = await _mediator.Send(new GetProductByIdQuery() { Id = id });
@@ -36,6 +38,7 @@ public class ProductsController : AppBaseController
     }
 
     [HttpPost]
+    [SwaggerOperation(OperationId = nameof(CreateProduct))]
     public async Task<ActionResult<ProductDto>> CreateProduct(CreateProductRequest createProductRequest)
     {
         var userId = GetUserId();
@@ -50,6 +53,7 @@ public class ProductsController : AppBaseController
     }
 
     [HttpPut("{id}")]
+    [SwaggerOperation(OperationId = nameof(UpdateProduct))]
     public async Task<ActionResult<ProductDto>> UpdateProduct(int id, UpdateProductRequest updateProductRequest)
     {
         var userId = GetUserId();
@@ -66,6 +70,7 @@ public class ProductsController : AppBaseController
     }
 
     [HttpDelete("{id}")]
+    [SwaggerOperation(OperationId = nameof(DeleteProduct))]
     public async Task<ActionResult> DeleteProduct(int id)
     {
         var userId = GetUserId();

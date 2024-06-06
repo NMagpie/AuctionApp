@@ -3,6 +3,7 @@ using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using MediatR;
 
 namespace Application.App.ProductReviews.Commands;
@@ -23,20 +24,18 @@ public class CreateProductReviewCommandHandler : IRequestHandler<CreateProductRe
 
     private readonly IEntityRepository _entityRepository;
 
-    private readonly IUserRepository _userRepository;
 
     private readonly IMapper _mapper;
 
-    public CreateProductReviewCommandHandler(IEntityRepository entityRepository, IUserRepository userRepository, IMapper mapper)
+    public CreateProductReviewCommandHandler(IEntityRepository entityRepository, IMapper mapper)
     {
         _entityRepository = entityRepository;
-        _userRepository = userRepository;
         _mapper = mapper;
     }
 
     public async Task<ProductReviewDto> Handle(CreateProductReviewCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetById(request.UserId)
+        var user = await _entityRepository.GetById<User>(request.UserId)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         var product = await _entityRepository.GetById<Product>(request.ProductId)

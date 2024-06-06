@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Abstractions;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Presentation.Controllers;
 
@@ -21,6 +22,7 @@ public class BidsController : AppBaseController
 
     [AllowAnonymous]
     [HttpGet("{id}")]
+    [SwaggerOperation(OperationId = nameof(GetBid))]
     public async Task<ActionResult<BidDto>> GetBid(int id)
     {
         var bidDto = await _mediator.Send(new GetBidByIdQuery() { Id = id });

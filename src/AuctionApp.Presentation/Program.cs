@@ -1,6 +1,5 @@
 using AuctionApp.Presentation.SignalR;
 using Domain.Auth;
-using Microsoft.AspNetCore.Http.Connections;
 using Presentation;
 using Presentation.Extentions;
 

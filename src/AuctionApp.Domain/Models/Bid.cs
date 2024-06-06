@@ -1,9 +1,11 @@
-﻿using Domain.Auth;
-using EntityFramework.Domain.Abstractions;
+﻿using AuctionApp.Domain.Abstractions;
+using Domain.Auth;
 
 namespace AuctionApp.Domain.Models;
-public class Bid : Entity
+public class Bid : IEntity
 {
+    public int Id { get; set; }
+
     public int ProductId { get; set; }
 
     public Product? Product { get; set; }

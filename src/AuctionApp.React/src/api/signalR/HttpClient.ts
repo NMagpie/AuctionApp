@@ -12,8 +12,11 @@ export default class HttpClient extends signalR.DefaultHttpClient {
     }
     public async send(
         request: signalR.HttpRequest
-    ): Promise<signalR.HttpResponse> {
-        const authHeaders = this.getAuthHeaders();
+    ): Promise<signalR.HttpResponse> {        
+
+        const authHeaders = {
+            Authorization: `Bearer ${await this.apiManager.retrieveAccessToken()}`,
+        };
         request.headers = { ...request.headers, ...authHeaders };
 
         try {
@@ -23,8 +26,9 @@ export default class HttpClient extends signalR.DefaultHttpClient {
             if (er instanceof signalR.HttpError) {
                 const error = er as signalR.HttpError;
                 if (error.statusCode == 401) {
-                    await this.apiManager.refreshAccessToken();
-                    const authHeaders = this.getAuthHeaders();
+                    const authHeaders = {
+                        Authorization: `Bearer ${await this.apiManager.retrieveAccessToken()}`,
+                    };
                     request.headers = { ...request.headers, ...authHeaders };
                 }
             } else {

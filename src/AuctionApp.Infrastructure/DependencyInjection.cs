@@ -29,13 +29,13 @@ public static class DependencyInjection
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<AuctionAppDbContext>();
 
-        services.ConfigureAll<BearerTokenOptions>(option => {
+        services.ConfigureAll<BearerTokenOptions>(option =>
+        {
             option.BearerTokenExpiration = TimeSpan.FromMinutes(15);
         });
 
         services
-            .AddScoped<IEntityRepository, EntityRepository>()
-            .AddScoped<IUserRepository, UserRepository>();
+            .AddScoped<IEntityRepository, EntityRepository>();
 
         return services;
     }

@@ -1,20 +1,12 @@
-import { useEffect, useState } from "react";
-import { AuctionDto } from "../../api";
-import { User, useApi } from "../../contexts/ApiContext";
+import { useApi } from "../../contexts/ApiContext";
 
 const HomePage = () => {
 
-    const {api, didUserLoad} = useApi();
-
-    const [user, setUser] = useState<User | null>(api.user);
-
-    useEffect(() => {
-        setUser(api.user);
-    }, [didUserLoad]);
+    const { api } = useApi();
 
     return (
         <div>
-            <h1>Hello{user?.userName && `, ${user?.userName}`}!</h1>
+            <h1 className="text-slate-700">Hello{api.userIdentity && `, ${api.user?.userName}`}!</h1>
         </div>
     );
 };

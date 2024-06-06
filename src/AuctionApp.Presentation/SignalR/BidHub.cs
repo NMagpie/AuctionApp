@@ -22,7 +22,6 @@ public class BidsHub : Hub
         _mapper = mapper;
     }
 
-    [Authorize]
     public async Task PlaceBid(CreateBidRequest request)
     {
         var userName = Context.User?.FindFirst(ClaimTypes.Name)?.Value;

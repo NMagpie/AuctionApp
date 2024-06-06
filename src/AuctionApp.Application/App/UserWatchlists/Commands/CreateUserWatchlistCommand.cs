@@ -3,6 +3,7 @@ using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
+using Domain.Auth;
 using MediatR;
 
 namespace Application.App.UserWatchlists.Commands;
@@ -18,20 +19,17 @@ public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatch
 {
     private readonly IEntityRepository _repository;
 
-    private readonly IUserRepository _userRepository;
-
     private readonly IMapper _mapper;
 
-    public CreateUserWatchlistCommandHandler(IEntityRepository repository, IUserRepository userRepository, IMapper mapper)
+    public CreateUserWatchlistCommandHandler(IEntityRepository repository,  IMapper mapper)
     {
         _repository = repository;
-        _userRepository = userRepository;
         _mapper = mapper;
     }
 
     public async Task<UserWatchlistDto> Handle(CreateUserWatchlistCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetById(request.UserId)
+        var user = await _repository.GetById<User>(request.UserId)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         var product = await _repository.GetById<Product>(request.ProductId)

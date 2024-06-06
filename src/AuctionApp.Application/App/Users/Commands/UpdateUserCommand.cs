@@ -21,24 +21,24 @@ public class UpdateUserCommand : IRequest<CurrentUserDto>
 public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, CurrentUserDto>
 {
 
-    private readonly IUserRepository _userRepository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public UpdateUserCommandHandler(IUserRepository userRepository, IMapper mapper)
+    public UpdateUserCommandHandler(IEntityRepository repository, IMapper mapper)
     {
-        _userRepository = userRepository;
+        _repository = repository;
         _mapper = mapper;
     }
 
     public async Task<CurrentUserDto> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetById(request.Id)
+        var user = await _repository.GetById<User>(request.Id)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         _mapper.Map(request, user);
 
-        await _userRepository.SaveChanges();
+        await _repository.SaveChanges();
 
         var userDto = _mapper.Map<User, CurrentUserDto>(user);
 

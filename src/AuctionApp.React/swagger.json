@@ -10,6 +10,7 @@
         "tags": [
           "Bids"
         ],
+        "operationId": "GetBid",
         "parameters": [
           {
             "name": "id",
@@ -23,7 +24,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -50,9 +51,10 @@
         "tags": [
           "CurrentUser"
         ],
+        "operationId": "GetCurrentUser",
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -88,6 +90,7 @@
         "tags": [
           "CurrentUser"
         ],
+        "operationId": "UpdateUser",
         "requestBody": {
           "content": {
             "application/json": {
@@ -109,7 +112,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -145,9 +148,10 @@
         "tags": [
           "CurrentUser"
         ],
+        "operationId": "DeleteUser",
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -168,6 +172,7 @@
         "tags": [
           "CurrentUser"
         ],
+        "operationId": "AddUserBalance",
         "requestBody": {
           "content": {
             "application/json": {
@@ -189,7 +194,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -221,7 +226,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -268,7 +273,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -296,7 +301,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -339,7 +344,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
@@ -360,7 +365,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           }
         }
       }
@@ -381,7 +386,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -412,7 +417,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request",
@@ -443,7 +448,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -486,7 +491,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -536,7 +541,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "application/json": {
                 "schema": {
@@ -577,6 +582,7 @@
         "tags": [
           "ProductReviews"
         ],
+        "operationId": "GetProductReview",
         "parameters": [
           {
             "name": "id",
@@ -590,7 +596,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -615,6 +621,7 @@
         "tags": [
           "ProductReviews"
         ],
+        "operationId": "UpdateProductReview",
         "parameters": [
           {
             "name": "id",
@@ -647,7 +654,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -683,6 +690,7 @@
         "tags": [
           "ProductReviews"
         ],
+        "operationId": "DeleteProductReview",
         "parameters": [
           {
             "name": "id",
@@ -696,7 +704,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -717,6 +725,7 @@
         "tags": [
           "ProductReviews"
         ],
+        "operationId": "CreateProductReview",
         "requestBody": {
           "content": {
             "application/json": {
@@ -738,7 +747,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -776,6 +785,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "GetProduct",
         "parameters": [
           {
             "name": "id",
@@ -789,7 +799,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -814,6 +824,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "UpdateProduct",
         "parameters": [
           {
             "name": "id",
@@ -846,7 +857,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -882,6 +893,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "DeleteProduct",
         "parameters": [
           {
             "name": "id",
@@ -895,7 +907,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -916,6 +928,7 @@
         "tags": [
           "Products"
         ],
+        "operationId": "CreateProduct",
         "requestBody": {
           "content": {
             "application/json": {
@@ -937,7 +950,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -975,6 +988,7 @@
         "tags": [
           "Users"
         ],
+        "operationId": "GetUser",
         "parameters": [
           {
             "name": "id",
@@ -988,7 +1002,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1015,6 +1029,7 @@
         "tags": [
           "UserWatchlists"
         ],
+        "operationId": "GetUserWatchlist",
         "parameters": [
           {
             "name": "id",
@@ -1028,7 +1043,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1064,6 +1079,7 @@
         "tags": [
           "UserWatchlists"
         ],
+        "operationId": "DeleteUserWatchlist",
         "parameters": [
           {
             "name": "id",
@@ -1077,7 +1093,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -1098,6 +1114,7 @@
         "tags": [
           "UserWatchlists"
         ],
+        "operationId": "GetUserWatchlistByProductId",
         "parameters": [
           {
             "name": "productId",
@@ -1110,7 +1127,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1146,6 +1163,7 @@
         "tags": [
           "UserWatchlists"
         ],
+        "operationId": "CreateUserWatchlist",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1167,7 +1185,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success",
+            "description": "OK",
             "content": {
               "text/plain": {
                 "schema": {
@@ -1204,6 +1222,11 @@
   "components": {
     "schemas": {
       "AccessTokenResponse": {
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "refreshToken"
+        ],
         "type": "object",
         "properties": {
           "tokenType": {
@@ -1237,6 +1260,12 @@
         "additionalProperties": false
       },
       "BidDto": {
+        "required": [
+          "amount",
+          "createTime",
+          "isWon",
+          "productId"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1334,6 +1363,9 @@
         "additionalProperties": false
       },
       "CreateUserWatchlistRequest": {
+        "required": [
+          "productId"
+        ],
         "type": "object",
         "properties": {
           "productId": {
@@ -1344,6 +1376,11 @@
         "additionalProperties": false
       },
       "CurrentUserDto": {
+        "required": [
+          "email",
+          "phoneNumber",
+          "userName"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1370,6 +1407,9 @@
         "additionalProperties": false
       },
       "ForgotPasswordRequest": {
+        "required": [
+          "email"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -1435,6 +1475,10 @@
         "additionalProperties": false
       },
       "InfoResponse": {
+        "required": [
+          "email",
+          "isEmailConfirmed"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -1448,6 +1492,10 @@
         "additionalProperties": false
       },
       "LoginRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -1470,6 +1518,9 @@
         "additionalProperties": false
       },
       "ProductDto": {
+        "required": [
+          "title"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1527,6 +1578,10 @@
         "additionalProperties": false
       },
       "ProductReviewDto": {
+        "required": [
+          "productId",
+          "rating"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1554,6 +1609,9 @@
         "additionalProperties": false
       },
       "RefreshRequest": {
+        "required": [
+          "refreshToken"
+        ],
         "type": "object",
         "properties": {
           "refreshToken": {
@@ -1564,6 +1622,10 @@
         "additionalProperties": false
       },
       "RegisterRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -1578,6 +1640,9 @@
         "additionalProperties": false
       },
       "ResendConfirmationEmailRequest": {
+        "required": [
+          "email"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -1588,6 +1653,11 @@
         "additionalProperties": false
       },
       "ResetPasswordRequest": {
+        "required": [
+          "email",
+          "newPassword",
+          "resetCode"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -1629,6 +1699,12 @@
         "additionalProperties": false
       },
       "TwoFactorResponse": {
+        "required": [
+          "isMachineRemembered",
+          "isTwoFactorEnabled",
+          "recoveryCodesLeft",
+          "sharedKey"
+        ],
         "type": "object",
         "properties": {
           "sharedKey": {
@@ -1720,6 +1796,9 @@
         "additionalProperties": false
       },
       "UserDto": {
+        "required": [
+          "userName"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -1734,6 +1813,9 @@
         "additionalProperties": false
       },
       "UserWatchlistDto": {
+        "required": [
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "id": {

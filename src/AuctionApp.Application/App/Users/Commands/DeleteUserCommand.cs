@@ -1,4 +1,5 @@
 ﻿using Application.Common.Abstractions;
+using Domain.Auth;
 using MediatR;
 
 namespace Application.App.Users.Commands;
@@ -11,16 +12,16 @@ public class DeleteUserCommand : IRequest
 public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand>
 {
 
-    private readonly IUserRepository _userRepository;
+    private readonly IEntityRepository _repository;
 
-    public DeleteUserCommandHandler(IUserRepository userRepository)
+    public DeleteUserCommandHandler(IEntityRepository repository)
     {
-        _userRepository = userRepository;
+        _repository = repository;
     }
     public async Task Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
-        await _userRepository.Remove(request.Id);
+        await _repository.Remove<User>(request.Id);
 
-        await _userRepository.SaveChanges();
+        await _repository.SaveChanges();
     }
 }

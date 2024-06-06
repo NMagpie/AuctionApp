@@ -1,6 +1,6 @@
 ﻿using Application.Common.Abstractions;
 using Application.Common.Exceptions;
-using EntityFramework.Domain.Abstractions;
+using AuctionApp.Domain.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -14,19 +14,19 @@ public class EntityRepository : IEntityRepository
         _auctionAppDbContext = auctionAppDbContext;
     }
 
-    public Task<T?> GetById<T>(int id) where T : Entity
+    public Task<T?> GetById<T>(int id) where T : class, IEntity
     {
         return _auctionAppDbContext.FindAsync<T>(id).AsTask();
     }
 
-    public async Task<T?> GetByIdWithInclude<T>(int id, params Expression<Func<T, object>>[] includeProperties) where T : Entity
+    public async Task<T?> GetByIdWithInclude<T>(int id, params Expression<Func<T, object>>[] includeProperties) where T : class, IEntity
     {
         var query = IncludeProperties(includeProperties);
 
         return await query.FirstOrDefaultAsync(entity => entity.Id == id);
     }
 
-    public Task<List<T>> GetByIds<T>(List<int> ids) where T : Entity
+    public Task<List<T>> GetByIds<T>(List<int> ids) where T : class, IEntity
     {
         IQueryable<T> query = _auctionAppDbContext
             .Set<T>()
@@ -36,7 +36,7 @@ public class EntityRepository : IEntityRepository
         return query.ToListAsync();
     }
 
-    public Task<List<T>> GetByPredicate<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties) where T : Entity
+    public Task<List<T>> GetByPredicate<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties) where T : class, IEntity
     {
         IQueryable<T> query = IncludeProperties(includeProperties)
             .Where(predicate);
@@ -44,14 +44,14 @@ public class EntityRepository : IEntityRepository
         return query.ToListAsync();
     }
 
-    public Task<List<T>> GetAll<T>() where T : Entity
+    public Task<List<T>> GetAll<T>() where T : class, IEntity
     {
         return _auctionAppDbContext
             .Set<T>()
             .ToListAsync();
     }
 
-    public Task Add<T>(T entity) where T : Entity
+    public Task Add<T>(T entity) where T : class, IEntity
     {
         return _auctionAppDbContext
             .Set<T>()
@@ -59,7 +59,7 @@ public class EntityRepository : IEntityRepository
             .AsTask();
     }
 
-    public async Task Remove<T>(int id) where T : Entity
+    public async Task Remove<T>(int id) where T : class, IEntity
     {
         var entity = await _auctionAppDbContext
             .Set<T>()
@@ -69,7 +69,7 @@ public class EntityRepository : IEntityRepository
         _auctionAppDbContext.Set<T>().Remove(entity);
     }
 
-    public Task RemoveRange<T>(List<int> ids) where T : Entity
+    public Task RemoveRange<T>(List<int> ids) where T : class, IEntity
     {
         IQueryable<T> query = _auctionAppDbContext
             .Set<T>()
@@ -85,7 +85,7 @@ public class EntityRepository : IEntityRepository
         return _auctionAppDbContext.SaveChangesAsync();
     }
 
-    private IQueryable<T> IncludeProperties<T>(params Expression<Func<T, object>>[] includeProperties) where T : Entity
+    private IQueryable<T> IncludeProperties<T>(params Expression<Func<T, object>>[] includeProperties) where T : class, IEntity
     {
         IQueryable<T> entities = _auctionAppDbContext.Set<T>();
         foreach (var includeProperty in includeProperties)

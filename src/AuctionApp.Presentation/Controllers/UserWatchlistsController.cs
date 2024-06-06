@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Abstractions;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Presentation.Controllers;
 
@@ -22,6 +23,7 @@ public class UserWatchlistsController : AppBaseController
     }
 
     [HttpGet("{id}")]
+    [SwaggerOperation(OperationId = nameof(GetUserWatchlist))]
     public async Task<ActionResult<UserWatchlistDto>> GetUserWatchlist(int id)
     {
         var userId = GetUserId();
@@ -32,6 +34,7 @@ public class UserWatchlistsController : AppBaseController
     }
 
     [HttpGet]
+    [SwaggerOperation(OperationId = nameof(GetUserWatchlistByProductId))]
     public async Task<ActionResult<UserWatchlistDto>> GetUserWatchlistByProductId([FromQuery] int productId)
     {
         var userId = GetUserId();
@@ -42,6 +45,7 @@ public class UserWatchlistsController : AppBaseController
     }
 
     [HttpPost]
+    [SwaggerOperation(OperationId = nameof(CreateUserWatchlist))]
     public async Task<ActionResult<UserWatchlistDto>> CreateUserWatchlist(CreateUserWatchlistRequest createUserWatchlistRequest)
     {
         var userId = GetUserId();
@@ -58,6 +62,7 @@ public class UserWatchlistsController : AppBaseController
     }
 
     [HttpDelete("{id}")]
+    [SwaggerOperation(OperationId = nameof(DeleteUserWatchlist))]
     public async Task<ActionResult> DeleteUserWatchlist(int id)
     {
         var userId = GetUserId();

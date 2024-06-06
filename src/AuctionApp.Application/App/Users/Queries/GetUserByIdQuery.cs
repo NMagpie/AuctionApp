@@ -13,19 +13,19 @@ public class GetUserByIdQuery : IRequest<UserDto>
 
 public class GetUserByIdQueryHandler : IRequestHandler<GetUserByIdQuery, UserDto>
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public GetUserByIdQueryHandler(IUserRepository userRepository, IMapper mapper)
+    public GetUserByIdQueryHandler(IEntityRepository repository, IMapper mapper)
     {
-        _userRepository = userRepository;
+        _repository = repository;
         _mapper = mapper;
     }
 
     public async Task<UserDto> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetById(request.Id)
+        var user = await _repository.GetById<User>(request.Id)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         var userDto = _mapper.Map<User, UserDto>(user);

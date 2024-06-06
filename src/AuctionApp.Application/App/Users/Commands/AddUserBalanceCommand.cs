@@ -15,24 +15,24 @@ public class AddUserBalanceCommand : IRequest<UserDto>
 
 public class AddUserBalanceCommandHandler : IRequestHandler<AddUserBalanceCommand, UserDto>
 {
-    private readonly IUserRepository _userRepository;
+    private readonly IEntityRepository _repository;
 
     private readonly IMapper _mapper;
 
-    public AddUserBalanceCommandHandler(IUserRepository repository, IMapper mapper)
+    public AddUserBalanceCommandHandler(IEntityRepository repository, IMapper mapper)
     {
-        _userRepository = repository;
+        _repository = repository;
         _mapper = mapper;
     }
 
     public async Task<UserDto> Handle(AddUserBalanceCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userRepository.GetById(request.Id)
+        var user = await _repository.GetById<User>(request.Id)
             ?? throw new EntityNotFoundException("User cannot be found");
 
         user.Balance += request.Amount;
 
-        await _userRepository.SaveChanges();
+        await _repository.SaveChanges();
 
         var userDto = _mapper.Map<User, UserDto>(user);
 

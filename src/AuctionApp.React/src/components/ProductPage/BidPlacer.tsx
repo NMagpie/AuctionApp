@@ -5,7 +5,7 @@ import { baseUrl } from "../../api/ApiManager";
 import HttpClient from "../../api/signalR/HttpClient";
 import { useEffect, useRef, useState } from "react";
 import { BidDto } from "../../api/openapi-generated";
-import { Button, Input, InputAdornment } from "@mui/material";
+import { Button, Input, InputAdornment, TextField } from "@mui/material";
 import NotificationSnackbar, { NotificationSnackbarProps } from "../NotificatonSnackbar";
 import { useNavigate } from "react-router-dom";
 
@@ -27,7 +27,7 @@ export default function BidPlacer({ product }: { product: Product }) {
 
     const [bidHistory, setBidHistory] = useState<BidDto[]>([]);
 
-    const [amount, setAmount] = useState(price);
+    const [amount, setAmount] = useState<number>(price);
 
     const handleAmountChange = (e) => {
         setAmount(e.target.value);
@@ -42,6 +42,7 @@ export default function BidPlacer({ product }: { product: Product }) {
         const connection = new signalR.HubConnectionBuilder()
             .withUrl(`${baseUrl}/BidsHub`, {
                 httpClient: new HttpClient(api),
+                //accessTokenFactory: async () => await api.retrieveAccessToken(),
             })
             .configureLogging(signalR.LogLevel.Information)
             .withAutomaticReconnect()
@@ -79,7 +80,7 @@ export default function BidPlacer({ product }: { product: Product }) {
             } catch (err) {
                 setNotification({ message: "Cannot connect to the server", severity: "error" });
             }
-        };
+        }
 
         connection.onreconnecting(() => setNotification({ message: "Reconnecting...", severity: "warning" }));
 
@@ -100,27 +101,33 @@ export default function BidPlacer({ product }: { product: Product }) {
             <div className="bid-control">
                 <Button
                     className="bid-button bid-button-dec"
-                    onClick={() => amount <= 0 ? 0 : setAmount(amount - 1)}
-                    >-</Button>
-                <Input
+                    onClick={() => amount <= 0 ? setAmount(0) : setAmount(amount - 1)}
+                >-</Button>
+                <TextField
                     className="bid-input"
                     placeholder="Bid amount..."
                     value={amount}
                     onChange={handleAmountChange}
-                    disableUnderline
-                    // startAdornment={<InputAdornment className="bg-slate-300" position="start">$</InputAdornment>}
-                    type="number" />
+                    type="number"
+                    InputProps={{
+                        inputProps: { min: 0 },
+                        endAdornment: (
+                            <InputAdornment className="bg-slate-300" position="end">$</InputAdornment>
+                        )
+                    }}
+                />
                 <Button
                     className="bid-button bid-button-inc"
-                    onClick={() => setAmount(amount + 1)}
-                    >+</Button>
+                    onClick={() => setAmount(Number(amount) + 1)}
+                >+</Button>
 
                 <Button
                     className="button-submit"
-                    onClick={api.userIdentity ? () => putBid() : () => navigate("/login")}
+                    // onClick={api.userIdentity ? () => putBid() : () => navigate("/login")}
+                    onClick={putBid}
                 >Place Bid
                 </Button>
             </div>
-        </div>
+        </div >
     );
 }

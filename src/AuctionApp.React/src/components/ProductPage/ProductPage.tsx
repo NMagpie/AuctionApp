@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState } from "react";
+import { Link, useLoaderData } from "react-router-dom";
 import { useApi } from "../../contexts/ApiContext";
-import { Avatar, Button, Skeleton, Typography } from "@mui/material";
-import { BidDto, ProductDto, UserDto, UserWatchlistDto } from "../../api/openapi-generated";
+import { Avatar, Button, Typography } from "@mui/material";
+import { BidDto, UserDto, UserWatchlistDto } from "../../api/openapi-generated";
 import ProductPanel from "./ProductPanel";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
@@ -21,65 +21,25 @@ export type Product = {
 
 export default function ProductPage() {
 
-    const { id } = useParams();
+    const { productData, watchlistData } = useLoaderData();
 
-    const [product, setProduct] = useState<ProductDto | null>(null);
+    const [product] = useState<Product>(productData);
 
-    const [watchlist, setWatchlist] = useState<UserWatchlistDto | null>(null);
+    const [watchlist, setWatchlist] = useState<UserWatchlistDto | null>(watchlistData);
 
     const { api } = useApi();
 
-    const getProduct = async () => {
-        let { data } = await api.products.productsIdGet({ id: parseInt(id ?? "") });
-
-        const product = {
-            id: data.id ?? 0,
-            title: data.title ?? '',
-            description: data.description ?? '',
-            creator: data.creator ?? null,
-            startTime: data.startTime ? new Date(data.startTime) : null,
-            endTime: data.endTime ? new Date(data.endTime) : null,
-            bids: data.bids ?? [],
-        };
-
-        const date = new Date();
-
-        date.setHours(date.getHours() + 1);
-
-        product.endTime = date;
-
-        const date1 = new Date();
-
-        date1.setSeconds(date1.getSeconds());
-
-        product.startTime = date1;
-
-        setProduct(product);
-
-
-        if (api.userIdentity) {
-
-            let watchlist = (await api.userWatchlsits.userWatchlistsGet({ productId: product?.id })).data;
-
-            setWatchlist(watchlist);
-        }
-    };
-
     const addWatchlist = async () => {
-        const { data } = await api.userWatchlsits.userWatchlistsPost({ createUserWatchlistRequest: { productId: product?.id } });
+        const { data } = await api.userWatchlsits.createUserWatchlist({ createUserWatchlistRequest: { productId: product?.id } });
 
         setWatchlist(data);
     };
 
     const removeWatchlist = async () => {
-        await api.userWatchlsits.userWatchlistsIdDelete({ id: watchlist?.id });
+        await api.userWatchlsits.deleteUserWatchlist({ id: watchlist?.id });
 
         setWatchlist(null);
     }
-
-    useEffect(() => {
-        getProduct();
-    }, []);
 
     return (
         <div className="product-card">

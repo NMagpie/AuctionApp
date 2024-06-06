@@ -28,7 +28,7 @@ public class GetUserwatchlistByProductIdQueryHandler : IRequestHandler<GetUserwa
     public async Task<UserWatchlistDto> Handle(GetUserwatchlistByProductIdQuery request, CancellationToken cancellationToken)
     {
 
-        var userWatchlist = (await _repository.GetByPredicate<UserWatchlist>(uw => uw.ProductId == request.ProductId && uw.UserId == request.UserId)).First()
+        var userWatchlist = (await _repository.GetByPredicate<UserWatchlist>(uw => uw.ProductId == request.ProductId && uw.UserId == request.UserId)).FirstOrDefault()
             ?? throw new EntityNotFoundException("User watchlist cannot be found");
 
         var userWatchlistDto = _mapper.Map<UserWatchlist, UserWatchlistDto>(userWatchlist);

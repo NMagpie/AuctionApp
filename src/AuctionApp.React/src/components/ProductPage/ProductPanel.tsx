@@ -76,4 +76,4 @@ export default function ProductPanel({ product }: { product: Product }) {
             }
         </>
     );
-};
+}

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Abstractions;
 using Presentation.Common.Models.Users;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Presentation.Controllers;
 
@@ -26,6 +27,7 @@ public class CurrentUserController : AppBaseController
     }
 
     [HttpGet()]
+    [SwaggerOperation(OperationId = nameof(GetCurrentUser))]
     public async Task<ActionResult<CurrentUserDto>> GetCurrentUser()
     {
         var userId = GetUserId();
@@ -36,6 +38,7 @@ public class CurrentUserController : AppBaseController
     }
 
     [HttpPost("add-balance")]
+    [SwaggerOperation(OperationId = nameof(AddUserBalance))]
     public async Task<ActionResult> AddUserBalance(AddUserBalanceRequest addUserBalanceRequest)
     {
         var userId = GetUserId();
@@ -50,6 +53,7 @@ public class CurrentUserController : AppBaseController
     }
 
     [HttpPut()]
+    [SwaggerOperation(OperationId = nameof(UpdateUser))]
     public async Task<ActionResult<CurrentUserDto>> UpdateUser(UpdateUserRequest updateUserRequest)
     {
         var userId = GetUserId();
@@ -64,6 +68,7 @@ public class CurrentUserController : AppBaseController
     }
 
     [HttpDelete()]
+    [SwaggerOperation(OperationId = nameof(DeleteUser))]
     public async Task<ActionResult> DeleteUser()
     {
         var userId = GetUserId();

@@ -1,12 +1,10 @@
 ﻿using Application.App.Queries;
-using Application.App.Users.Commands;
 using Application.App.Users.Responses;
 using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.Common.Abstractions;
-using Presentation.Common.Models.Users;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Presentation.Controllers;
 
@@ -24,8 +22,8 @@ public class UsersController : AppBaseController
         _mapper = mapper;
     }
 
-    [AllowAnonymous]
     [HttpGet("{id}")]
+    [SwaggerOperation(OperationId = nameof(GetUser))]
     public async Task<ActionResult<UserDto>> GetUser(int id)
     {
         var userDto = await _mediator.Send(new GetUserByIdQuery() { Id = id });
