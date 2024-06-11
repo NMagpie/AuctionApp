@@ -1,6 +1,8 @@
 ﻿using Application.App.ProductReviews.Commands;
 using Application.App.ProductReviews.Responses;
 using Application.App.Queries;
+using AuctionApp.Application.App.ProductReviews.Queries;
+using AuctionApp.Application.Common.Models;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -78,5 +80,17 @@ public class ProductReviewsController : AppBaseController
         await _mediator.Send(new DeleteProductReviewCommand() { Id = id, UserId = userId });
 
         return Ok();
+    }
+
+    [AllowAnonymous]
+    [HttpGet]
+    [SwaggerOperation(OperationId = nameof(GetPagedReviews))]
+    public async Task<ActionResult<PaginatedResult<ProductReviewDto>>> GetPagedReviews([FromQuery] int productId, [FromQuery] int pageIndex)
+    {
+        var result = await _mediator.Send(new GetProductReviewsOfProductQuery() { ProductId = productId, PageIndex = pageIndex });
+
+        await Console.Out.WriteLineAsync(result.ToString());
+
+        return Ok(result);
     }
 }

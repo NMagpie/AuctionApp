@@ -1,0 +1,8 @@
+.countdown-body {
+
+    @apply grid grid-cols-4 xl:gap-5 justify-center my-2 py-2 bg-slate-300 overflow-x-auto overflow-y-hidden sm:w-3/4 lg:w-auto;
+
+    p {
+        @apply text-center font-bold my-1;
+    }
+}

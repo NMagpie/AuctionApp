@@ -27,7 +27,7 @@ export default function RegisterPage() {
     const onSubmit = async (data: FormData) => {
 
         api.register(data.email, data.password)
-            .then(() => navigate("/"))
+            .then(() => navigate(-1))
             .catch((error) => {
 
                 if (error instanceof AxiosError) {

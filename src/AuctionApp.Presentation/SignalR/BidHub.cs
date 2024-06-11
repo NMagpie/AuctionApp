@@ -1,6 +1,6 @@
-﻿namespace AuctionApp.Presentation.SignalR;
-
+﻿
 using Application.App.Bids.Commands;
+using Application.App.Bids.Responses;
 using Application.App.Queries;
 using AuctionApp.Presentation.SignalR.Dtos;
 using AutoMapper;
@@ -8,8 +8,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
+namespace AuctionApp.Presentation.SignalR;
 public class BidsHub : Hub
 {
     private readonly IMediator _mediator;
@@ -22,6 +22,7 @@ public class BidsHub : Hub
         _mapper = mapper;
     }
 
+    [Authorize]
     public async Task PlaceBid(CreateBidRequest request)
     {
         var userName = Context.User?.FindFirst(ClaimTypes.Name)?.Value;
@@ -34,7 +35,11 @@ public class BidsHub : Hub
 
         var result = await _mediator.Send(command);
 
-        await Clients.Group(command.ProductId.ToString()).SendAsync("BidNotify", result);
+        var response = _mapper.Map<BidDto, CreateBidResponse>(result);
+
+        response.UserName = userName!;
+
+        await Clients.Group(command.ProductId.ToString()).SendAsync("BidNotify", response);
     }
 
     public async Task GetLatestPrice(int productId)

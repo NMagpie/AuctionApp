@@ -1,8 +1,8 @@
 import { Typography } from "@mui/material";
-import Countdown from "./SellingCountdown";
-import { Product } from "./ProductPage";
+import { Product } from "../../pages/ProductPage/ProductPage";
 import BidPlacer from "./BidPlacer";
 import { useState } from "react";
+import  CountDown from "../CountDown/CountDown";
 
 const dateFormat = { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' };
 
@@ -43,7 +43,7 @@ export default function ProductPanel({ product }: { product: Product }) {
                         {`End Time: ${product?.endTime?.toLocaleTimeString([], dateFormat)}`}
                     </Typography>
                     <Typography variant="h5">
-                        Auction has ended
+                        Selling has ended
                     </Typography>
                 </div>
                 :
@@ -65,7 +65,7 @@ export default function ProductPanel({ product }: { product: Product }) {
                     </div>
 
                     {product &&
-                        <Countdown
+                        <CountDown
                             key={productStatus === "started" ? "finish-timer" : "start-timer"}
                             setProductStatus={productStatus === "started" ? () => { setProductStatus("finished") } : () => { setProductStatus("started") }
                             }

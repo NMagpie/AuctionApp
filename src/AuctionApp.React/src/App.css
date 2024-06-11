@@ -1,3 +1,7 @@
 /* * {
     background: rgb(0 100 0 / 0.1) !important;
 } */
+
+.text-flex-divider {
+    @apply text-slate-600 border-solid border w-3/4 lg:w-full my-5;
+}

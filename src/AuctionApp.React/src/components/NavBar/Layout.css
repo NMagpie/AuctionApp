@@ -1,5 +1,5 @@
 .full-page {
-    @apply h-full w-full flex flex-col;
+    @apply min-h-full w-full flex flex-col;
 }
 
 .outlet {

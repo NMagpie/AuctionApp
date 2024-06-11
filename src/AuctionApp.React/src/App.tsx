@@ -5,20 +5,20 @@ import '@fontsource/roboto/700.css';
 
 import { ApiProvider, useApi } from './contexts/ApiContext';
 import { Route, Navigate, createRoutesFromElements, createBrowserRouter, RouterProvider } from "react-router-dom";
-import NoPage from './components/NoPage/NoPage';
+import NoPage from './pages/NoPage/NoPage';
 import Layout from './components/NavBar/Layout';
-import Home from './components/HomePage/HomePage';
-import LoginPage from './components/LoginPage/LoginPage';
-import RegisterPage from './components/RegisterPage/RegisterPage';
+import Home from './pages/HomePage/HomePage';
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
 import React from 'react';
-import UserPage from './components/UserPage/UserPage';
-import ProductPage from './components/ProductPage/ProductPage';
+import UserPage from './pages/UserPage/UserPage';
+import ProductPage from './pages/ProductPage/ProductPage';
 
-import productLoader from './components/ProductPage/ProductLoader';
+import productLoader from './pages/ProductPage/ProductLoader';
 
 import './App.css'
 import Loading from './components/LoadingComponent/Loading';
-import ErrorPage from './components/ErrorPage/ErrorPage';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 function App() {
 

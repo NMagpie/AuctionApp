@@ -20,6 +20,6 @@ public class CreateProductReviewCommandValidator : BaseValidator<CreateProductRe
 
         RuleFor(x => x.Rating)
             .GreaterThan(0)
-            .LessThan(10);
+            .LessThan(5);
     }
 }

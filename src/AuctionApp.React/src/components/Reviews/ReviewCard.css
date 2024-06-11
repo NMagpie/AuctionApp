@@ -1,0 +1,3 @@
+.review-body {
+    @apply flex flex-col my-4 p-4 bg-white;
+}

@@ -26,7 +26,7 @@ export default function LoginPage() {
     const onSubmit = async (data: FormData) => {
 
         api.login(data.email, data.password)
-            .then(() => navigate("/"))
+            .then(() => navigate(-1))
             .catch((error) => {
 
                 if (error instanceof AxiosError) {

@@ -10,7 +10,7 @@ public class AuctionAppDbContext : IdentityDbContext<User, IdentityRole<int>, in
 {
     public AuctionAppDbContext(DbContextOptions<AuctionAppDbContext> options) : base(options) { }
 
-    public DbSet<ProductReview> ProductReview { get; set; } = default!;
+    public DbSet<ProductReview> ProductReviews { get; set; } = default!;
 
     public DbSet<Bid> Bids { get; set; } = default!;
 

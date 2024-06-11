@@ -1,17 +1,17 @@
 import { useCountdown } from "./useCountDown";
 import { Typography } from "@mui/material";
-
-import './SellingCountdown.css';
+import { ProductStatus } from "../Products/ProductPanel";
 import { useEffect } from "react";
-import { ProductStatus } from "./ProductPanel";
 
-type SellingCountdownProps = {
+import './CountDown.css';
+
+type CountDownProps = {
     targetDate: Date,
     productStatus: ProductStatus,
     setProductStatus: () => void,
 };
 
-export default function SellingCountdown({ targetDate, setProductStatus }: SellingCountdownProps) {
+export default function CountDown({ targetDate, setProductStatus }: CountDownProps) {
 
     const countDown = useCountdown(targetDate);
 

@@ -1,4 +1,5 @@
-﻿using AuctionApp.Domain.Abstractions;
+﻿using AuctionApp.Application.Common.Models;
+using AuctionApp.Domain.Abstractions;
 using System.Linq.Expressions;
 
 namespace Application.Common.Abstractions;
@@ -21,4 +22,8 @@ public interface IEntityRepository
     Task RemoveRange<T>(List<int> ids) where T : class, IEntity;
 
     Task SaveChanges();
+
+    Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest, params Expression<Func<TEntity, object>>[] includeProperties)
+        where TEntity : class, IEntity
+        where TDto : class;
 }

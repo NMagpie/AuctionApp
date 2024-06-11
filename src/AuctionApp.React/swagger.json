@@ -778,6 +778,52 @@
             "oauth2": [ ]
           }
         ]
+      },
+      "get": {
+        "tags": [
+          "ProductReviews"
+        ],
+        "operationId": "GetPagedReviews",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "pageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReviewDtoPaginatedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReviewDtoPaginatedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductReviewDtoPaginatedResult"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/Products/{id}": {
@@ -1110,11 +1156,11 @@
       }
     },
     "/UserWatchlists": {
-      "get": {
+      "head": {
         "tags": [
           "UserWatchlists"
         ],
-        "operationId": "GetUserWatchlistByProductId",
+        "operationId": "ExistsUserWatchlistByProductId",
         "parameters": [
           {
             "name": "productId",
@@ -1183,6 +1229,55 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWatchlistDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWatchlistDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserWatchlistDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "UserWatchlists"
+        ],
+        "operationId": "DeleteUserWatchlistByProductId",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -1579,6 +1674,7 @@
       },
       "ProductReviewDto": {
         "required": [
+          "dateCreated",
           "productId",
           "rating"
         ],
@@ -1588,10 +1684,8 @@
             "type": "integer",
             "format": "int32"
           },
-          "userId": {
-            "type": "integer",
-            "format": "int32",
-            "nullable": true
+          "user": {
+            "$ref": "#/components/schemas/UserDto"
           },
           "productId": {
             "type": "integer",
@@ -1604,6 +1698,35 @@
           "rating": {
             "type": "number",
             "format": "float"
+          },
+          "dateCreated": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProductReviewDtoPaginatedResult": {
+        "type": "object",
+        "properties": {
+          "pageIndex": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductReviewDto"
+            },
+            "nullable": true
           }
         },
         "additionalProperties": false

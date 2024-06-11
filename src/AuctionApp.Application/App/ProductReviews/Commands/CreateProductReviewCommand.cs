@@ -21,9 +21,7 @@ public class CreateProductReviewCommand : IRequest<ProductReviewDto>
 
 public class CreateProductReviewCommandHandler : IRequestHandler<CreateProductReviewCommand, ProductReviewDto>
 {
-
     private readonly IEntityRepository _entityRepository;
-
 
     private readonly IMapper _mapper;
 
@@ -41,12 +39,14 @@ public class CreateProductReviewCommandHandler : IRequestHandler<CreateProductRe
         var product = await _entityRepository.GetById<Product>(request.ProductId)
             ?? throw new EntityNotFoundException("Product cannot be found");
 
-        if (product.EndTime >= DateTime.UtcNow)
+        if (product.EndTime >= DateTimeOffset.UtcNow)
         {
             throw new BusinessValidationException("Cannot put review: product sell is not finished");
         }
 
         var productReview = _mapper.Map<CreateProductReviewCommand, ProductReview>(request);
+
+        productReview.DateCreated = DateTimeOffset.UtcNow;
 
         await _entityRepository.Add(productReview);
 

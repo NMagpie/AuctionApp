@@ -80,7 +80,15 @@ export default class ApiManager {
 
         const userIdentityString = localStorage.getItem('userIdentity');
 
-        this.userIdentity = userIdentityString ? JSON.parse(userIdentityString) : null;
+        this.userIdentity = null;
+
+        if (userIdentityString) {
+            const parsedUserIdentity = JSON.parse(userIdentityString);
+
+            parsedUserIdentity.expireDate = new Date(parsedUserIdentity.expireDate);
+
+            this.userIdentity = parsedUserIdentity;
+        }
 
         this.user = null;
     }

@@ -18,5 +18,7 @@ namespace AuctionApp.Domain.Models
         public string? ReviewText { get; set; }
 
         public float Rating { get; set; }
+
+        public DateTimeOffset DateCreated { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.App.Bids.Commands;
+using Application.App.Bids.Responses;
 using AuctionApp.Presentation.SignalR.Dtos;
 using AutoMapper;
 
@@ -8,5 +9,7 @@ public class BidProfile : Profile
     public BidProfile()
     {
         CreateMap<CreateBidRequest, CreateBidCommand>();
+
+        CreateMap<BidDto, CreateBidResponse>();
     }
 }

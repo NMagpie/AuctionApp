@@ -1,0 +1,17 @@
+.review-form-body {
+    @apply flex flex-col bg-slate-100;
+
+    textarea {
+
+        @apply p-2 font-medium text-base resize-none my-5 bg-slate-500 text-white;
+    }
+
+    .submit-review {
+        @apply w-1/4 self-end bg-slate-500 text-white;
+    }
+
+    .submit-review:hover {
+        @apply bg-slate-800;
+    }
+
+}

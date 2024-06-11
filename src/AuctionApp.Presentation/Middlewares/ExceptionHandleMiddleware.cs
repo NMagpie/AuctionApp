@@ -24,9 +24,9 @@ public class ExceptionHandleMiddleware
         {
             ctx.Response.StatusCode = ex switch
             {
-                ValidationException _ => (int)HttpStatusCode.BadRequest,
-                EntityNotFoundException _ => (int)HttpStatusCode.NotFound,
-                InvalidUserException _ => (int)HttpStatusCode.Forbidden,
+                ValidationException => (int)HttpStatusCode.BadRequest,
+                EntityNotFoundException => (int)HttpStatusCode.NotFound,
+                InvalidUserException => (int)HttpStatusCode.Forbidden,
                 _ => (int)HttpStatusCode.InternalServerError,
             };
             await CreateExceptionResponseAsync(ctx, ex);

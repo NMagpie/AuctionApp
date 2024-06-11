@@ -1,6 +1,7 @@
 ﻿using Application.App.Queries;
 using Application.App.UserWatchlists.Commands;
 using Application.App.UserWatchlists.Responses;
+using AuctionApp.Application.App.UserWatchlists.Commands;
 using AuctionApp.Presentation.Common.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -33,15 +34,15 @@ public class UserWatchlistsController : AppBaseController
         return Ok(userWatchlistDto);
     }
 
-    [HttpGet]
-    [SwaggerOperation(OperationId = nameof(GetUserWatchlistByProductId))]
-    public async Task<ActionResult<UserWatchlistDto>> GetUserWatchlistByProductId([FromQuery] int productId)
+    [HttpHead]
+    [SwaggerOperation(OperationId = nameof(ExistsUserWatchlistByProductId))]
+    public async Task<ActionResult<UserWatchlistDto>> ExistsUserWatchlistByProductId([FromQuery] int productId)
     {
         var userId = GetUserId();
 
-        var userWatchlistDto = await _mediator.Send(new GetUserwatchlistByProductIdQuery() { ProductId = productId, UserId = userId });
+        await _mediator.Send(new GetUserwatchlistByProductIdQuery() { ProductId = productId, UserId = userId });
 
-        return Ok(userWatchlistDto);
+        return Ok();
     }
 
     [HttpPost]
@@ -68,6 +69,17 @@ public class UserWatchlistsController : AppBaseController
         var userId = GetUserId();
 
         await _mediator.Send(new DeleteUserWatchlistCommand() { Id = id, UserId = userId });
+
+        return Ok();
+    }
+
+    [HttpDelete]
+    [SwaggerOperation(OperationId = nameof(DeleteUserWatchlistByProductId))]
+    public async Task<ActionResult<UserWatchlistDto>> DeleteUserWatchlistByProductId([FromQuery] int productId)
+    {
+        var userId = GetUserId();
+
+        await _mediator.Send(new DeleteUserWatchlistByProductIdCommand() { ProductId = productId, UserId = userId });
 
         return Ok();
     }

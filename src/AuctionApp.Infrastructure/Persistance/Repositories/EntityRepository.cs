@@ -1,6 +1,9 @@
 ﻿using Application.Common.Abstractions;
 using Application.Common.Exceptions;
+using AuctionApp.Application.Common.Models;
+using AuctionApp.Application.Extentions;
 using AuctionApp.Domain.Abstractions;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -9,9 +12,12 @@ public class EntityRepository : IEntityRepository
 {
     private readonly AuctionAppDbContext _auctionAppDbContext;
 
-    public EntityRepository(AuctionAppDbContext auctionAppDbContext)
+    private readonly IMapper _mapper;
+
+    public EntityRepository(AuctionAppDbContext auctionAppDbContext, IMapper mapper)
     {
         _auctionAppDbContext = auctionAppDbContext;
+        _mapper = mapper;
     }
 
     public Task<T?> GetById<T>(int id) where T : class, IEntity
@@ -83,6 +89,14 @@ public class EntityRepository : IEntityRepository
     public Task SaveChanges()
     {
         return _auctionAppDbContext.SaveChangesAsync();
+    }
+
+    public async Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest, params Expression<Func<TEntity, object>>[] includeProperties) 
+        where TEntity : class, IEntity                                                                   
+        where TDto : class
+    {
+        return await IncludeProperties(includeProperties)
+            .CreatePaginatedResultAsync<TEntity, TDto>(pagedRequest, _mapper);
     }
 
     private IQueryable<T> IncludeProperties<T>(params Expression<Func<T, object>>[] includeProperties) where T : class, IEntity

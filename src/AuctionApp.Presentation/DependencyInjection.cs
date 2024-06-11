@@ -2,7 +2,10 @@
 using AuctionApp.Presentation.Common.Configurations;
 using AuctionApp.Presentation.SignalR;
 using Infrastructure;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
@@ -41,6 +44,10 @@ public static class DependencyInjection
 
         builder.Services
             .AddSignalR(options => options.AddFilter<ExceptionHandlingHubFilter>());
+
+        builder.Services.TryAddEnumerable(
+            ServiceDescriptor.Singleton<IPostConfigureOptions<BearerTokenOptions>,
+                ConfigureBearerTokenOptions>());
 
         builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

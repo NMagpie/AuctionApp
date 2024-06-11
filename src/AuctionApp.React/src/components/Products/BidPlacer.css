@@ -1,9 +1,9 @@
 .bid-placer-body {
 
-    @apply flex flex-col items-center;
+    @apply flex flex-col w-full items-center;
 
     .bid-control {
-        @apply flex;
+        @apply flex w-full flex-col xl:flex-row justify-center;
 
         /* Chrome, Safari, Edge, Opera */
         input::-webkit-outer-spin-button,
@@ -29,12 +29,24 @@
             @apply bg-slate-500 text-white;
         }
 
+        .bid-button:hover {
+            @apply bg-slate-800;
+        }
+
         .bid-button-inc {
-            @apply float-right rounded-l-none rounded-r-lg;
+            @apply float-right rounded-l-none rounded-r-2xl;
         }
 
         .bid-button-dec {
-            @apply float-left rounded-r-none rounded-l-lg;
+            @apply float-left rounded-r-none rounded-l-2xl;
+        }
+
+        .button-submit {
+            @apply p-3 mt-3 xl:mt-0 xl:ml-3 bg-slate-300 text-inherit self-center xl:w-1/4 w-1/2;
+        }
+
+        .button-submit:hover {
+            @apply bg-slate-800;
         }
     }
 }

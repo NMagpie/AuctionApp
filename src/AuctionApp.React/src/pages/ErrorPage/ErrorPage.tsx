@@ -9,13 +9,16 @@ const ErrorPage = () => {
 };
 
 const getErrorText = (error) => {
+
     switch (true) {
         case (error?.response?.status === 404):
             return "Seems like not found...";
         case (error?.response?.status === 401):
             return "I'm not sure you can get here...";
+        case (error?.response?.status === 500):
+            return "Something went wrong...";
         default:
-            return "Something went wrong..."
+            return error?.response.message;
     }
 };
 
