@@ -4,12 +4,12 @@ import * as signalR from "@microsoft/signalr";
 import { baseUrl } from "../../api/ApiManager";
 import { useEffect, useState } from "react";
 import { BidDto } from "../../api/openapi-generated";
-import { AlertColor, Button, InputAdornment, TextField } from "@mui/material";
-import NotificationSnackbar, { NotificationSnackbarProps } from "../NotificatonSnackbar";
+import { Button, InputAdornment, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GavelIcon from '@mui/icons-material/Gavel';
 
 import './BidPlacer.css';
+import { useSnackbar } from "notistack";
 
 export default function BidPlacer({ product }: { product: Product }) {
 
@@ -19,27 +19,7 @@ export default function BidPlacer({ product }: { product: Product }) {
 
     const [connection, setConnection] = useState<signalR.HubConnection | null>();
 
-    const setOpenNotification = (state: boolean) => {
-        setNotification(prevState => {
-            return {
-                ...prevState,
-                open: state,
-            };
-        });
-    };
-
-    const setNotificationMessage = (message: string, severity: AlertColor) => {
-        setNotification(prevState => {
-            return {
-                ...prevState,
-                message: message,
-                severity: severity,
-                open: true,
-            };
-        });
-    };
-
-    const [notification, setNotification] = useState<NotificationSnackbarProps>({ message: "", open: false, setOpen: setOpenNotification });
+    const { enqueueSnackbar } = useSnackbar();
 
     const [price, setPrice] = useState<number>(0);
 
@@ -51,11 +31,14 @@ export default function BidPlacer({ product }: { product: Product }) {
         setAmount(e.target.value);
     };
 
-    const placeBid = () => {
+    const placeBid = (e) => {
+        e.preventDefault();
         connection
             ?.invoke("PlaceBid", { productId: product.id, amount: amount })
             .catch(error => {
-                setNotificationMessage(error.message, "error");
+                enqueueSnackbar(error.message, {
+                    variant: "error"
+                });
             });
     };
 
@@ -80,7 +63,9 @@ export default function BidPlacer({ product }: { product: Product }) {
         });
 
         connection.on("ReceiveError", error => {
-            setNotificationMessage(error, "error");
+            enqueueSnackbar(error, {
+                variant: "error"
+            });
         });
 
         async function start() {
@@ -95,15 +80,21 @@ export default function BidPlacer({ product }: { product: Product }) {
                         connection.invoke("GetLatestPrice", product.id);
                     }
                 });
-                setNotificationMessage("Connected", "info");
+                enqueueSnackbar("Connected", {
+                    variant: "info"
+                });
             } catch (err) {
-                setNotificationMessage("Cannot connect to the server", "error");
+                console.log(err);
             }
         }
 
-        connection.onreconnecting(() => setNotificationMessage("Reconnecting...", "warning"));
+        connection.onreconnecting(() => enqueueSnackbar("Reconnecting...", {
+            variant: "warning"
+        }));
 
-        connection.onreconnected(() => setNotificationMessage("Reconnected!", "success"));
+        connection.onreconnected(() => enqueueSnackbar("Reconnected!", {
+            variant: "success"
+        }));
 
         start();
 
@@ -114,7 +105,6 @@ export default function BidPlacer({ product }: { product: Product }) {
 
     return (
         <div className="bid-placer-body">
-            <NotificationSnackbar message={notification?.message} severity={notification?.severity} open={notification?.open} setOpen={setOpenNotification} />
             <p className="font-bold text-lg">Current price: {price}</p>
 
             <form className="bid-control">
@@ -151,9 +141,9 @@ export default function BidPlacer({ product }: { product: Product }) {
                 <Button
                     type="submit"
                     className="button-submit"
-                    onClick={api.userIdentity ? () => placeBid() : () => navigate("/login")}
+                    onClick={api.userIdentity ? (e) => placeBid(e) : () => navigate("/login")}
                 >
-                    <GavelIcon className="mr-2"/>
+                    <GavelIcon className="mr-2" />
                     Bid
                 </Button>
             </form>

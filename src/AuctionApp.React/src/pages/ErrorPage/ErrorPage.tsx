@@ -3,7 +3,7 @@ import { useRouteError } from "react-router-dom";
 const ErrorPage = () => {
     const error = useRouteError();
 
-    const errorText = getErrorText(error);
+    const errorText = error ? getErrorText(error) : "Such page does not exist...";
 
     return <h1 className="text-slate-700 text-center">{errorText}</h1>;
 };

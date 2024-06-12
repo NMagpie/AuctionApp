@@ -1,7 +1,7 @@
 import { useCountdown } from "./useCountDown";
 import { Typography } from "@mui/material";
-import { ProductStatus } from "../Products/ProductPanel";
 import { useEffect } from "react";
+import { ProductStatus } from "../../common";
 
 import './CountDown.css';
 
@@ -29,11 +29,11 @@ export default function CountDown({ targetDate, setProductStatus }: CountDownPro
     ];
 
     const UnitNameList = () => unitList.map(
-        unit => <Typography key={`unit-${unit}`}>{unit}</Typography>
+        unit => <Typography className="countdown-unit" key={`unit-${unit}`}>{unit}</Typography>
     );
 
     const UnitValueList = () => countDown.map(
-        (unit, index) => <Typography className="text-2xl lg:text-3xl" key={`value-${index}`}>{unit & unit}</Typography>
+        (unit, index) => <Typography className="countdown-value" key={`value-${index}`}>{unit & unit}</Typography>
     );
 
     return (

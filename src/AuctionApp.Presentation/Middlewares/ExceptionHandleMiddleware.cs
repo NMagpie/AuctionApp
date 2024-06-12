@@ -24,7 +24,7 @@ public class ExceptionHandleMiddleware
         {
             ctx.Response.StatusCode = ex switch
             {
-                ValidationException => (int)HttpStatusCode.BadRequest,
+                BusinessValidationException => (int)HttpStatusCode.UnprocessableEntity,
                 EntityNotFoundException => (int)HttpStatusCode.NotFound,
                 InvalidUserException => (int)HttpStatusCode.Forbidden,
                 _ => (int)HttpStatusCode.InternalServerError,

@@ -5,4 +5,8 @@
     p {
         @apply text-center font-bold my-1;
     }
+
+    p.countdown-value {
+        @apply text-2xl lg:text-3xl;
+    }
 }

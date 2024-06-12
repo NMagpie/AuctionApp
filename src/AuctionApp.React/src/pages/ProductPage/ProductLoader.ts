@@ -1,4 +1,5 @@
 import ApiManager from "../../api/ApiManager"
+import { productDtoToProduct } from "../../common";
 
 const productLoader = async (api: ApiManager, id: string) => {
 
@@ -6,15 +7,7 @@ const productLoader = async (api: ApiManager, id: string) => {
 
     const { data: productResult } = await api.products.getProduct({ id: intId });
 
-    const productData = {
-        id: productResult.id ?? 0,
-        title: productResult.title ?? '',
-        description: productResult.description ?? '',
-        creator: productResult.creator ?? null,
-        startTime: productResult.startTime ? new Date(productResult.startTime) : null,
-        endTime: productResult.endTime ? new Date(productResult.endTime) : null,
-        bids: productResult.bids ?? [],
-    };
+    const productData = productDtoToProduct(productResult);
 
     const { data: reviewsData } = await api.productReviews.getPagedReviews({ productId: intId, pageIndex: 0 });
 

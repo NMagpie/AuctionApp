@@ -2,27 +2,16 @@ import { useState } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { useApi } from "../../contexts/ApiContext";
 import { Avatar, Button, Typography } from "@mui/material";
-import { BidDto, ProductReviewDto, UserDto } from "../../api/openapi-generated";
+import { ProductReviewDto } from "../../api/openapi-generated";
 import ProductPanel from "../../components/Products/ProductPanel";
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
-import ReviewForm from "../../components/ReviewForm/ReviewForm";
+import ReviewForm from "../../components/Reviews/ReviewForm";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ReviewCard from "../../components/Reviews/ReviewCard";
 
 import './ProductPage.css';
-
-export type Product = {
-    id: number;
-    title: string;
-    description: string;
-    creator: UserDto | null;
-    startTime: Date | null;
-    endTime: Date | null;
-    bids: BidDto[];
-};
-
-const hasMore = (index: number, pageSize: number, total: number) => (index + 1) * pageSize < total;
+import { Product, hasMore } from "../../common";
 
 export default function ProductPage() {
 
@@ -65,7 +54,7 @@ export default function ProductPage() {
 
         setReviewsIndex(nextIndex);
 
-        setHasMoreReviews(hasMore(nextIndex, reviewsData.pageSize, reviewsData.total));
+        setHasMoreReviews(hasMore(nextIndex, reviewsData.pageSize, data.total));
     };
 
     return (
@@ -151,7 +140,7 @@ export default function ProductPage() {
 
                 <div className="reviews-list">
                     <InfiniteScroll
-                        dataLength={reviewsData.items.length}
+                        dataLength={reviews.length}
                         next={fetchReviews}
                         hasMore={hasMoreReviews}
                         loader={<h4>Loading...</h4>}

@@ -1,0 +1,25 @@
+.search-result-card {
+    @apply my-5 lg:m-auto w-full lg:w-auto;
+
+    .card-image {
+        transition: transform cubic-bezier(0.39, 0.575, 0.565, 1) 250ms;
+    }
+
+    .card-count-down {
+        transition: transform cubic-bezier(0.39, 0.575, 0.565, 1) 250ms;
+
+        @apply flex absolute bottom-0 mx-auto left-3 right-3 text-center justify-center;
+
+        .countdown-body {
+            @apply w-full lg:gap-0 bg-slate-300/90 rounded-lg;
+
+            p.countdown-unit {
+                @apply text-xs;
+            }
+
+            p.countdown-value {
+                @apply text-xl;
+            }
+        }
+    }
+}

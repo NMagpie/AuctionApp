@@ -8,5 +8,5 @@ public class Category : IEntity
 
     public string Name { get; set; }
 
-    public ICollection<Product>? Lots { get; set; } = [];
+    public ICollection<Product>? Products { get; set; } = [];
 }

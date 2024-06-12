@@ -448,6 +448,37 @@ export interface ProductDto {
 /**
  * 
  * @export
+ * @interface ProductDtoPaginatedResult
+ */
+export interface ProductDtoPaginatedResult {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductDtoPaginatedResult
+     */
+    'pageIndex'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductDtoPaginatedResult
+     */
+    'pageSize'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductDtoPaginatedResult
+     */
+    'total'?: number;
+    /**
+     * 
+     * @type {Array<ProductDto>}
+     * @memberof ProductDtoPaginatedResult
+     */
+    'items'?: Array<ProductDto> | null;
+}
+/**
+ * 
+ * @export
  * @interface ProductReviewDto
  */
 export interface ProductReviewDto {
@@ -2658,6 +2689,60 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
+         * @param {string} [searchQuery] 
+         * @param {number} [pageIndex] 
+         * @param {string} [category] 
+         * @param {string} [columnNameForSorting] 
+         * @param {string} [sortDirection] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchProducts: async (searchQuery?: string, pageIndex?: number, category?: string, columnNameForSorting?: string, sortDirection?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/Products`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (searchQuery !== undefined) {
+                localVarQueryParameter['SearchQuery'] = searchQuery;
+            }
+
+            if (pageIndex !== undefined) {
+                localVarQueryParameter['PageIndex'] = pageIndex;
+            }
+
+            if (category !== undefined) {
+                localVarQueryParameter['Category'] = category;
+            }
+
+            if (columnNameForSorting !== undefined) {
+                localVarQueryParameter['ColumnNameForSorting'] = columnNameForSorting;
+            }
+
+            if (sortDirection !== undefined) {
+                localVarQueryParameter['SortDirection'] = sortDirection;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} id 
          * @param {UpdateProductRequest} [updateProductRequest] 
          * @param {*} [options] Override http request option.
@@ -2739,6 +2824,20 @@ export const ProductsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} [searchQuery] 
+         * @param {number} [pageIndex] 
+         * @param {string} [category] 
+         * @param {string} [columnNameForSorting] 
+         * @param {string} [sortDirection] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchProducts(searchQuery?: string, pageIndex?: number, category?: string, columnNameForSorting?: string, sortDirection?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, category, columnNameForSorting, sortDirection, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {number} id 
          * @param {UpdateProductRequest} [updateProductRequest] 
          * @param {*} [options] Override http request option.
@@ -2784,6 +2883,19 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          */
         getProduct(id: number, options?: any): AxiosPromise<ProductDto> {
             return localVarFp.getProduct(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {string} [searchQuery] 
+         * @param {number} [pageIndex] 
+         * @param {string} [category] 
+         * @param {string} [columnNameForSorting] 
+         * @param {string} [sortDirection] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchProducts(searchQuery?: string, pageIndex?: number, category?: string, columnNameForSorting?: string, sortDirection?: string, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
+            return localVarFp.searchProducts(searchQuery, pageIndex, category, columnNameForSorting, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2838,6 +2950,48 @@ export interface ProductsApiGetProductRequest {
      * @memberof ProductsApiGetProduct
      */
     readonly id: number
+}
+
+/**
+ * Request parameters for searchProducts operation in ProductsApi.
+ * @export
+ * @interface ProductsApiSearchProductsRequest
+ */
+export interface ProductsApiSearchProductsRequest {
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly searchQuery?: string
+
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly pageIndex?: number
+
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly category?: string
+
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly columnNameForSorting?: string
+
+    /**
+     * 
+     * @type {string}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly sortDirection?: string
 }
 
 /**
@@ -2899,6 +3053,17 @@ export class ProductsApi extends BaseAPI {
      */
     public getProduct(requestParameters: ProductsApiGetProductRequest, options?: AxiosRequestConfig) {
         return ProductsApiFp(this.configuration).getProduct(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {ProductsApiSearchProductsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductsApi
+     */
+    public searchProducts(requestParameters: ProductsApiSearchProductsRequest = {}, options?: AxiosRequestConfig) {
+        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.category, requestParameters.columnNameForSorting, requestParameters.sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

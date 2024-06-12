@@ -1,34 +1,8 @@
 import { Typography } from "@mui/material";
-import { Product } from "../../pages/ProductPage/ProductPage";
 import BidPlacer from "./BidPlacer";
 import { useState } from "react";
-import  CountDown from "../CountDown/CountDown";
-
-const dateFormat = { year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-
-export type ProductStatus = "pending" | "started" | "finished";
-
-const getProductStatus = (product: Product): ProductStatus => {
-
-    if (!product) {
-        return null;
-    }
-
-    const currentDate = new Date();
-
-    const isSellingStarted = product?.startTime <= currentDate;
-
-    const isSellingEnded = product?.endTime <= currentDate;
-
-    switch (true) {
-        case (!isSellingStarted && !isSellingEnded):
-            return "pending"
-        case (isSellingStarted && !isSellingEnded):
-            return "started"
-        case (isSellingStarted && isSellingEnded):
-            return "finished";
-    }
-};
+import CountDown from "../CountDown/CountDown";
+import { Product, ProductStatus, dateFormat, getProductStatus } from "../../common";
 
 export default function ProductPanel({ product }: { product: Product }) {
 
@@ -67,7 +41,8 @@ export default function ProductPanel({ product }: { product: Product }) {
                     {product &&
                         <CountDown
                             key={productStatus === "started" ? "finish-timer" : "start-timer"}
-                            setProductStatus={productStatus === "started" ? () => { setProductStatus("finished") } : () => { setProductStatus("started") }
+                            setProductStatus={
+                                productStatus === "started" ? () => { setProductStatus("finished") } : () => { setProductStatus("started") }
                             }
                             targetDate={productStatus === "started" ? product?.endTime : product?.startTime} />}
 

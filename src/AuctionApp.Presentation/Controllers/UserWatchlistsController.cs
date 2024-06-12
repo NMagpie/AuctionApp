@@ -2,7 +2,7 @@
 using Application.App.UserWatchlists.Commands;
 using Application.App.UserWatchlists.Responses;
 using AuctionApp.Application.App.UserWatchlists.Commands;
-using AuctionApp.Presentation.Common.Requests;
+using AuctionApp.Presentation.Common.Requests.UserWatchlists;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -17,11 +17,11 @@ public static class QueryableExtensions
 
         var total = await query.CountAsync();
 
-        query = query.Sort(pagedRequest);
-
-        query = query.Paginate(pagedRequest);
-
         var projectionResult = query.ProjectTo<TDto>(mapper.ConfigurationProvider);
+
+        projectionResult = projectionResult.Sort(pagedRequest);
+
+        projectionResult = projectionResult.Paginate(pagedRequest);
 
         var listResult = await projectionResult.ToListAsync();
 

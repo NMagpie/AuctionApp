@@ -2,6 +2,7 @@ import { Button, Rating, Typography } from '@mui/material';
 import { SetStateAction, useState } from 'react';
 import { useApi } from '../../contexts/ApiContext';
 import { ProductReviewDto } from '../../api/openapi-generated';
+import { useSnackbar } from 'notistack';
 
 import './ReviewForm.css';
 
@@ -14,14 +15,22 @@ export default function ReviewForm({ productId, setReviews }: ReviewFormProps) {
 
     const { api } = useApi();
 
-    const onSubmit = async () => {
+    const { enqueueSnackbar } = useSnackbar();
+
+    const onSubmit = async (e) => {
+        e.preventDefault();
+
         if (rating <= 0 || rating > 5) {
-            setError("Set correct rating");
+            enqueueSnackbar("Set correct rating", {
+                variant: "error"
+            });
             return;
         }
 
         if (reviewText && reviewText.length > 2048) {
-            setError("Review text cannot be longer that 2048 characters");
+            enqueueSnackbar("Review text cannot be longer that 2048 characters", {
+                variant: "error"
+            });
             return;
         }
 
@@ -44,7 +53,9 @@ export default function ReviewForm({ productId, setReviews }: ReviewFormProps) {
                 ]);
             })
             .catch(e =>
-                setError(e.message)
+                enqueueSnackbar(e.message, {
+                    variant: "error"
+                })
             );
     };
 
@@ -52,10 +63,8 @@ export default function ReviewForm({ productId, setReviews }: ReviewFormProps) {
 
     const [reviewText, setReviewText] = useState<string | undefined>(undefined);
 
-    const [error, setError] = useState("");
-
     return (
-        <div className='review-form-body'>
+        <form className='review-form-body'>
             <h3 className='mt-0'>
                 Leave a review:
             </h3>
@@ -79,9 +88,12 @@ export default function ReviewForm({ productId, setReviews }: ReviewFormProps) {
                 }}
             />
 
-            <Button className='submit-review' onClick={onSubmit}>Submit</Button>
-
-            {error && <span className='text-red-500'>{error}</span>}
-        </div>
+            <Button
+                type='submit'
+                className='submit-review'
+                onClick={onSubmit}
+            >Submit
+            </Button>
+        </form>
     );
 }

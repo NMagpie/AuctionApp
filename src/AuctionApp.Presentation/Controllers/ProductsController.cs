@@ -1,6 +1,8 @@
 ﻿using Application.App.Products.Commands;
 using Application.App.Products.Responses;
 using Application.App.Queries;
+using AuctionApp.Application.App.Products.Queries;
+using AuctionApp.Application.Common.Models;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -78,5 +80,15 @@ public class ProductsController : AppBaseController
         await _mediator.Send(new DeleteProductCommand() { Id = id, UserId = userId });
 
         return Ok();
+    }
+
+    [HttpGet]
+    [AllowAnonymous]
+    [SwaggerOperation(OperationId = nameof(SearchProducts))]
+    public async Task<ActionResult<PaginatedResult<ProductDto>>> SearchProducts([FromQuery] SearchProductsQuery query)
+    {
+        var result = await _mediator.Send(query);
+
+        return Ok(result);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Application.App.Products.Commands;
 using Application.App.Products.Responses;
+using AuctionApp.Application.App.Products.Queries;
+using AuctionApp.Application.Common.Models;
 using AuctionApp.Domain.Models;
 using AutoMapper;
 using EntityFramework.Domain.Models;
@@ -24,5 +26,7 @@ public class ProductProfile : Profile
                     src => src.Categories.Select(category => new Category() { Name = category.ToLower() })
                 )
             );
+
+        CreateMap<SearchProductsQuery, PagedRequest>();
     }
 }

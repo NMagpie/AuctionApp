@@ -89,8 +89,6 @@ public class ProductReviewsController : AppBaseController
     {
         var result = await _mediator.Send(new GetProductReviewsOfProductQuery() { ProductId = productId, PageIndex = pageIndex });
 
-        await Console.Out.WriteLineAsync(result.ToString());
-
         return Ok(result);
     }
 }
