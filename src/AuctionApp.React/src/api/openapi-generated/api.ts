@@ -248,6 +248,23 @@ export interface CurrentUserDto {
 /**
  * 
  * @export
+ * @enum {string}
+ */
+
+export const EProductSearchPresets = {
+    ComingSoon: 'ComingSoon',
+    EndingSoon: 'EndingSoon',
+    MostActive: 'MostActive',
+    BidHigh: 'BidHigh',
+    BidLow: 'BidLow'
+} as const;
+
+export type EProductSearchPresets = typeof EProductSearchPresets[keyof typeof EProductSearchPresets];
+
+
+/**
+ * 
+ * @export
  * @interface ForgotPasswordRequest
  */
 export interface ForgotPasswordRequest {
@@ -266,6 +283,12 @@ export interface ForgotPasswordRequest {
 export interface HttpValidationProblemDetails {
     [key: string]: any;
 
+    /**
+     * 
+     * @type {{ [key: string]: Array<string>; }}
+     * @memberof HttpValidationProblemDetails
+     */
+    'errors'?: { [key: string]: Array<string>; } | null;
     /**
      * 
      * @type {string}
@@ -296,12 +319,6 @@ export interface HttpValidationProblemDetails {
      * @memberof HttpValidationProblemDetails
      */
     'instance'?: string | null;
-    /**
-     * 
-     * @type {{ [key: string]: Array<string>; }}
-     * @memberof HttpValidationProblemDetails
-     */
-    'errors'?: { [key: string]: Array<string>; } | null;
 }
 /**
  * 
@@ -966,7 +983,7 @@ export const CurrentUserApiAxiosParamCreator = function (configuration?: Configu
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -1069,7 +1086,7 @@ export const CurrentUserApiAxiosParamCreator = function (configuration?: Configu
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2142,7 +2159,7 @@ export const ProductReviewsApiAxiosParamCreator = function (configuration?: Conf
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2292,7 +2309,7 @@ export const ProductReviewsApiAxiosParamCreator = function (configuration?: Conf
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2605,7 +2622,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2692,12 +2709,15 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {string} [searchQuery] 
          * @param {number} [pageIndex] 
          * @param {string} [category] 
+         * @param {EProductSearchPresets} [searchPreset] 
+         * @param {number} [maxPrice] 
+         * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts: async (searchQuery?: string, pageIndex?: number, category?: string, columnNameForSorting?: string, sortDirection?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchProducts: async (searchQuery?: string, pageIndex?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Products`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2720,6 +2740,18 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             if (category !== undefined) {
                 localVarQueryParameter['Category'] = category;
+            }
+
+            if (searchPreset !== undefined) {
+                localVarQueryParameter['SearchPreset'] = searchPreset;
+            }
+
+            if (maxPrice !== undefined) {
+                localVarQueryParameter['MaxPrice'] = maxPrice;
+            }
+
+            if (minPrice !== undefined) {
+                localVarQueryParameter['MinPrice'] = minPrice;
             }
 
             if (columnNameForSorting !== undefined) {
@@ -2770,7 +2802,7 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
@@ -2827,13 +2859,16 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          * @param {string} [searchQuery] 
          * @param {number} [pageIndex] 
          * @param {string} [category] 
+         * @param {EProductSearchPresets} [searchPreset] 
+         * @param {number} [maxPrice] 
+         * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchProducts(searchQuery?: string, pageIndex?: number, category?: string, columnNameForSorting?: string, sortDirection?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, category, columnNameForSorting, sortDirection, options);
+        async searchProducts(searchQuery?: string, pageIndex?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2889,13 +2924,16 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * @param {string} [searchQuery] 
          * @param {number} [pageIndex] 
          * @param {string} [category] 
+         * @param {EProductSearchPresets} [searchPreset] 
+         * @param {number} [maxPrice] 
+         * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts(searchQuery?: string, pageIndex?: number, category?: string, columnNameForSorting?: string, sortDirection?: string, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
-            return localVarFp.searchProducts(searchQuery, pageIndex, category, columnNameForSorting, sortDirection, options).then((request) => request(axios, basePath));
+        searchProducts(searchQuery?: string, pageIndex?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
+            return localVarFp.searchProducts(searchQuery, pageIndex, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -2981,6 +3019,27 @@ export interface ProductsApiSearchProductsRequest {
 
     /**
      * 
+     * @type {EProductSearchPresets}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly searchPreset?: EProductSearchPresets
+
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly maxPrice?: number
+
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly minPrice?: number
+
+    /**
+     * 
      * @type {string}
      * @memberof ProductsApiSearchProducts
      */
@@ -3063,7 +3122,7 @@ export class ProductsApi extends BaseAPI {
      * @memberof ProductsApi
      */
     public searchProducts(requestParameters: ProductsApiSearchProductsRequest = {}, options?: AxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.category, requestParameters.columnNameForSorting, requestParameters.sortDirection, options).then((request) => request(this.axios, this.basePath));
+        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.category, requestParameters.searchPreset, requestParameters.maxPrice, requestParameters.minPrice, requestParameters.columnNameForSorting, requestParameters.sortDirection, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3110,7 +3169,7 @@ export const UserWatchlistsApiAxiosParamCreator = function (configuration?: Conf
 
 
     
-            localVarHeaderParameter['Content-Type'] = 'application/json';
+            localVarHeaderParameter['Content-Type'] = 'application/json-patch+json';
 
             setSearchParams(localVarUrlObj, localVarQueryParameter);
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};

@@ -2,9 +2,9 @@ import { Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
 import CountDown from '../CountDown/CountDown';
 import { useState } from 'react';
 import { Product, ProductStatus, getProductStatus } from '../../common';
+import { useNavigate } from 'react-router-dom';
 
 import './SearchResultCard.css';
-import { useNavigate } from 'react-router-dom';
 
 export default function SearchResultCard({ product }: { product: Product }) {
 
@@ -19,8 +19,12 @@ export default function SearchResultCard({ product }: { product: Product }) {
     const getProductStatusText = () => {
         switch (productStatus) {
             case "pending":
+                return <div className='flex flex-row'>
+                    <p className='text-left my-0 bg-slate-300 rounded-md px-4'>Coming soon</p>
+                    <p className='grow my-0'>Initial price: ${product.initialPrice}</p>
+                </div>
             case "started":
-                return `Initial price: $${product.initialPrice}`;
+                return <>Initial price: ${product.initialPrice}</>;
             case 'finished':
                 return "Finished";
         }
@@ -44,7 +48,7 @@ export default function SearchResultCard({ product }: { product: Product }) {
                     alt={`product-${product.id}`}
                 />
 
-                {productStatus == "finished" &&
+                {productStatus != "finished" &&
                     <div className={`card-count-down ${cardHovered && 'translate-y-20'}`}>
                         <CountDown
                             key={productStatus === "started" ? "finish-timer" : "start-timer"}
@@ -64,11 +68,11 @@ export default function SearchResultCard({ product }: { product: Product }) {
                     onClick={navigateToProduct}
                 >
                     <h2 className='my-0'>
-                        {product.title}
+                        {product.title.length > 27 ? `${product.title.substring(0,27)}...` : product.title}
                     </h2>
                 </CardActionArea>
 
-                <h3 className='text-right mb-0'>
+                <h3 className='text-right mb-0 mt-0'>
                     {getProductStatusText()}
                 </h3>
 

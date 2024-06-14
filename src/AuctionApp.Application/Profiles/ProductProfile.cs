@@ -13,19 +13,9 @@ public class ProductProfile : Profile
     {
         CreateMap<Product, ProductDto>();
 
-        CreateMap<CreateProductCommand, Product>()
-            .ForMember(dest => dest.Categories,
-                src => src.MapFrom(
-                    src => src.Categories.Select(category => new Category() { Name = category.ToLower() })
-                )
-            );
+        CreateMap<CreateProductCommand, Product>();
 
-        CreateMap<UpdateProductCommand, Product>()
-            .ForMember(dest => dest.Categories,
-                src => src.MapFrom(
-                    src => src.Categories.Select(category => new Category() { Name = category.ToLower() })
-                )
-            );
+        CreateMap<UpdateProductCommand, Product>();
 
         CreateMap<SearchProductsQuery, PagedRequest>();
     }

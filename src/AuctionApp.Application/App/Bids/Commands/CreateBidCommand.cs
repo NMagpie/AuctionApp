@@ -30,7 +30,7 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
 
     public async Task<BidDto> Handle(CreateBidCommand request, CancellationToken cancellationToken)
     {
-        var product = await _repository.GetById<Product>(request.ProductId)
+        var product = await _repository.GetByIdWithInclude<Product>(request.ProductId, product => product.Bids)
             ?? throw new EntityNotFoundException("Product cannot be found");
 
         if (product.EndTime <= DateTimeOffset.UtcNow)
@@ -38,7 +38,7 @@ public class CreateBidCommandHandler : IRequestHandler<CreateBidCommand, BidDto>
             throw new BusinessValidationException("Cannot place bid: Auction Time is out");
         }
 
-        if (product.Bids.DefaultIfEmpty().Max(bid => bid.Amount) >= request.Amount)
+        if (product.Bids.Select(bid => bid.Amount).DefaultIfEmpty(0).Max() >= request.Amount)
         {
             throw new BusinessValidationException("Cannot place bid: someone placed greater bid");
         }

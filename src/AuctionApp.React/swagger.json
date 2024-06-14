@@ -93,6 +93,11 @@
         "operationId": "UpdateUser",
         "requestBody": {
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateUserRequest"
@@ -175,6 +180,11 @@
         "operationId": "AddUserBalance",
         "requestBody": {
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddUserBalanceRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/AddUserBalanceRequest"
@@ -635,6 +645,11 @@
         ],
         "requestBody": {
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductReviewRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateProductReviewRequest"
@@ -728,6 +743,11 @@
         "operationId": "CreateProductReview",
         "requestBody": {
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductReviewRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateProductReviewRequest"
@@ -884,6 +904,11 @@
         ],
         "requestBody": {
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/UpdateProductRequest"
@@ -977,6 +1002,11 @@
         "operationId": "CreateProduct",
         "requestBody": {
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateProductRequest"
@@ -1054,6 +1084,29 @@
             "in": "query",
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "SearchPreset",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/EProductSearchPresets"
+            }
+          },
+          {
+            "name": "MaxPrice",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "MinPrice",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
             }
           },
           {
@@ -1278,6 +1331,11 @@
         "operationId": "CreateUserWatchlist",
         "requestBody": {
           "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserWatchlistRequest"
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CreateUserWatchlistRequest"
@@ -1494,12 +1552,8 @@
             "type": "number",
             "format": "double"
           },
-          "categories": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+          "category": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -1567,6 +1621,16 @@
         },
         "additionalProperties": false
       },
+      "EProductSearchPresets": {
+        "enum": [
+          "ComingSoon",
+          "EndingSoon",
+          "MostActive",
+          "BidHigh",
+          "BidLow"
+        ],
+        "type": "string"
+      },
       "ForgotPasswordRequest": {
         "required": [
           "email"
@@ -1583,6 +1647,16 @@
       "HttpValidationProblemDetails": {
         "type": "object",
         "properties": {
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
           "type": {
             "type": "string",
             "nullable": true
@@ -1602,16 +1676,6 @@
           },
           "instance": {
             "type": "string",
-            "nullable": true
-          },
-          "errors": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            },
             "nullable": true
           }
         },
@@ -1720,20 +1784,14 @@
             "nullable": true
           },
           "bids": {
-            "uniqueItems": true,
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BidDto"
             },
             "nullable": true
           },
-          "categories": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CategoryDto"
-            },
-            "nullable": true
+          "category": {
+            "$ref": "#/components/schemas/CategoryDto"
           }
         },
         "additionalProperties": false
@@ -1970,12 +2028,8 @@
             "type": "number",
             "format": "double"
           },
-          "categories": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+          "category": {
+            "type": "string",
             "nullable": true
           }
         },

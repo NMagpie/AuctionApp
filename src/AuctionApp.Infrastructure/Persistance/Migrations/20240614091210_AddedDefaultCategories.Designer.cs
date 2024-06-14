@@ -4,6 +4,7 @@ using Infrastructure.Persistance;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AuctionAppDbContext))]
-    partial class AuctionAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240614091210_AddedDefaultCategories")]
+    partial class AddedDefaultCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,9 +67,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CreatorId")
                         .HasColumnType("int");
 
@@ -89,8 +89,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("CreatorId");
 
@@ -152,6 +150,21 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("UserWatchlists");
+                });
+
+            modelBuilder.Entity("CategoryProduct", b =>
+                {
+                    b.Property<int>("CategoriesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoriesId", "ProductsId");
+
+                    b.HasIndex("ProductsId");
+
+                    b.ToTable("CategoryProduct");
                 });
 
             modelBuilder.Entity("Domain.Auth.User", b =>
@@ -245,9 +258,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Name")
-                        .IsUnique();
 
                     b.ToTable("Categories");
 
@@ -433,15 +443,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("AuctionApp.Domain.Models.Product", b =>
                 {
-                    b.HasOne("EntityFramework.Domain.Models.Category", "Category")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoryId");
-
                     b.HasOne("Domain.Auth.User", "Creator")
                         .WithMany()
                         .HasForeignKey("CreatorId");
-
-                    b.Navigation("Category");
 
                     b.Navigation("Creator");
                 });
@@ -480,6 +484,21 @@ namespace Infrastructure.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CategoryProduct", b =>
+                {
+                    b.HasOne("EntityFramework.Domain.Models.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AuctionApp.Domain.Models.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -536,11 +555,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("AuctionApp.Domain.Models.Product", b =>
                 {
                     b.Navigation("Bids");
-                });
-
-            modelBuilder.Entity("EntityFramework.Domain.Models.Category", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -53,3 +53,28 @@ export const getProductStatus = (product: Product): ProductStatus => {
             return "finished";
     }
 };
+
+export const getSearchQuery = (query: QueryBody) => {
+    const params: Array<string> = [];
+
+    query.pageIndex && params.push(`pageIndex=${query.pageIndex}`);
+
+    query.searchQuery && params.push(`q=${query.searchQuery}`);
+
+    query.category && params.push(`category=${query.category}`);
+
+    query.columnNameForSorting && params.push(`sort=
+        ${query.columnNameForSorting}
+        ${query.sortDirection && `.${query.sortDirection}`
+        }`);
+
+    const preset = query.searchPreset ? `preset=${query.searchPreset}` : "preset=none";
+
+    params.push(preset);
+
+    query.minPrice && params.push(`minPrice=${query.minPrice}`);
+
+    query.maxPrice && params.push(`maxPrice=${query.maxPrice}`);
+
+    return "/search?" + params.join("&");
+};

@@ -1,6 +1,4 @@
-﻿using Domain.Auth;
-
-namespace Presentation.Common.Requests.Products;
+﻿namespace Presentation.Common.Requests.Products;
 public class CreateProductRequest
 {
     public string Title { get; set; }
@@ -13,5 +11,5 @@ public class CreateProductRequest
 
     public decimal InitialPrice { get; set; }
 
-    public HashSet<string> Categories { get; set; } = [];
+    public string Category { get; set; }
 }

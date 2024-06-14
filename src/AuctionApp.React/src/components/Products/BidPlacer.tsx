@@ -52,12 +52,12 @@ export default function BidPlacer({ product }: { product: Product }) {
             .withAutomaticReconnect()
             .build();
 
-        connection.on("GetLatestPrice", (price: number) => {
+        connection.on("GetLatestPrice", (price: number) => {            
             setPrice(price);
         });
 
         connection.on("BidNotify", (bidDto: BidDto) => {
-            setBidHistory(bidHistory => [...bidHistory, bidDto]);
+            setBidHistory(bidHistory => [...bidHistory, bidDto]);            
 
             setPrice(bidDto.amount);
         });

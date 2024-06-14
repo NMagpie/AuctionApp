@@ -11,5 +11,5 @@ public class UpdateProductRequest
 
     public decimal InitialPrice { get; set; }
 
-    public HashSet<string> Categories { get; set; } = [];
+    public string Category { get; set; }
 }

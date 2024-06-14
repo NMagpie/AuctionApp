@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Converters;
 using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 
@@ -36,7 +37,10 @@ public static class DependencyInjection
                         .AllowCredentials();
                 });
             })
-            .AddControllers();
+            .AddControllers()
+            .AddNewtonsoftJson(options => 
+                options.SerializerSettings.Converters.Add(new StringEnumConverter())
+            );
 
         builder.Services.AddEndpointsApiExplorer();
 
@@ -50,6 +54,8 @@ public static class DependencyInjection
                 ConfigureBearerTokenOptions>());
 
         builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+        builder.Services.AddSwaggerGenNewtonsoftSupport();
 
         builder.Services.AddSwaggerGen(option =>
         {

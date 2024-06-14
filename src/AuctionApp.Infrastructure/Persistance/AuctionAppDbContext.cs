@@ -1,4 +1,5 @@
 ﻿using AuctionApp.Domain.Models;
+using AuctionApp.Infrastructure.Extentions;
 using Domain.Auth;
 using EntityFramework.Domain.Models;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistance;
+
 public class AuctionAppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public AuctionAppDbContext(DbContextOptions<AuctionAppDbContext> options) : base(options) { }
@@ -23,6 +25,8 @@ public class AuctionAppDbContext : IdentityDbContext<User, IdentityRole<int>, in
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuctionAppDbContext).Assembly);
+
+        modelBuilder.Seed();
 
         base.OnModelCreating(modelBuilder);
     }

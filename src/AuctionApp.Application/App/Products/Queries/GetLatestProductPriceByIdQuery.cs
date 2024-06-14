@@ -20,7 +20,7 @@ public class GetLatestProductPriceByIdQueryHandler : IRequestHandler<GetLatestPr
 
     public async Task<decimal> Handle(GetLatestProductPriceByIdQuery request, CancellationToken cancellationToken)
     {
-        var product = await _repository.GetByIdWithInclude<Product>(request.Id, product => product.Creator)
+        var product = await _repository.GetByIdWithInclude<Product>(request.Id, product => product.Creator, product => product.Bids)
             ?? throw new EntityNotFoundException("Product cannot be found");
 
         var price = product.Bids.Count == 0 ? product.InitialPrice : product.Bids.Max(bid => bid.Amount);

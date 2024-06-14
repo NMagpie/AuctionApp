@@ -1,8 +1,9 @@
 ﻿using Application.App.Products.Responses;
 using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
-using Domain.Auth;
+using EntityFramework.Domain.Models;
 using MediatR;
 
 namespace Application.App.Products.Commands;
@@ -21,7 +22,7 @@ public class CreateProductCommand : IRequest<ProductDto>
 
     public decimal InitialPrice { get; set; }
 
-    public HashSet<string> Categories { get; set; } = [];
+    public string Category { get; set; }
 }
 
 public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand, ProductDto>
@@ -39,7 +40,12 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
     public async Task<ProductDto> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
+        var category = (await _repository.GetByPredicate<Category>(c => c.Name == request.Category)).SingleOrDefault()
+            ?? throw new EntityNotFoundException("Category cannot be found");
+
         var product = _mapper.Map<CreateProductCommand, Product>(request);
+
+        product.Category = category;
 
         await _repository.Add(product);
 

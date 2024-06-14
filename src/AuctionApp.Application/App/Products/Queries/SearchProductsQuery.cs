@@ -1,5 +1,6 @@
 ﻿using Application.App.Products.Responses;
 using Application.Common.Abstractions;
+using Application.Common.Exceptions;
 using AuctionApp.Application.Common.Models;
 using AuctionApp.Domain.Models;
 using AutoMapper;
@@ -14,6 +15,12 @@ public class SearchProductsQuery : IRequest<PaginatedResult<ProductDto>>
     public int PageIndex { get; set; }
 
     public string? Category { get; set; }
+
+    public EProductSearchPresets? SearchPreset { get; set; }
+
+    public decimal? MaxPrice { get; set; }
+
+    public decimal? MinPrice { get; set; }
 
     public string? ColumnNameForSorting { get; set; }
 
@@ -34,19 +41,34 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
 
     public async Task<PaginatedResult<ProductDto>> Handle(SearchProductsQuery request, CancellationToken cancellationToken)
     {
-        var query = _mapper.Map<PagedRequest>(request);
-
         var filters = new List<string>();
 
         if (!string.IsNullOrEmpty(request.SearchQuery))
         {
-            filters.Add($"Title.Contains(\"{request.SearchQuery}\") or Description.Contains(\"{request.SearchQuery}\")");
+            filters.Add($"(Title.Contains(\"{request.SearchQuery}\") or Description.Contains(\"{request.SearchQuery}\"))");
         }
 
         if (!string.IsNullOrEmpty(request.Category))
         {
-            filters.Add($"Categories.Any(c => c.Name == \"{request.Category}\")");
+            filters.Add($"Category.Name == \"{request.Category}\"");
         }
+
+        if (request.MaxPrice != null)
+        {
+            filters.Add($"InitialPrice <= {request.MaxPrice}");
+        }
+
+        if (request.MinPrice != null)
+        {
+            filters.Add($"InitialPrice >= {request.MinPrice}");
+        }
+
+        if (request.SearchPreset.HasValue)
+        {
+            GetFilteringByPreset(request, filters);
+        }
+
+        var query = _mapper.Map<PagedRequest>(request);
 
         query.Filter = string.Join(" and ", filters);
 
@@ -55,5 +77,46 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
         var result = await _repository.GetPagedData<Product, ProductDto>(query);
 
         return result;
+    }
+
+    private void GetFilteringByPreset(SearchProductsQuery request, List<string> filters)
+    {
+        var nearestTime = DateTimeOffset.UtcNow.AddMinutes(5);
+
+        switch (request.SearchPreset)
+        {
+            case EProductSearchPresets.ComingSoon:
+                filters.Add($"StartTime >= DateTimeOffset(\"{nearestTime}\")");
+                request.ColumnNameForSorting = "StartTime";
+                request.SortDirection = "asc";
+                break;
+
+            case EProductSearchPresets.EndingSoon:
+                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
+                request.ColumnNameForSorting = "EndTime";
+                request.SortDirection = "asc";
+                break;
+
+            case EProductSearchPresets.MostActive:
+                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
+                request.ColumnNameForSorting = "Bids.Count";
+                request.SortDirection = "desc";
+                break;
+
+            case EProductSearchPresets.BidHigh:
+                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset( \"{nearestTime}\")");
+                request.ColumnNameForSorting = "Bids.Select(b => b.Amount).DefaultIfEmpty().Max()";
+                request.SortDirection = "desc";
+                break;
+
+            case EProductSearchPresets.BidLow:
+                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
+                request.ColumnNameForSorting = "Bids.Select(b => b.Amount).DefaultIfEmpty().Max()";
+                request.SortDirection = "desc";
+                break;
+
+            default:
+                throw new BusinessValidationException("Invalid search preset");
+        };
     }
 }

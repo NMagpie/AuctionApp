@@ -3,7 +3,7 @@ using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Domain.Models;
 using AutoMapper;
-using Domain.Auth;
+using EntityFramework.Domain.Models;
 using MediatR;
 
 namespace Application.App.Products.Commands;
@@ -24,7 +24,7 @@ public class UpdateProductCommand : IRequest<ProductDto>
 
     public decimal InitialPrice { get; set; }
 
-    public HashSet<string> Categories { get; set; } = [];
+    public string Category { get; set; }
 }
 
 public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand, ProductDto>
@@ -45,6 +45,9 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         var product = await _repository.GetById<Product>(request.Id)
             ?? throw new EntityNotFoundException("Product cannot be found");
 
+        var category = (await _repository.GetByPredicate<Category>(c => c.Name == request.Category)).SingleOrDefault()
+            ?? throw new EntityNotFoundException("Category cannot be found");
+
         if (product.CreatorId != request.CreatorId)
         {
             throw new InvalidUserException("You do not have permission to modify this data");
@@ -56,6 +59,8 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
         }
 
         _mapper.Map(request, product);
+
+        product.Category = category;
 
         await _repository.SaveChanges();
 

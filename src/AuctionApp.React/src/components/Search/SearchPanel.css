@@ -1,0 +1,15 @@
+.search-page-panel {
+    @apply flex flex-col gap-3 lg:sticky top-[96px] bg-gray-200 border-solid border border-slate-300 shadow-xl rounded-lg;
+
+    .submit-buttons {
+        @apply flex flex-col md:flex-row justify-between mt-5 gap-5;
+    }
+
+    button {
+        @apply bg-slate-500 text-white px-5;
+    }
+
+    button:hover {
+        @apply bg-slate-800;
+    }
+}

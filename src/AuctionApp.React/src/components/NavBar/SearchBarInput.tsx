@@ -13,7 +13,7 @@ export default function SearchBarInput({ inputValue, handleInputChange }: Search
     const search = (e) => {
         e.preventDefault();
 
-        navigate(`/search?q=${inputValue}`);
+        navigate(`/search?q=${inputValue}`, { replace: true });
     };
 
     return (

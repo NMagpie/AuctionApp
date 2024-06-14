@@ -48,6 +48,7 @@ const AppRouter = () => {
         <Route path="/search"
           element={<SearchPage />}
           loader={async ({ request }) => searchLoader(api, request)}
+          errorElement={<ErrorPage />}
         />
 
         <Route path="/users/:id" element={<UserPage />} />

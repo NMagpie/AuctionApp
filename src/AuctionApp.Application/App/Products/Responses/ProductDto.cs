@@ -21,7 +21,7 @@ public class ProductDto
 
     public decimal? InitialPrice { get; set; }
 
-    public HashSet<BidDto> Bids { get; set; } = [];
+    public List<BidDto> Bids { get; set; } = [];
 
-    public HashSet<CategoryDto> Categories { get; set; } = [];
+    public CategoryDto Category { get; set; }
 }
