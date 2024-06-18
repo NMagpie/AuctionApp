@@ -21,10 +21,10 @@ public class CreateProductCommandValidator : BaseValidator<CreateProductCommand>
 
         RuleFor(x => x.StartTime)
             .GreaterThan(DateTimeOffset.UtcNow + TimeSpan.FromMinutes(5))
-            .WithMessage("Start Time must be greater than current time for at least 5 minutes");
+            .WithMessage("The Start Time must be greater than current time for at least 5 minutes");
 
         RuleFor(x => x.EndTime)
-            .GreaterThan(x => x.StartTime)
-            .WithMessage("End Time must be greater than start time");
+            .GreaterThan(x => x.StartTime + TimeSpan.FromMinutes(1))
+            .WithMessage("The Selling Time must be at least 1 minute long");
     }
 }

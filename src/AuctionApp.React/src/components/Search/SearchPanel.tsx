@@ -2,13 +2,17 @@ import { EProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } 
 import { FormControl, InputLabel, Select, MenuItem, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { getSearchQuery } from "../../common";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import './SearchPanel.css';
 
 function SearchPanel({ query }: { query: QueryBody }) {
 
     const [selectedQuery, setSelectedQuery] = useState(query);
+
+    useEffect(() => {
+        setSelectedQuery(query);
+    }, [query]);
 
     const navigate = useNavigate();
 
@@ -18,6 +22,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
         navigate(searchQueryString);
     };
 
+
     const resetQuery = () => {
         const emptyQuery = {
             searchQuery: selectedQuery.searchQuery,
@@ -26,8 +31,6 @@ function SearchPanel({ query }: { query: QueryBody }) {
             minPrice: "",
             maxPrice: "",
         };
-
-        setSelectedQuery(emptyQuery);
 
         const searchQueryString = getSearchQuery(emptyQuery);
 
@@ -49,16 +52,22 @@ function SearchPanel({ query }: { query: QueryBody }) {
     };
 
     const handleMinPriceChange = (e) => {
+
+        const minPrice = Number(e.target.value) ?? 0;
+
         setSelectedQuery({
             ...selectedQuery,
-            minPrice: e.target?.value ?? 0,
+            minPrice: minPrice < 0 ? 0 : minPrice,
         });
     };
 
     const handleMaxPriceChange = (e) => {
+
+        const maxPrice = Number(e.target.value) ?? 0;
+
         setSelectedQuery({
             ...selectedQuery,
-            maxPrice: e.target?.value ?? 0,
+            maxPrice: maxPrice < 0 ? 0 : maxPrice,
         });
     };
 

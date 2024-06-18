@@ -103,7 +103,7 @@ export default function ProductPage() {
                     }
                 </div>
 
-                <div className="text-flex-divider" />
+                <div className="text-flex-divider my-5" />
 
                 {product && <ProductPanel product={product} />}
 

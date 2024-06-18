@@ -22,7 +22,5 @@ export type LoginValidFieldNames =
 export const LoginSchema: ZodType<LoginFormData> = z
     .object({
         email: z.string().email(),
-        password: z
-            .string()
-            .min(8, { message: "Password is too short" })
+        password: z.string(),
     });

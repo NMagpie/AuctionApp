@@ -2,9 +2,9 @@ import { IconButton } from "@mui/material";
 import { Dispatch, SetStateAction, useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
+import SearchBarInput from "./SearchBarInput";
 
 import './SearchBar.css';
-import SearchBarInput from "./SearchBarInput";
 
 type SearchBarProps = {
     isSearchBarOpen: boolean;

@@ -28,7 +28,7 @@ public class UpdateProductCommandValidator : BaseValidator<UpdateProductCommand>
             .WithMessage("Start Time must be greater than current time for at least 5 minutes");
 
         RuleFor(x => x.EndTime)
-            .GreaterThan(x => x.StartTime)
-            .WithMessage("End Time must be greater than start time");
+            .GreaterThan(x => x.StartTime + TimeSpan.FromMinutes(1))
+            .WithMessage("The Selling Time must be at least 1 minute long");
     }
 }

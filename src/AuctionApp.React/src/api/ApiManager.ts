@@ -48,17 +48,6 @@ export default class ApiManager {
 
         this.axios = axios.create();
 
-        // this.axios.interceptors.request.use(async (config) => {
-
-        //     const token = await this.retrieveAccessToken();
-
-        //     if (token) {
-        //         config.headers["Authorization"] = `Bearer ${token}`;
-        //     }
-
-        //     return config;
-        // });
-
         const configuration = new Configuration({
             basePath: baseUrl,
             accessToken: () => this.retrieveAccessToken()
@@ -160,10 +149,13 @@ export default class ApiManager {
             return;
         }
 
-        this.userIdentity = new UserIdentity();
-        this.userIdentity.accessToken = data.accessToken!;
-        this.userIdentity.refreshToken = data.refreshToken!;
-        this.userIdentity.expireDate = new Date((requestTime ?? Date.now()) + data.expiresIn! * 1000);
+        const updatedIdentity = {
+            accessToken: data.accessToken!,
+            refreshToken: data.refreshToken!,
+            expireDate: new Date((requestTime ?? Date.now()) + data.expiresIn! * 1000),
+        };
+
+        this.userIdentity = updatedIdentity;
 
         localStorage.setItem('userIdentity', JSON.stringify(this.userIdentity));
     }
@@ -175,9 +167,12 @@ export default class ApiManager {
             return;
         }
 
-        this.user = new User();
-        this.user.id = data.id!;
-        this.user.userName = data.userName!;
-        this.user.balance = data.balance!;
+        const updatedUser = {
+            id: data.id!,
+            userName: data.userName!,
+            balance: data.balance!,
+        };
+
+        this.user = updatedUser;
     }
 }

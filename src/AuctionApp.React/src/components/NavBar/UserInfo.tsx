@@ -4,6 +4,7 @@ import { useApi } from "../../contexts/ApiContext";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import { useNavigate } from "react-router-dom";
 import { User } from "../../api/ApiManager";
+import AddBalanceDialog from "./AddBalanceDialog";
 
 import './UserInfo.css';
 
@@ -11,13 +12,13 @@ export default function UserInfo() {
 
     const navigate = useNavigate();
 
-    const { api, didUserLoad } = useApi();
+    const { api, didUserLoad, user } = useApi();
 
-    const [user, setUser] = useState<User | null>(api.user);
+    const [userState, setUser] = useState<User | null>(api.user);
 
     useEffect(() => {
-        setUser(api.user);
-    }, [didUserLoad, api.user]);
+        setUser(user);
+    }, [didUserLoad, user]);
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -25,38 +26,25 @@ export default function UserInfo() {
 
     const handleCloseUserMenu = () => setAnchorElUser(null);
 
+    const [addBalanceOpen, setAddBalanceOpen] = useState(false);
+
     const settings = [
-        { title: 'Profile', action: () => { } },
-        { title: 'Logout', action: () => { api.logout(); navigate(0); } }
+        { title: 'My Profile', action: () => { } },
+        { title: 'Create Product', action: () => { navigate("/create-product"); } },
+        { title: 'Logout', action: () => { api.logout(); navigate(0); } },
     ];
 
     return (
         <div className='user-info items-center'>
 
             {
-                user ?
+                userState ?
 
                     <Box className='flex items-center'>
-                        <div className='hidden md:flex items-center'>
-                            <Typography>
-                                {user.balance} $
-                            </Typography>
-                            <Tooltip title="Add balance">
-                                <IconButton
-                                    size="large"
-                                    aria-label="add balance of current user"
-                                    aria-haspopup="true"
-                                    onClick={() => { }}
-                                    color="inherit"
-                                >
-                                    <AddCardIcon />
-                                </IconButton>
-                            </Tooltip>
-                        </div>
 
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu}>
-                                <Avatar alt={user.userName?.charAt(0)} src="./src" />
+                                <Avatar alt={userState.userName?.charAt(0)} src="./src" />
                             </IconButton>
                         </Tooltip>
 
@@ -76,6 +64,36 @@ export default function UserInfo() {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
+
+                            <div className="menu-user-info">
+
+                                <Typography className="menu-user-name">
+                                    {userState.userName}
+                                </Typography>
+
+                                <div key="user-balance" className='user-balance'>
+                                    <Typography>
+                                        {userState.balance} $
+                                    </Typography>
+                                    <Tooltip title="Add balance">
+                                        <IconButton
+                                            size="large"
+                                            onClick={() => { setAddBalanceOpen(true); }}
+                                            color="inherit"
+                                        >
+                                            <AddCardIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                    <AddBalanceDialog
+                                        open={addBalanceOpen}
+                                        onClose={() => { setAddBalanceOpen(false); }}
+                                    />
+                                </div>
+
+                                <div className="text-flex-divider" />
+
+                            </div>
+
                             {settings.map((setting) => (
                                 <MenuItem key={setting.title} onClick={() => { handleCloseUserMenu(); setting.action() }}>
                                     <Typography textAlign="center">{setting.title}</Typography>

@@ -81,7 +81,9 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
 
     private void GetFilteringByPreset(SearchProductsQuery request, List<string> filters)
     {
-        var nearestTime = DateTimeOffset.UtcNow.AddMinutes(5);
+        var currentTime = DateTimeOffset.UtcNow;
+
+        var nearestTime = currentTime.AddMinutes(1);
 
         switch (request.SearchPreset)
         {
@@ -92,27 +94,27 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
                 break;
 
             case EProductSearchPresets.EndingSoon:
-                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
+                filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
                 request.ColumnNameForSorting = "EndTime";
                 request.SortDirection = "asc";
                 break;
 
             case EProductSearchPresets.MostActive:
-                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
+                filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
                 request.ColumnNameForSorting = "Bids.Count";
                 request.SortDirection = "desc";
                 break;
 
             case EProductSearchPresets.BidHigh:
-                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset( \"{nearestTime}\")");
+                filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset( \"{nearestTime}\")");
                 request.ColumnNameForSorting = "Bids.Select(b => b.Amount).DefaultIfEmpty().Max()";
                 request.SortDirection = "desc";
                 break;
 
             case EProductSearchPresets.BidLow:
-                filters.Add($"StartTime <= DateTimeOffset(\"{nearestTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
+                filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
                 request.ColumnNameForSorting = "Bids.Select(b => b.Amount).DefaultIfEmpty().Max()";
-                request.SortDirection = "desc";
+                request.SortDirection = "asc";
                 break;
 
             default:

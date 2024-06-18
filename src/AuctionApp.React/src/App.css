@@ -3,5 +3,5 @@
 } */
 
 .text-flex-divider {
-    @apply text-slate-600 border-solid border w-3/4 lg:w-full my-5;
+    @apply text-slate-600 border-solid border w-3/4 lg:w-full;
 }

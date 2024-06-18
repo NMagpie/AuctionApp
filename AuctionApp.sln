@@ -5,8 +5,6 @@ VisualStudioVersion = 17.9.34714.143
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{EF5097A2-4287-4B3A-8DC6-0AE6E7A1057F}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{DCAC9553-288D-4101-B79E-9E07869CF780}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionApp.Application", "src\AuctionApp.Application\AuctionApp.Application.csproj", "{B764AB6B-0F5F-4B27-9B3B-8F9E3D1B4929}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionApp.Domain", "src\AuctionApp.Domain\AuctionApp.Domain.csproj", "{B4567A44-0C55-41F0-BCD9-2ED0F94F0077}"
@@ -14,10 +12,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionApp.Infrastructure", "src\AuctionApp.Infrastructure\AuctionApp.Infrastructure.csproj", "{BA076AD2-EBE1-43E5-A3C5-C5443DB3C988}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionApp.Presentation", "src\AuctionApp.Presentation\AuctionApp.Presentation.csproj", "{3DBDA3AB-1885-4D19-B087-36D9A30BE139}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionApp.IntegrationTests", "test\AuctionApp.IntegrationTests\AuctionApp.IntegrationTests.csproj", "{2900593D-AE82-4A5A-AA95-C2CD189FA29E}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuctionApp.UnitTests", "test\AuctionApp.UnitTests\AuctionApp.UnitTests.csproj", "{DAF4C91A-9B1A-4A10-8AD4-2DE7E9048CD0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,14 +35,6 @@ Global
 		{3DBDA3AB-1885-4D19-B087-36D9A30BE139}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3DBDA3AB-1885-4D19-B087-36D9A30BE139}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3DBDA3AB-1885-4D19-B087-36D9A30BE139}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2900593D-AE82-4A5A-AA95-C2CD189FA29E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2900593D-AE82-4A5A-AA95-C2CD189FA29E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2900593D-AE82-4A5A-AA95-C2CD189FA29E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2900593D-AE82-4A5A-AA95-C2CD189FA29E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DAF4C91A-9B1A-4A10-8AD4-2DE7E9048CD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DAF4C91A-9B1A-4A10-8AD4-2DE7E9048CD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DAF4C91A-9B1A-4A10-8AD4-2DE7E9048CD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DAF4C91A-9B1A-4A10-8AD4-2DE7E9048CD0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,8 +44,6 @@ Global
 		{B4567A44-0C55-41F0-BCD9-2ED0F94F0077} = {EF5097A2-4287-4B3A-8DC6-0AE6E7A1057F}
 		{BA076AD2-EBE1-43E5-A3C5-C5443DB3C988} = {EF5097A2-4287-4B3A-8DC6-0AE6E7A1057F}
 		{3DBDA3AB-1885-4D19-B087-36D9A30BE139} = {EF5097A2-4287-4B3A-8DC6-0AE6E7A1057F}
-		{2900593D-AE82-4A5A-AA95-C2CD189FA29E} = {DCAC9553-288D-4101-B79E-9E07869CF780}
-		{DAF4C91A-9B1A-4A10-8AD4-2DE7E9048CD0} = {DCAC9553-288D-4101-B79E-9E07869CF780}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D99F9264-4BC1-434C-AF71-C7FD5B861A44}

@@ -1,4 +1,4 @@
-import { Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
+import { Card, CardActionArea, CardMedia, CardContent, Button } from '@mui/material';
 import CountDown from '../CountDown/CountDown';
 import { useState } from 'react';
 import { Product, ProductStatus, getProductStatus } from '../../common';
@@ -16,19 +16,23 @@ export default function SearchResultCard({ product }: { product: Product }) {
 
     const [cardHovered, setCardHovered] = useState(false);
 
-    const getProductStatusText = () => {
-        switch (productStatus) {
-            case "pending":
-                return <div className='flex flex-row'>
-                    <p className='text-left my-0 bg-slate-300 rounded-md px-4'>Coming soon</p>
-                    <p className='grow my-0'>Initial price: ${product.initialPrice}</p>
-                </div>
-            case "started":
-                return <>Initial price: ${product.initialPrice}</>;
-            case 'finished':
-                return "Finished";
-        }
-    };
+    const productStatusPanel = () => {
+        return (
+            <>
+                {productStatus !== "finished" ?
+                    <div className='flex flex-row items-baseline'>
+                        <Button
+                            disabled={productStatus === "pending"}
+                            onClick={navigateToProduct}
+                            className='product-button'
+                        >{productStatus === "pending" ? "Coming soon" : "Bid now"}</Button>
+                        <p className='grow my-0'>Initial price: ${product.initialPrice}</p>
+                    </div>
+                    :
+                    "Finished"}
+            </>
+        );
+    }
 
     return (
         <Card
@@ -68,12 +72,12 @@ export default function SearchResultCard({ product }: { product: Product }) {
                     onClick={navigateToProduct}
                 >
                     <h2 className='my-0'>
-                        {product.title.length > 27 ? `${product.title.substring(0,27)}...` : product.title}
+                        {product.title.length > 27 ? `${product.title.substring(0, 27)}...` : product.title}
                     </h2>
                 </CardActionArea>
 
                 <h3 className='text-right mb-0 mt-0'>
-                    {getProductStatusText()}
+                    {productStatusPanel()}
                 </h3>
 
             </CardContent>

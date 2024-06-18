@@ -70,7 +70,12 @@ export default function LoginPage() {
                     error={errors.password}
                 />
 
-                <Button className="my-5" variant="outlined" color="primary" type="submit">Login</Button>
+                <Button
+                    className="my-5"
+                    variant="outlined"
+                    color="primary"
+                    type="submit"
+                >Login</Button>
 
                 <small className="flex items-baseline">Need an account?
                     <Button href="/register"> Register here</Button>

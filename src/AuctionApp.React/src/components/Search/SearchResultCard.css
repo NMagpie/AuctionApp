@@ -1,7 +1,9 @@
 .search-result-card {
-    @apply my-5 lg:m-auto w-full lg:w-auto;
+    @apply my-5 lg:m-auto w-full h-full;
 
     .card-image {
+        @apply object-cover h-[300px] md:h-[400px] lg:h-[250px];
+
         transition: transform cubic-bezier(0.39, 0.575, 0.565, 1) 250ms;
     }
 
@@ -21,5 +23,13 @@
                 @apply text-xl;
             }
         }
+    }
+
+    .product-button {
+        @apply my-0 bg-slate-300 rounded-md px-4 text-inherit;
+    }
+
+    .product-button:hover {
+        @apply bg-slate-800 text-white;
     }
 }

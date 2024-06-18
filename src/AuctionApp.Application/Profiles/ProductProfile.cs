@@ -4,7 +4,6 @@ using AuctionApp.Application.App.Products.Queries;
 using AuctionApp.Application.Common.Models;
 using AuctionApp.Domain.Models;
 using AutoMapper;
-using EntityFramework.Domain.Models;
 
 namespace Application.Profiles;
 public class ProductProfile : Profile
@@ -13,9 +12,11 @@ public class ProductProfile : Profile
     {
         CreateMap<Product, ProductDto>();
 
-        CreateMap<CreateProductCommand, Product>();
+        CreateMap<CreateProductCommand, Product>()
+            .ForMember(dest => dest.Category, opt => opt.Ignore());
 
-        CreateMap<UpdateProductCommand, Product>();
+        CreateMap<UpdateProductCommand, Product>()
+            .ForMember(dest => dest.Category, opt => opt.Ignore());
 
         CreateMap<SearchProductsQuery, PagedRequest>();
     }

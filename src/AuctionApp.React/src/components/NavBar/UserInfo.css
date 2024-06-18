@@ -8,3 +8,23 @@
         @apply font-mono bg-white text-black no-underline font-bold;
     }
 }
+
+.menu-user-info {
+    @apply mx-4 my-2 text-center flex flex-col items-center;
+
+    .user-balance {
+        @apply flex flex-row items-center;
+
+        p {
+            @apply p-3;
+        }
+    }
+
+    p {
+        @apply font-bold;
+    }
+
+    p.menu-user-name {
+        @apply mb-1 text-xl;
+    }
+}

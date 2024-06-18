@@ -5,4 +5,8 @@
     a.logo:visited {
         @apply sm:grow-0 grow font-mono mr-4 flex text-white no-underline tracking-widest font-bold items-center;
     }
+
+    .toolbar {
+        @apply flex;
+    }
 }

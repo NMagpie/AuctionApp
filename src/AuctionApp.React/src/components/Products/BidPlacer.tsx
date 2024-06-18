@@ -1,5 +1,4 @@
 import { useApi } from "../../contexts/ApiContext";
-import { Product } from "../../pages/ProductPage/ProductPage";
 import * as signalR from "@microsoft/signalr";
 import { baseUrl } from "../../api/ApiManager";
 import { useEffect, useState } from "react";
@@ -7,9 +6,10 @@ import { BidDto } from "../../api/openapi-generated";
 import { Button, InputAdornment, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GavelIcon from '@mui/icons-material/Gavel';
+import { useSnackbar } from "notistack";
+import { Product } from "../../common";
 
 import './BidPlacer.css';
-import { useSnackbar } from "notistack";
 
 export default function BidPlacer({ product }: { product: Product }) {
 
@@ -28,7 +28,7 @@ export default function BidPlacer({ product }: { product: Product }) {
     const [amount, setAmount] = useState<number>(price);
 
     const handleAmountChange = (e) => {
-        setAmount(e.target.value);
+        setAmount(Number(e.target.value));
     };
 
     const placeBid = (e) => {
@@ -52,12 +52,12 @@ export default function BidPlacer({ product }: { product: Product }) {
             .withAutomaticReconnect()
             .build();
 
-        connection.on("GetLatestPrice", (price: number) => {            
+        connection.on("GetLatestPrice", (price: number) => {
             setPrice(price);
         });
 
         connection.on("BidNotify", (bidDto: BidDto) => {
-            setBidHistory(bidHistory => [...bidHistory, bidDto]);            
+            setBidHistory(bidHistory => [...bidHistory, bidDto]);
 
             setPrice(bidDto.amount);
         });

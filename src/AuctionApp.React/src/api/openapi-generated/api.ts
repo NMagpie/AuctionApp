@@ -165,10 +165,10 @@ export interface CreateProductRequest {
     'initialPrice'?: number;
     /**
      * 
-     * @type {Set<string>}
+     * @type {string}
      * @memberof CreateProductRequest
      */
-    'categories'?: Set<string> | null;
+    'category'?: string | null;
 }
 /**
  * 
@@ -451,16 +451,16 @@ export interface ProductDto {
     'initialPrice'?: number | null;
     /**
      * 
-     * @type {Set<BidDto>}
+     * @type {Array<BidDto>}
      * @memberof ProductDto
      */
-    'bids'?: Set<BidDto> | null;
+    'bids'?: Array<BidDto> | null;
     /**
      * 
-     * @type {Set<CategoryDto>}
+     * @type {CategoryDto}
      * @memberof ProductDto
      */
-    'categories'?: Set<CategoryDto> | null;
+    'category'?: CategoryDto;
 }
 /**
  * 
@@ -749,10 +749,10 @@ export interface UpdateProductRequest {
     'initialPrice'?: number;
     /**
      * 
-     * @type {Set<string>}
+     * @type {string}
      * @memberof UpdateProductRequest
      */
-    'categories'?: Set<string> | null;
+    'category'?: string | null;
 }
 /**
  * 

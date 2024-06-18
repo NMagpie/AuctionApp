@@ -18,15 +18,20 @@ import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { SnackbarProvider } from 'notistack';
 import SearchPage from './pages/SearchPage/SearchPage';
 import searchLoader from './pages/SearchPage/SearchLoader';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 import './App.css'
+import CreateProductPage from './pages/CreateProductPage/CreateProductPage';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 function App() {
   return (
     <SnackbarProvider autoHideDuration={3000} preventDuplicate>
-      <ApiProvider>
-        <AppRouter />
-      </ApiProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ApiProvider>
+          <AppRouter />
+        </ApiProvider>
+      </LocalizationProvider>
     </SnackbarProvider>
   )
 }
@@ -37,13 +42,28 @@ const AppRouter = () => {
 
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path="/" element={<Layout />}>
+      <Route
+        path="/"
+        element={<Layout />}
+      >
 
-        <Route index element={<Home />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route
+          index
+          element={<Home />}
+        />
+        <Route
+          path="*"
+          element={<ErrorPage />}
+        />
 
-        <Route path="/login" element={<RequireGuest> <LoginPage /> </RequireGuest>} />
-        <Route path="/register" element={<RequireGuest> <RegisterPage /> </RequireGuest>} />
+        <Route
+          path="/login"
+          element={<RequireGuest> <LoginPage /> </RequireGuest>}
+        />
+        <Route
+          path="/register"
+          element={<RequireGuest> <RegisterPage /> </RequireGuest>}
+        />
 
         <Route path="/search"
           element={<SearchPage />}
@@ -57,6 +77,10 @@ const AppRouter = () => {
           element={<ProductPage />}
           loader={async ({ params }) => productLoader(api, params.id)}
           errorElement={<ErrorPage />}
+        />
+
+        <Route path="/create-product"
+          element={<RequireAuth> <CreateProductPage /> </RequireAuth>}
         />
 
       </Route>
@@ -73,16 +97,30 @@ const AppRouter = () => {
 
 function RequireAuth({ children }: { children: React.ReactNode | React.ReactNode[] }) {
 
-  const { user } = useApi().api;
+  const { didUserLoad, user } = useApi();
 
-  return user ? children : <Navigate to="/login" />;
+  return (
+    <>
+      {didUserLoad ?
+        user ? children : <Navigate to="/login" /> :
+        <Loading />
+      }
+    </>
+  )
 }
 
 function RequireGuest({ children }: { children: React.ReactNode | React.ReactNode[] }) {
 
-  const { user } = useApi().api;
+  const { didUserLoad, user } = useApi();
 
-  return !user ? children : <Navigate to="/" />;
+  return (
+    <>
+      {didUserLoad ?
+        !user ? children : <Navigate to="/" /> :
+        <Loading />
+      }
+    </>
+  )
 }
 
 export default App;

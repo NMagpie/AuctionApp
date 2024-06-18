@@ -43,7 +43,7 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
         var category = (await _repository.GetByPredicate<Category>(c => c.Name == request.Category)).SingleOrDefault()
             ?? throw new EntityNotFoundException("Category cannot be found");
 
-        var product = _mapper.Map<CreateProductCommand, Product>(request);
+        var product = _mapper.Map<Product>(request);
 
         product.Category = category;
 
