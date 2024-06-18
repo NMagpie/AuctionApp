@@ -1,7 +1,7 @@
 import { EProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } from "../../api/openapi-generated";
 import { FormControl, InputLabel, Select, MenuItem, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { getSearchQuery } from "../../common";
+import { categoryList, getSearchQuery } from "../../common";
 import { useEffect, useState } from "react";
 
 import './SearchPanel.css';
@@ -40,6 +40,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
     const handlePresetChange = (e) => {
         setSelectedQuery({
             ...selectedQuery,
+            pageIndex: 0,
             searchPreset: EProductSearchPresets[e.target.value] ?? "none",
         });
     };
@@ -47,6 +48,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
     const handleCategoryChange = (e) => {
         setSelectedQuery({
             ...selectedQuery,
+            pageIndex: 0,
             category: e.target.value ?? "",
         });
     };
@@ -57,6 +59,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
 
         setSelectedQuery({
             ...selectedQuery,
+            pageIndex: 0,
             minPrice: minPrice < 0 ? 0 : minPrice,
         });
     };
@@ -67,6 +70,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
 
         setSelectedQuery({
             ...selectedQuery,
+            pageIndex: 0,
             maxPrice: maxPrice < 0 ? 0 : maxPrice,
         });
     };
@@ -103,11 +107,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
                     onChange={handleCategoryChange}
                 >
                     <MenuItem value="">None</MenuItem>
-                    <MenuItem value={"Antiques"}>Antiques</MenuItem>
-                    <MenuItem value={"Electronics"}>Electronics</MenuItem>
-                    <MenuItem value={"Fashion"}>Fashion</MenuItem>
-                    <MenuItem value={"Books"}>Books</MenuItem>
-                    <MenuItem value={"Other"}>Other</MenuItem>
+                    {categoryList.map(c => <MenuItem key={`category-${c}`} value={c}>{c}</MenuItem>)}
                 </Select>
             </FormControl>
 

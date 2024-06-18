@@ -5,3 +5,7 @@
 .user-page-info-content {
     @apply flex flex-col content-center items-center p-10 gap-5;
 }
+
+.user-product-list {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5;
+}

@@ -2,6 +2,14 @@
     @apply text-slate-700 mx-5 lg:m-10;
 
     .create-product-form {
-        @apply flex flex-col gap-5 mx-auto md:w-1/2;
+        @apply flex flex-col gap-5 mx-auto lg:w-1/2;
+
+        .submit-button {
+            @apply w-fit self-end bg-slate-500 text-white px-5;
+        }
+
+        .submit-button:hover {
+            @apply bg-slate-800;
+        }
     }
 }

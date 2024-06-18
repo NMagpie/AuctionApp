@@ -1,31 +1,39 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { useApi } from "../../contexts/ApiContext";
 import { Avatar, Typography } from "@mui/material";
 import Divider from '@mui/material/Divider';
-import { UserDto } from "../../api/openapi-generated";
+import { ProductDto } from "../../api/openapi-generated";
+import { productDtoToProduct } from "../../common";
+import SearchResultCard from "../../components/Search/SearchResultCard";
 
 import './UserPage.css';
 
 export default function UserPage() {
 
-    const { id } = useParams();
+    const { user, userProductsData } = useLoaderData();
 
-    const [user, setUser] = useState<UserDto | null>(null);
+    const { api } = useApi();
 
-    const api = useApi().api;
-
-    const getUser = async () => {
-        const user = (await api.users.getUser({ id: parseInt(id ?? "") })).data;
-
-        setUser(user);
-    };
-
-    console.log();
-
-    useEffect(() => {
-        getUser();
-    }, []);
+    const userProductList = (products) => {
+        return (
+            products.length ?
+                <>
+                    <div className="user-product-list">
+                        {products.map((product: ProductDto) => {
+                            return (
+                                <SearchResultCard
+                                    key={`user-product-${product.id}`}
+                                    product={productDtoToProduct(product)}
+                                />
+                            );
+                        }
+                        )}
+                    </div>
+                </>
+                :
+                <h2>User hasn't created any of products...</h2>
+        );
+    }
 
     return (
         <div className="user-page-info">
@@ -38,7 +46,9 @@ export default function UserPage() {
 
                 <Divider className="bg-black border-slate-700 border-solid w-1/2" />
 
-                <Typography variant="h5">Auctions:</Typography>
+                <Typography variant="h5">Products:</Typography>
+
+                {userProductList(userProductsData.items)}
             </div>
 
         </div>

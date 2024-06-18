@@ -78,3 +78,11 @@ export const getSearchQuery = (query: QueryBody) => {
 
     return "/search?" + params.join("&");
 };
+
+export const categoryList = [
+    "Antiques",
+    "Electronics",
+    "Fashion",
+    "Books",
+    "Other"
+];

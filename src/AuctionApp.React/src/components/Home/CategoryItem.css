@@ -1,0 +1,13 @@
+.category-item {
+    @apply flex flex-col w-fit;
+
+    img {
+        transition: all cubic-bezier(0.39, 0.575, 0.565, 1) 250ms;
+
+        @apply h-[150px];
+    }
+
+    label {
+        @apply text-slate-800;
+    }
+}

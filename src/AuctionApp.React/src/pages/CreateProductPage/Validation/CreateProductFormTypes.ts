@@ -1,5 +1,6 @@
 import { FieldError, UseFormRegister } from "react-hook-form";
 import { z, ZodType } from "zod";
+import { categoryList } from "../../../common";
 
 export type CreateProductFormData = {
     title: string;
@@ -35,13 +36,9 @@ const getCorrectStartDate = () => {
     return date;
 };
 
-const CategorySchema = z.union([
-    z.literal("Antiques"),
-    z.literal("Books"),
-    z.literal("Electronics"),
-    z.literal("Fashion"),
-    z.literal("Other"),
-]);
+const CategorySchema = z.union(
+    categoryList.map(c => z.literal(c))
+);
 
 export const CreateProductSchema: ZodType<CreateProductFormData> = z
     .object({

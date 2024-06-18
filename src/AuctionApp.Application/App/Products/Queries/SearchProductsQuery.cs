@@ -14,6 +14,8 @@ public class SearchProductsQuery : IRequest<PaginatedResult<ProductDto>>
 
     public int PageIndex { get; set; }
 
+    public int PageSize { get; set; }
+
     public string? Category { get; set; }
 
     public EProductSearchPresets? SearchPreset { get; set; }
@@ -25,6 +27,8 @@ public class SearchProductsQuery : IRequest<PaginatedResult<ProductDto>>
     public string? ColumnNameForSorting { get; set; }
 
     public string? SortDirection { get; set; }
+
+    public int? CreatorId { get; set; }
 }
 
 public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, PaginatedResult<ProductDto>>
@@ -63,6 +67,11 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
             filters.Add($"InitialPrice >= {request.MinPrice}");
         }
 
+        if (request.CreatorId != null)
+        {
+            filters.Add($"CreatorId == {request.CreatorId}");
+        }
+
         if (request.SearchPreset.HasValue)
         {
             GetFilteringByPreset(request, filters);
@@ -71,8 +80,6 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
         var query = _mapper.Map<PagedRequest>(request);
 
         query.Filter = string.Join(" and ", filters);
-
-        query.PageSize = 12;
 
         var result = await _repository.GetPagedData<Product, ProductDto>(query);
 

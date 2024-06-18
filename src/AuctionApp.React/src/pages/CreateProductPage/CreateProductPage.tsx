@@ -10,6 +10,7 @@ import { CreateProductSchema } from './Validation/CreateProductFormTypes';
 import CreateProductDateTimeFormField from './Validation/CreateProductDateTimeField';
 import CreateProductCategorySelectFormField from './Validation/CreateProductCategorySelectFormField';
 import { useSnackbar } from 'notistack';
+import { categoryList } from '../../common';
 
 import './CreateProductPage.css';
 
@@ -122,14 +123,11 @@ function CreateProductPage() {
                     register={register}
                     error={errors.category}
                 >
-                    <MenuItem value={"Antiques"}>Antiques</MenuItem>
-                    <MenuItem value={"Electronics"}>Electronics</MenuItem>
-                    <MenuItem value={"Fashion"}>Fashion</MenuItem>
-                    <MenuItem value={"Books"}>Books</MenuItem>
-                    <MenuItem value={"Other"}>Other</MenuItem>
+                    {categoryList.map(c => <MenuItem key={`category-${c}`} value={c}>{c}</MenuItem>)}
                 </CreateProductCategorySelectFormField>
 
                 <Button
+                    className="submit-button"
                     variant="outlined"
                     color="primary"
                     type="submit"

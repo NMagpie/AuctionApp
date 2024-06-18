@@ -1,7 +1,7 @@
 import ApiManager from "../../api/ApiManager"
 import { productDtoToProduct } from "../../common";
 
-const productLoader = async (api: ApiManager, id: string) => {
+const productPageLoader = async (api: ApiManager, id: string) => {
 
     const intId = Number.parseInt(id);
 
@@ -40,4 +40,4 @@ const productLoader = async (api: ApiManager, id: string) => {
     return { productData, watshlistExists, reviewsData };
 };
 
-export default productLoader;
+export default productPageLoader;

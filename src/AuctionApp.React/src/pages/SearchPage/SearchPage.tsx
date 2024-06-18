@@ -50,7 +50,8 @@ export default function SearchPage() {
     return (
         <div className='search-page'>
 
-            <h1 className='search-title'>Search results: {searchTitle()}</h1>
+            <h1 className="search-title hidden sm:block">Search results: {searchTitle()}</h1>
+            <h2 className="search-title sm:hidden">Search results: {searchTitle()}</h2>
 
             <div className='search-page-body'>
 
@@ -87,7 +88,6 @@ export default function SearchPage() {
                 }
 
             </div>
-
 
         </div>
     );

@@ -12,17 +12,19 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 import React from 'react';
 import UserPage from './pages/UserPage/UserPage';
 import ProductPage from './pages/ProductPage/ProductPage';
-import productLoader from './pages/ProductPage/ProductLoader';
-import Loading from './components/LoadingComponent/Loading';
+import productPageLoader from './pages/ProductPage/ProductPageLoader';
+import Loading from './components/Loading/Loading';
 import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { SnackbarProvider } from 'notistack';
 import SearchPage from './pages/SearchPage/SearchPage';
-import searchLoader from './pages/SearchPage/SearchLoader';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-
-import './App.css'
 import CreateProductPage from './pages/CreateProductPage/CreateProductPage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import searchPageLoader from './pages/SearchPage/SearchPageLoader';
+
+import './App.css'
+import homePageLoader from './pages/HomePage/HomePageLoader';
+import userPageLoader from './pages/UserPage/UserPageLoader';
 
 function App() {
   return (
@@ -50,6 +52,8 @@ const AppRouter = () => {
         <Route
           index
           element={<Home />}
+          loader={() => homePageLoader(api)}
+          errorElement={<ErrorPage />}
         />
         <Route
           path="*"
@@ -67,15 +71,19 @@ const AppRouter = () => {
 
         <Route path="/search"
           element={<SearchPage />}
-          loader={async ({ request }) => searchLoader(api, request)}
+          loader={async ({ request }) => searchPageLoader(api, request)}
           errorElement={<ErrorPage />}
         />
 
-        <Route path="/users/:id" element={<UserPage />} />
+        <Route path="/users/:id"
+          element={<UserPage />}
+          loader={async ({ params }) => userPageLoader(api, params.id)}
+          errorElement={<ErrorPage />}
+        />
 
         <Route path="/products/:id"
           element={<ProductPage />}
-          loader={async ({ params }) => productLoader(api, params.id)}
+          loader={async ({ params }) => productPageLoader(api, params.id)}
           errorElement={<ErrorPage />}
         />
 

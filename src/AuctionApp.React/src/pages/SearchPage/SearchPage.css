@@ -1,11 +1,8 @@
 .search-page {
-    @apply text-slate-700 lg:mx-10;
+    @apply text-slate-700 mx-5 lg:mx-10;
 
     .search-title {
-
-        overflow-wrap: break-word;
-
-        @apply text-center md:text-start;
+        @apply text-center lg:text-start break-words;
     }
 
     .search-page-body {
@@ -13,7 +10,7 @@
     }
 
     .search-product-result {
-        @apply lg:grid flex flex-col lg:grid-cols-2 xl:grid-cols-3 gap-5;
+        @apply grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5;
     }
 
     .search-page-panel {
@@ -21,10 +18,10 @@
     }
 
     .pagination {
-        @apply my-5;
+        @apply mt-10 lg:mt-5;
     }
 
-    .pagination > ul {
+    .pagination>ul {
         @apply justify-center;
     }
 }

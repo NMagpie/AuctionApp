@@ -2708,16 +2708,18 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * 
          * @param {string} [searchQuery] 
          * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
          * @param {string} [category] 
          * @param {EProductSearchPresets} [searchPreset] 
          * @param {number} [maxPrice] 
          * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts: async (searchQuery?: string, pageIndex?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchProducts: async (searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, userId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Products`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2736,6 +2738,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             if (pageIndex !== undefined) {
                 localVarQueryParameter['PageIndex'] = pageIndex;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['PageSize'] = pageSize;
             }
 
             if (category !== undefined) {
@@ -2760,6 +2766,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             if (sortDirection !== undefined) {
                 localVarQueryParameter['SortDirection'] = sortDirection;
+            }
+
+            if (userId !== undefined) {
+                localVarQueryParameter['UserId'] = userId;
             }
 
 
@@ -2858,17 +2868,19 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          * 
          * @param {string} [searchQuery] 
          * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
          * @param {string} [category] 
          * @param {EProductSearchPresets} [searchPreset] 
          * @param {number} [maxPrice] 
          * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchProducts(searchQuery?: string, pageIndex?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, options);
+        async searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, userId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, userId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2923,17 +2935,19 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * 
          * @param {string} [searchQuery] 
          * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
          * @param {string} [category] 
          * @param {EProductSearchPresets} [searchPreset] 
          * @param {number} [maxPrice] 
          * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts(searchQuery?: string, pageIndex?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
-            return localVarFp.searchProducts(searchQuery, pageIndex, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, options).then((request) => request(axios, basePath));
+        searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, userId?: number, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
+            return localVarFp.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, userId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3012,6 +3026,13 @@ export interface ProductsApiSearchProductsRequest {
 
     /**
      * 
+     * @type {number}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly pageSize?: number
+
+    /**
+     * 
      * @type {string}
      * @memberof ProductsApiSearchProducts
      */
@@ -3051,6 +3072,13 @@ export interface ProductsApiSearchProductsRequest {
      * @memberof ProductsApiSearchProducts
      */
     readonly sortDirection?: string
+
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly userId?: number
 }
 
 /**
@@ -3122,7 +3150,7 @@ export class ProductsApi extends BaseAPI {
      * @memberof ProductsApi
      */
     public searchProducts(requestParameters: ProductsApiSearchProductsRequest = {}, options?: AxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.category, requestParameters.searchPreset, requestParameters.maxPrice, requestParameters.minPrice, requestParameters.columnNameForSorting, requestParameters.sortDirection, options).then((request) => request(this.axios, this.basePath));
+        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.pageSize, requestParameters.category, requestParameters.searchPreset, requestParameters.maxPrice, requestParameters.minPrice, requestParameters.columnNameForSorting, requestParameters.sortDirection, requestParameters.userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

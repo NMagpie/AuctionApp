@@ -1,7 +1,7 @@
 import ApiManager from "../../api/ApiManager";
 import { EProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } from "../../api/openapi-generated";
 
-const searchLoader = async (api: ApiManager, request: Request) => {
+const searchPageLoader = async (api: ApiManager, request: Request) => {
     const url = new URL(request.url);
     const query = url.searchParams.get("q");
     const category = url.searchParams.get("category");
@@ -25,6 +25,7 @@ const searchLoader = async (api: ApiManager, request: Request) => {
 
     const queryBody: QueryBody = {
         pageIndex: pageIndex ?? 0,
+        pageSize: 12,
         ...query && { searchQuery: query },
         ...category && { category },
         ...sort && {
@@ -41,4 +42,4 @@ const searchLoader = async (api: ApiManager, request: Request) => {
     return { searchData, queryBody };
 }
 
-export default searchLoader;
+export default searchPageLoader;
