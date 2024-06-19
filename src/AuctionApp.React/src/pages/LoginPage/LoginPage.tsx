@@ -12,7 +12,7 @@ import './LoginPage.css';
 export default function LoginPage() {
     const navigate = useNavigate();
 
-    const api = useApi().api;
+    const api = useApi();
 
     const {
         register,

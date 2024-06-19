@@ -1,6 +1,6 @@
 import { useLoaderData, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { getSearchQuery, productDtoToProduct } from '../../common';
+import { getQuery, productDtoToProduct } from '../../common';
 import { ProductDto } from '../../api/openapi-generated';
 import SearchResultCard from '../../components/Search/SearchResultCard';
 import SearchPanel from '../../components/Search/SearchPanel';
@@ -24,9 +24,11 @@ export default function SearchPage() {
             pageIndex: value - 1,
         };
 
-        const searchQueryString = getSearchQuery(modifiedQuery);
+        const searchQueryString = getQuery(modifiedQuery);
 
         navigate(searchQueryString);
+
+        window.scrollTo(0, 0);
     }
 
     useEffect(() => {

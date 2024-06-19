@@ -1,25 +1,26 @@
 import { TextField, Typography } from "@mui/material";
-import { CreateProductFormFieldProps } from "./CreateProductFormTypes";
+import { ManageProductFormFieldProps } from "./ManageProductFormTypes";
 
-const CreateProductTextMultilineFormField: React.FC<CreateProductFormFieldProps> = ({
+const ManageProductTextFormField: React.FC<ManageProductFormFieldProps> = ({
     type,
     placeholder,
     name,
     register,
     error,
     valueAsNumber,
+    defaultValue,
 }) => (
     <div className="flex flex-col">
         <Typography className="mb-1">{placeholder}</Typography>
         <TextField
             type={type}
-            multiline
-            rows={4}
+            variant="outlined"
             placeholder={placeholder}
+            defaultValue={defaultValue}
             {...register(name, { valueAsNumber })}
         />
         {error && <span className="error-message">{error.message}</span>}
     </div>
 );
 
-export default CreateProductTextMultilineFormField;
+export default ManageProductTextFormField;

@@ -10,7 +10,7 @@ import { Button } from "@mui/material";
 
 function HomePage() {
 
-    const { api } = useApi();
+    const api = useApi();
 
     const { upcomingProducts, mostActiveProducts } = useLoaderData();
 

@@ -1,9 +1,8 @@
 import { Box, Typography, Tooltip, IconButton, Avatar, Menu, MenuItem, Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useApi } from "../../contexts/ApiContext";
 import AddCardIcon from '@mui/icons-material/AddCard';
 import { useNavigate } from "react-router-dom";
-import { User } from "../../api/ApiManager";
 import AddBalanceDialog from "./AddBalanceDialog";
 
 import './UserInfo.css';
@@ -12,13 +11,7 @@ export default function UserInfo() {
 
     const navigate = useNavigate();
 
-    const { api, didUserLoad, user } = useApi();
-
-    const [userState, setUser] = useState<User | null>(api.user);
-
-    useEffect(() => {
-        setUser(user);
-    }, [didUserLoad, user]);
+    const api = useApi();
 
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -29,8 +22,8 @@ export default function UserInfo() {
     const [addBalanceOpen, setAddBalanceOpen] = useState(false);
 
     const settings = [
-        { title: 'My Profile', action: () => { } },
-        { title: 'Create Product', action: () => { navigate("/create-product"); } },
+        { title: 'My Profile', action: () => { navigate("/me"); window.scrollTo(0, 0); } },
+        { title: 'Create Product', action: () => { navigate("/create-product"); window.scrollTo(0, 0); } },
         { title: 'Logout', action: () => { api.logout(); navigate(0); } },
     ];
 
@@ -38,13 +31,13 @@ export default function UserInfo() {
         <div className='user-info items-center'>
 
             {
-                userState ?
+                api.user ?
 
                     <Box className='flex items-center'>
 
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu}>
-                                <Avatar alt={userState.userName?.charAt(0)} src="./src" />
+                                <Avatar alt={api.user.userName?.charAt(0)} src="./src" />
                             </IconButton>
                         </Tooltip>
 
@@ -68,12 +61,12 @@ export default function UserInfo() {
                             <div className="menu-user-info">
 
                                 <Typography className="menu-user-name">
-                                    {userState.userName}
+                                    {api.user.userName}
                                 </Typography>
 
                                 <div key="user-balance" className='user-balance'>
                                     <Typography>
-                                        {userState.balance} $
+                                        {api.user.balance} $
                                     </Typography>
                                     <Tooltip title="Add balance">
                                         <IconButton

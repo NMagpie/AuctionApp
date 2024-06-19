@@ -19,6 +19,8 @@ export class User {
 
     userName: string | null | undefined;
 
+    email: string | null | undefined;
+
     balance: number | null | undefined;
 }
 
@@ -171,6 +173,7 @@ export default class ApiManager {
             id: data.id!,
             userName: data.userName!,
             balance: data.balance!,
+            email: data.email!,
         };
 
         this.user = updatedUser;

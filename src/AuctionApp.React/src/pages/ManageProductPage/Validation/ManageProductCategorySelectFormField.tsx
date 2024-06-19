@@ -1,19 +1,20 @@
 import { Select, Typography } from "@mui/material";
-import { CreateProductFormFieldProps } from "./CreateProductFormTypes";
+import { ManageProductFormFieldProps } from "./ManageProductFormTypes";
 
-const CreateProductCategorySelectFormField: React.FC<CreateProductFormFieldProps> = ({
+const ManageProductCategorySelectFormField: React.FC<ManageProductFormFieldProps> = ({
     placeholder,
     name,
     register,
     error,
     valueAsNumber,
     children,
+    defaultValue,
 }) => (
     <div className="flex flex-col">
         <Typography className="mb-1">{placeholder}</Typography>
         <Select
-            defaultValue=""
             placeholder={placeholder}
+            defaultValue={defaultValue}
             {...register(name, { valueAsNumber })}
         >
             {children}
@@ -22,4 +23,4 @@ const CreateProductCategorySelectFormField: React.FC<CreateProductFormFieldProps
     </div>
 );
 
-export default CreateProductCategorySelectFormField;
+export default ManageProductCategorySelectFormField;

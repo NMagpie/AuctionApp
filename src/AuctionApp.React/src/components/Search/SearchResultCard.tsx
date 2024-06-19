@@ -10,7 +10,7 @@ export default function SearchResultCard({ product }: { product: Product }) {
 
     const navigate = useNavigate();
 
-    const navigateToProduct = () => navigate(`/products/${product.id}`);
+    const navigateToProduct = () => { navigate(`/products/${product.id}`); window.scrollTo(0, 0); };
 
     const [productStatus, setProductStatus] = useState<ProductStatus>(getProductStatus(product));
 

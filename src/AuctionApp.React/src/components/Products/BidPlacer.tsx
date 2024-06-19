@@ -15,7 +15,7 @@ export default function BidPlacer({ product }: { product: Product }) {
 
     const navigate = useNavigate();
 
-    const { api } = useApi();
+    const api = useApi();
 
     const [connection, setConnection] = useState<signalR.HubConnection | null>();
 

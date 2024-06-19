@@ -13,7 +13,7 @@ export default function RegisterPage() {
 
     const navigate = useNavigate();
 
-    const api = useApi().api;
+    const api = useApi();
 
     const {
         register,

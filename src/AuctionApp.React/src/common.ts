@@ -54,7 +54,7 @@ export const getProductStatus = (product: Product): ProductStatus => {
     }
 };
 
-export const getSearchQuery = (query: QueryBody) => {
+export const getQuery = (query: QueryBody) => {
     const params: Array<string> = [];
 
     query.pageIndex && params.push(`pageIndex=${query.pageIndex}`);

@@ -1,8 +1,3 @@
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
 import { ApiProvider, useApi } from './contexts/ApiContext';
 import { Route, Navigate, createRoutesFromElements, createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from './components/NavBar/Layout';
@@ -18,13 +13,14 @@ import ErrorPage from './pages/ErrorPage/ErrorPage';
 import { SnackbarProvider } from 'notistack';
 import SearchPage from './pages/SearchPage/SearchPage';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import CreateProductPage from './pages/CreateProductPage/CreateProductPage';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import searchPageLoader from './pages/SearchPage/SearchPageLoader';
+import homePageLoader from './pages/HomePage/HomePageLoader';
+import { currentUserPageLoader, userPageLoader } from './pages/UserPage/UserPageLoader';
+import ManageProductPage from './pages/ManageProductPage/ManageProductPage';
 
 import './App.css'
-import homePageLoader from './pages/HomePage/HomePageLoader';
-import userPageLoader from './pages/UserPage/UserPageLoader';
+import editProductLoader from './pages/ManageProductPage/editProductLoader';
 
 function App() {
   return (
@@ -40,7 +36,7 @@ function App() {
 
 const AppRouter = () => {
 
-  const { api } = useApi();
+  const api = useApi();
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -75,9 +71,15 @@ const AppRouter = () => {
           errorElement={<ErrorPage />}
         />
 
+        <Route path="/me"
+          element={<UserPage />}
+          loader={async ({ request }) => currentUserPageLoader(api, request)}
+          errorElement={<ErrorPage />}
+        />
+
         <Route path="/users/:id"
           element={<UserPage />}
-          loader={async ({ params }) => userPageLoader(api, params.id)}
+          loader={async ({ params, request }) => userPageLoader(api, Number.parseInt(params.id ?? "0"), request)}
           errorElement={<ErrorPage />}
         />
 
@@ -88,7 +90,13 @@ const AppRouter = () => {
         />
 
         <Route path="/create-product"
-          element={<RequireAuth> <CreateProductPage /> </RequireAuth>}
+          element={<RequireAuth> <ManageProductPage /> </RequireAuth>}
+        />
+
+        <Route path="/edit-product/:id"
+          element={<RequireAuth> <ManageProductPage /> </RequireAuth>}
+          loader={async ({ params }) => editProductLoader(api, params.id)}
+          errorElement={<ErrorPage />}
         />
 
       </Route>
@@ -105,30 +113,16 @@ const AppRouter = () => {
 
 function RequireAuth({ children }: { children: React.ReactNode | React.ReactNode[] }) {
 
-  const { didUserLoad, user } = useApi();
+  const api = useApi();
 
-  return (
-    <>
-      {didUserLoad ?
-        user ? children : <Navigate to="/login" /> :
-        <Loading />
-      }
-    </>
-  )
+  return (api.user ? children : <Navigate to="/login" />)
 }
 
 function RequireGuest({ children }: { children: React.ReactNode | React.ReactNode[] }) {
 
-  const { didUserLoad, user } = useApi();
+  const api = useApi();
 
-  return (
-    <>
-      {didUserLoad ?
-        !user ? children : <Navigate to="/" /> :
-        <Loading />
-      }
-    </>
-  )
+  return (!api.user ? children : <Navigate to="/" />)
 }
 
 export default App;

@@ -1,26 +1,42 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import CreateProductTextFormField from './Validation/CreateProductTextFormField';
-import CreateProductTextMultilineFormField from './Validation/CreateProductTextMultilineFormField';
 import { Button, MenuItem } from '@mui/material';
 import { useApi } from '../../contexts/ApiContext';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 import { AxiosError } from 'axios';
-import { CreateProductSchema } from './Validation/CreateProductFormTypes';
-import CreateProductDateTimeFormField from './Validation/CreateProductDateTimeField';
-import CreateProductCategorySelectFormField from './Validation/CreateProductCategorySelectFormField';
 import { useSnackbar } from 'notistack';
 import { categoryList } from '../../common';
 
-import './CreateProductPage.css';
+import ManageProductCategorySelectFormField from './Validation/ManageProductCategorySelectFormField';
+import ManageProductDateTimeFormField from './Validation/ManageProductDateTimeField';
+import { ManageProductSchema } from './Validation/ManageProductFormTypes';
+import ManageProductTextFormField from './Validation/ManageProductTextFormField';
+import ManageProductTextMultilineFormField from './Validation/ManageProductTextMultilineFormField';
+import { ProductDto } from '../../api/openapi-generated';
+import dayjs from 'dayjs';
 
-function CreateProductPage() {
+import './ManageProductPage.css';
 
-    const { api } = useApi();
+function ManageProductPage() {
+
+    const productData: ProductDto = useLoaderData()?.productData;
+
+    const productExists = !!productData;
+
+    const api = useApi();
 
     const navigate = useNavigate();
 
     const { enqueueSnackbar } = useSnackbar();
+
+    const defaultValues = {
+        title: productExists ? productData.title : "",
+        description: productExists ? productData.description : "",
+        startTime: productExists ? dayjs(productData.startTime) : dayjs(),
+        endTime: productExists ? dayjs(productData.endTime) : dayjs(),
+        initialPrice: productExists ? productData.initialPrice : "",
+        category: productExists ? productData!.category!.name! : "",
+    };
 
     const {
         register,
@@ -28,13 +44,19 @@ function CreateProductPage() {
         formState: { errors },
         setError,
     } = useForm<FormData>({
-        resolver: zodResolver(CreateProductSchema),
+        resolver: zodResolver(ManageProductSchema),
     });
+
 
     const onSubmit = async (data: FormData) => {
 
-        api.products.createProduct({
-            createProductRequest: {
+        const invokeRequest = productExists ? api.products.updateProduct.bind(api.products) : api.products.createProduct.bind(api.products);
+
+        const requestType = productExists ? "updateProductRequest" : "createProductRequest";
+
+        const requestBody = {
+            ...productExists && { id: productData.id },
+            [requestType]: {
                 title: data.title,
                 description: data.description,
                 startTime: data.startTime,
@@ -42,7 +64,9 @@ function CreateProductPage() {
                 initialPrice: data.initialPrice,
                 category: data.category,
             }
-        })
+        };
+
+        invokeRequest(requestBody)
             .then((response) => navigate(`/products/${response.data.id}`))
             .catch((error) => {
 
@@ -74,67 +98,73 @@ function CreateProductPage() {
 
     return (
         <div className='create-product-body'>
-            <h1>Create Product</h1>
+            <h1>{`${productExists ? "Edit" : "Create"} Product`}</h1>
 
             <form className='create-product-form' onSubmit={handleSubmit(onSubmit)}>
 
-                <CreateProductTextFormField
+                <ManageProductTextFormField
                     type="text"
                     placeholder="Title"
                     name="title"
                     register={register}
                     error={errors.title}
+                    defaultValue={defaultValues.title}
                 />
 
-                <CreateProductTextMultilineFormField
+                <ManageProductTextMultilineFormField
                     type="text"
                     placeholder="Description"
                     name="description"
                     register={register}
                     error={errors.description}
+                    defaultValue={defaultValues.description}
                 />
 
-                <CreateProductTextFormField
+                <ManageProductTextFormField
                     type="number"
                     placeholder="Initial Price"
                     name="initialPrice"
                     register={register}
                     error={errors.initialPrice}
                     valueAsNumber
+                    defaultValue={defaultValues.initialPrice}
                 />
 
-                <CreateProductDateTimeFormField
+                <ManageProductDateTimeFormField
                     label="Start Time"
                     name="startTime"
                     register={register}
                     error={errors.startTime}
+                    defaultValue={defaultValues.startTime}
                 />
 
-                <CreateProductDateTimeFormField
+                <ManageProductDateTimeFormField
                     label="End Time"
                     name="endTime"
                     register={register}
                     error={errors.endTime}
+                    defaultValue={defaultValues.endTime}
                 />
 
-                <CreateProductCategorySelectFormField
+                <ManageProductCategorySelectFormField
                     placeholder="Category"
                     name="category"
                     register={register}
                     error={errors.category}
+                    defaultValue={defaultValues.category}
                 >
                     {categoryList.map(c => <MenuItem key={`category-${c}`} value={c}>{c}</MenuItem>)}
-                </CreateProductCategorySelectFormField>
+                </ManageProductCategorySelectFormField>
 
                 <Button
                     className="submit-button"
                     variant="outlined"
                     color="primary"
                     type="submit"
-                >Create</Button>
+                >{productExists ? "Done" : "Create"}</Button>
             </form>
         </div>
     )
 }
 
-export default CreateProductPage;
+export default ManageProductPage;

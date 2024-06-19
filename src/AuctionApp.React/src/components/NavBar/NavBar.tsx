@@ -16,7 +16,11 @@ export default function NavBar() {
             <Container>
                 <Toolbar className="bg-slate-600">
 
-                    <Link className={`logo ${isSearchBarOpen ? 'hidden' : ''} sm:flex`} to={"/"}>
+                    <Link
+                        className={`logo ${isSearchBarOpen ? 'hidden' : ''} sm:flex`}
+                        onClick={() => { window.scrollTo(0, 0); }}
+                        to={"/"}
+                    >
                         <AccountBalance className='mr-2' />
                         <Typography
                             variant="h6"

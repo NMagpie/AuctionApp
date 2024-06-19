@@ -1,6 +1,6 @@
 ﻿namespace AuctionApp.Application.Common.Models;
 
-public enum EProductSearchPresets
+public enum ProductSearchPresets
 {
     ComingSoon,
     EndingSoon,

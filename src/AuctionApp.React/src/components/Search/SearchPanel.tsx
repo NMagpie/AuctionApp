@@ -1,7 +1,7 @@
 import { EProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } from "../../api/openapi-generated";
 import { FormControl, InputLabel, Select, MenuItem, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { categoryList, getSearchQuery } from "../../common";
+import { categoryList, getQuery } from "../../common";
 import { useEffect, useState } from "react";
 
 import './SearchPanel.css';
@@ -17,7 +17,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
     const navigate = useNavigate();
 
     const navigateByQuery = () => {
-        const searchQueryString = getSearchQuery(selectedQuery);
+        const searchQueryString = getQuery(selectedQuery);
 
         navigate(searchQueryString);
     };
@@ -32,7 +32,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
             maxPrice: "",
         };
 
-        const searchQueryString = getSearchQuery(emptyQuery);
+        const searchQueryString = getQuery(emptyQuery);
 
         navigate(searchQueryString);
     };

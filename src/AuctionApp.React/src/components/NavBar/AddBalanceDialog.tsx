@@ -13,7 +13,7 @@ type Props = {
 
 function AddBalanceDialog({ open, onClose }: Props) {
 
-    const { api } = useApi();
+    const api = useApi();
 
     const { enqueueSnackbar } = useSnackbar();
 

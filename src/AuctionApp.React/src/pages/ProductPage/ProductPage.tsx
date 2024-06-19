@@ -27,7 +27,7 @@ export default function ProductPage() {
 
     const [hasMoreReviews, setHasMoreReviews] = useState(hasMore(0, reviewsData.pageSize, reviewsData.total));
 
-    const { api } = useApi();
+    const api = useApi();
 
     const addWatchlist = async () => {
         await api.userWatchlsits.createUserWatchlist({ createUserWatchlistRequest: { productId: product?.id } });
@@ -82,6 +82,7 @@ export default function ProductPage() {
 
                     <Link
                         className="flex flex-row"
+                        onClick={() => { window.scrollTo(0, 0); }}
                         to={`/users/${product?.creator?.id}`}>
                         <Avatar
                             className="mr-2"

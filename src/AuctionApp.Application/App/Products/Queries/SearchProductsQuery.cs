@@ -18,7 +18,7 @@ public class SearchProductsQuery : IRequest<PaginatedResult<ProductDto>>
 
     public string? Category { get; set; }
 
-    public EProductSearchPresets? SearchPreset { get; set; }
+    public ProductSearchPresets? SearchPreset { get; set; }
 
     public decimal? MaxPrice { get; set; }
 
@@ -94,31 +94,31 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
 
         switch (request.SearchPreset)
         {
-            case EProductSearchPresets.ComingSoon:
+            case ProductSearchPresets.ComingSoon:
                 filters.Add($"StartTime >= DateTimeOffset(\"{nearestTime}\")");
                 request.ColumnNameForSorting = "StartTime";
                 request.SortDirection = "asc";
                 break;
 
-            case EProductSearchPresets.EndingSoon:
+            case ProductSearchPresets.EndingSoon:
                 filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
                 request.ColumnNameForSorting = "EndTime";
                 request.SortDirection = "asc";
                 break;
 
-            case EProductSearchPresets.MostActive:
+            case ProductSearchPresets.MostActive:
                 filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
                 request.ColumnNameForSorting = "Bids.Count";
                 request.SortDirection = "desc";
                 break;
 
-            case EProductSearchPresets.BidHigh:
+            case ProductSearchPresets.BidHigh:
                 filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset( \"{nearestTime}\")");
                 request.ColumnNameForSorting = "Bids.Select(b => b.Amount).DefaultIfEmpty().Max()";
                 request.SortDirection = "desc";
                 break;
 
-            case EProductSearchPresets.BidLow:
+            case ProductSearchPresets.BidLow:
                 filters.Add($"StartTime <= DateTimeOffset(\"{currentTime}\") and EndTime >= DateTimeOffset(\"{nearestTime}\")");
                 request.ColumnNameForSorting = "Bids.Select(b => b.Amount).DefaultIfEmpty().Max()";
                 request.SortDirection = "asc";

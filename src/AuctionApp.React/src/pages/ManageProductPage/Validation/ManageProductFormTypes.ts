@@ -2,7 +2,7 @@ import { FieldError, UseFormRegister } from "react-hook-form";
 import { z, ZodType } from "zod";
 import { categoryList } from "../../../common";
 
-export type CreateProductFormData = {
+export type ManageProductFormData = {
     title: string;
     description: string;
     startTime: Date;
@@ -11,16 +11,16 @@ export type CreateProductFormData = {
     category: string;
 };
 
-export type CreateProductFormFieldProps = {
+export type ManageProductFormFieldProps = {
     type: string;
     placeholder: string;
-    name: CreateProductValidFieldNames;
+    name: ManageProductValidFieldNames;
     register: UseFormRegister<FormData>;
     error: FieldError | undefined;
     valueAsNumber?: boolean;
 };
 
-export type CreateProductValidFieldNames =
+export type ManageProductValidFieldNames =
     | "title"
     | "description"
     | "startTime"
@@ -40,7 +40,7 @@ const CategorySchema = z.union(
     categoryList.map(c => z.literal(c))
 );
 
-export const CreateProductSchema: ZodType<CreateProductFormData> = z
+export const ManageProductSchema: ZodType<ManageProductFormData> = z
     .object({
         title: z.string().min(1).max(256),
         description: z.string().min(1).max(2048),

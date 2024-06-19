@@ -13,7 +13,7 @@ type ReviewFormProps = {
 
 export default function ReviewForm({ productId, setReviews }: ReviewFormProps) {
 
-    const { api } = useApi();
+    const api = useApi();
 
     const { enqueueSnackbar } = useSnackbar();
 

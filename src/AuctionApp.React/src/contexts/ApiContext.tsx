@@ -1,30 +1,19 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import ApiManager, { User, baseUrl } from '../api/ApiManager';
+import ApiManager, { baseUrl } from '../api/ApiManager';
+import Loading from '../components/Loading/Loading';
 
 const apiManager = new ApiManager(baseUrl);
 
-interface ApiContextType {
-    api: ApiManager;
-    didUserLoad: boolean;
-    user: User | null;
-}
-
-const ApiContext = createContext<ApiContextType>({ api: apiManager, didUserLoad: false });
+const ApiContext = createContext<ApiManager>(apiManager);
 
 export const ApiProvider = ({ children }: { children: React.ReactNode | React.ReactNode[] }) => {
 
     const [didUserLoad, setDidLoad] = useState(false);
 
-    const [user, setUser] = useState<User | null>(null);
-
     useEffect(() => {
         const getCurrentUser = async () => {
             try {
                 await apiManager.getCurrentUser();
-
-                setUser(apiManager.user);
-            } catch (e) {
-                setUser(null);
             } finally {
                 setDidLoad(true);
             }
@@ -34,9 +23,10 @@ export const ApiProvider = ({ children }: { children: React.ReactNode | React.Re
     }, [didUserLoad, apiManager.userIdentity]);
 
 
+    if (!didUserLoad) return <Loading />;
 
     return (
-        <ApiContext.Provider value={{ api: apiManager, didUserLoad, user }}>
+        <ApiContext.Provider value={apiManager}>
             {children}
         </ApiContext.Provider>
     );

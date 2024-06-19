@@ -11,6 +11,7 @@ export default function ReviewCard({ review }: { review: ProductReviewDto }) {
 
             <Link
                 className="flex flex-row mb-2 w-fit"
+                onClick={() => { window.scrollTo(0, 0); }}
                 to={`/users/${review.user?.id}`}>
                 <Avatar
                     className="mr-2"
