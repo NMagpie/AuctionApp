@@ -23,6 +23,7 @@ export default function UserInfo() {
 
     const settings = [
         { title: 'My Profile', action: () => { navigate("/me"); window.scrollTo(0, 0); } },
+        { title: 'My Watchlist', action: () => { navigate("/me/watchlist"); window.scrollTo(0, 0); } },
         { title: 'Create Product', action: () => { navigate("/create-product"); window.scrollTo(0, 0); } },
         { title: 'Logout', action: () => { api.logout(); navigate(0); } },
     ];

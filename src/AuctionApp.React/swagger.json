@@ -204,7 +204,83 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentUserDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          }
+        },
+        "security": [
+          {
+            "oauth2": [ ]
+          }
+        ]
+      }
+    },
+    "/watchlist": {
+      "get": {
+        "tags": [
+          "CurrentUser"
+        ],
+        "operationId": "GetUserWatchlist",
+        "parameters": [
+          {
+            "name": "PageIndex",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDtoPaginatedResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDtoPaginatedResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductDtoPaginatedResult"
+                }
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"
@@ -1098,7 +1174,7 @@
             "name": "SearchPreset",
             "in": "query",
             "schema": {
-              "$ref": "#/components/schemas/EProductSearchPresets"
+              "$ref": "#/components/schemas/ProductSearchPresets"
             }
           },
           {
@@ -1132,7 +1208,7 @@
             }
           },
           {
-            "name": "UserId",
+            "name": "CreatorId",
             "in": "query",
             "schema": {
               "type": "integer",
@@ -1637,16 +1713,6 @@
         },
         "additionalProperties": false
       },
-      "EProductSearchPresets": {
-        "enum": [
-          "ComingSoon",
-          "EndingSoon",
-          "MostActive",
-          "BidHigh",
-          "BidLow"
-        ],
-        "type": "string"
-      },
       "ForgotPasswordRequest": {
         "required": [
           "email"
@@ -1895,6 +1961,16 @@
           }
         },
         "additionalProperties": false
+      },
+      "ProductSearchPresets": {
+        "enum": [
+          "ComingSoon",
+          "EndingSoon",
+          "MostActive",
+          "BidHigh",
+          "BidLow"
+        ],
+        "type": "string"
       },
       "RefreshRequest": {
         "required": [

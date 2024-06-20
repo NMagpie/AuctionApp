@@ -6,14 +6,14 @@ using Domain.Auth;
 using MediatR;
 
 namespace Application.App.Users.Commands;
-public class AddUserBalanceCommand : IRequest<UserDto>
+public class AddUserBalanceCommand : IRequest<CurrentUserDto>
 {
     public int Id { get; set; }
 
     public decimal Amount { get; set; }
 }
 
-public class AddUserBalanceCommandHandler : IRequestHandler<AddUserBalanceCommand, UserDto>
+public class AddUserBalanceCommandHandler : IRequestHandler<AddUserBalanceCommand, CurrentUserDto>
 {
     private readonly IEntityRepository _repository;
 
@@ -25,7 +25,7 @@ public class AddUserBalanceCommandHandler : IRequestHandler<AddUserBalanceComman
         _mapper = mapper;
     }
 
-    public async Task<UserDto> Handle(AddUserBalanceCommand request, CancellationToken cancellationToken)
+    public async Task<CurrentUserDto> Handle(AddUserBalanceCommand request, CancellationToken cancellationToken)
     {
         var user = await _repository.GetById<User>(request.Id)
             ?? throw new EntityNotFoundException("User cannot be found");
@@ -34,7 +34,7 @@ public class AddUserBalanceCommandHandler : IRequestHandler<AddUserBalanceComman
 
         await _repository.SaveChanges();
 
-        var userDto = _mapper.Map<User, UserDto>(user);
+        var userDto = _mapper.Map<User, CurrentUserDto>(user);
 
         return userDto;
     }

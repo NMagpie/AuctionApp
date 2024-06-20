@@ -1,4 +1,6 @@
 ﻿using Infrastructure.Persistance;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace AuctionApp.Presentation.Middlewares;
 public class TransactionMiddleware
@@ -18,7 +20,7 @@ public class TransactionMiddleware
             return;
         }
 
-        using var transaction = await dbContext.Database.BeginTransactionAsync();
+        using var transaction = await dbContext.Database.BeginTransactionAsync(IsolationLevel.Serializable);
 
         await _next(httpContext);
 

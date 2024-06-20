@@ -1,5 +1,5 @@
 .user-page-info {
-    @apply bg-white text-slate-800 rounded-lg w-full h-fit;
+    @apply bg-white text-slate-800 w-full h-fit;
 
     .user-page-info-content {
         @apply flex flex-col content-center items-center p-10 gap-5;

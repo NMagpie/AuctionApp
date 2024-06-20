@@ -23,28 +23,21 @@ function AddBalanceDialog({ open, onClose }: Props) {
         setAmount(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        api.currentUser.addUserBalance({ addUserBalanceRequest: { amount: amount } })
-            .then(() => {
+        try {
+            const { data: user } = await api.currentUser.addUserBalance({ addUserBalanceRequest: { amount: amount } })
+            onClose();
 
-                onClose();
+            setAmount(0);
 
-                setAmount(0);
-
-                if (api.user?.balance) {
-                    api.user!.balance += Number(amount);
-                }
-
-            })
-            .catch(e => {
-
-                enqueueSnackbar(e.response.data.Message, {
-                    variant: "error"
-                });
-
+            api.user!.balance = user.balance
+        } catch (e) {
+            enqueueSnackbar(e.response.data.Message, {
+                variant: "error"
             });
+        }
 
     };
 

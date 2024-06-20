@@ -1,5 +1,7 @@
-﻿namespace AuctionApp.Application.Common.Models;
-public class PagedRequest
+﻿using AuctionApp.Application.Common.Abstractions;
+
+namespace AuctionApp.Application.Common.Models;
+public class PagedRequest : IPagedRequest
 {
     public int PageIndex { get; set; }
 

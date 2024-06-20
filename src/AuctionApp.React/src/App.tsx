@@ -21,6 +21,8 @@ import ManageProductPage from './pages/ManageProductPage/ManageProductPage';
 
 import './App.css'
 import editProductLoader from './pages/ManageProductPage/editProductLoader';
+import UserWatchlistPage from './pages/UserWatchlistPage/UserWatchlistPage';
+import userWatchlistPageLoader from './pages/UserWatchlistPage/UserWatchlistPageLoader';
 
 function App() {
   return (
@@ -57,43 +59,56 @@ const AppRouter = () => {
         />
 
         <Route
-          path="/login"
+          path="login"
           element={<RequireGuest> <LoginPage /> </RequireGuest>}
         />
         <Route
-          path="/register"
+          path="register"
           element={<RequireGuest> <RegisterPage /> </RequireGuest>}
         />
 
-        <Route path="/search"
+        <Route
+          path="search"
           element={<SearchPage />}
           loader={async ({ request }) => searchPageLoader(api, request)}
           errorElement={<ErrorPage />}
         />
 
-        <Route path="/me"
-          element={<UserPage />}
+        <Route
+          path="me"
+          element={<RequireAuth> <UserPage /> </RequireAuth>}
           loader={async ({ request }) => currentUserPageLoader(api, request)}
           errorElement={<ErrorPage />}
         />
 
-        <Route path="/users/:id"
+        <Route
+          path='me/watchlist'
+          element={<RequireAuth> <UserWatchlistPage /> </RequireAuth>}
+          loader={async ({ request }) => userWatchlistPageLoader(api, request)}
+          errorElement={<ErrorPage />}
+        />
+
+        <Route
+          path="users/:id"
           element={<UserPage />}
           loader={async ({ params, request }) => userPageLoader(api, Number.parseInt(params.id ?? "0"), request)}
           errorElement={<ErrorPage />}
         />
 
-        <Route path="/products/:id"
+        <Route
+          path="products/:id"
           element={<ProductPage />}
           loader={async ({ params }) => productPageLoader(api, params.id)}
           errorElement={<ErrorPage />}
         />
 
-        <Route path="/create-product"
+        <Route
+          path="create-product"
           element={<RequireAuth> <ManageProductPage /> </RequireAuth>}
         />
 
-        <Route path="/edit-product/:id"
+        <Route
+          path="edit-product/:id"
           element={<RequireAuth> <ManageProductPage /> </RequireAuth>}
           loader={async ({ params }) => editProductLoader(api, params.id)}
           errorElement={<ErrorPage />}

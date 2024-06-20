@@ -1,5 +1,5 @@
 import ApiManager from "../../api/ApiManager";
-import { EProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } from "../../api/openapi-generated";
+import { ProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } from "../../api/openapi-generated";
 
 const searchPageLoader = async (api: ApiManager, request: Request) => {
     const url = new URL(request.url);
@@ -32,7 +32,7 @@ const searchPageLoader = async (api: ApiManager, request: Request) => {
             columnNameForSorting: sortField,
             sortDirection
         },
-        ...preset && { searchPreset: EProductSearchPresets[preset] },
+        ...preset && { searchPreset: ProductSearchPresets[preset] },
         ...minPrice && { minPrice },
         ...maxPrice && { maxPrice },
     }

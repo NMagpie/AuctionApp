@@ -5,9 +5,9 @@ import { useApi } from "../../contexts/ApiContext";
 import { useState } from "react";
 import EditIcon from '@mui/icons-material/Edit';
 import UserProductList from "../../components/UserProducts/UserProductList";
+import { useSnackbar } from "notistack";
 
 import './UserPage.css';
-import { useSnackbar } from "notistack";
 
 export default function UserPage() {
 
@@ -20,7 +20,7 @@ export default function UserPage() {
     const { enqueueSnackbar } = useSnackbar();
 
     const navigateToPage = (_, value: number) => {
-        navigate(`/users/${user.id}?pageIndex=${value - 1}`, { replace: true, preventScrollReset: false });
+        navigate(`/users/${user.id}?pageIndex=${value - 1}`, { replace: true });
 
         window.scrollTo(0, 0);
     };
@@ -49,6 +49,8 @@ export default function UserPage() {
                             userName: editUsername,
                         }
                     });
+
+                    await api.getCurrentUser();
 
                     setUsername(data.userName);
 

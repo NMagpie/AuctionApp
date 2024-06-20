@@ -44,7 +44,7 @@ public static class QueryableExtensions
     {
         if (!string.IsNullOrWhiteSpace(pagedRequest.ColumnNameForSorting))
         {
-            query = query.OrderBy(pagedRequest.ColumnNameForSorting + " " + pagedRequest.SortDirection);
+            query = query.OrderBy($"{pagedRequest.ColumnNameForSorting} {pagedRequest.SortDirection}");
         }
         return query;
     }

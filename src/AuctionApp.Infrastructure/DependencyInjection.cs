@@ -1,4 +1,6 @@
 ﻿using Application.Common.Abstractions;
+using AuctionApp.Application.Common.Abstractions;
+using AuctionApp.Infrastructure.Persistance.Repositories;
 using Domain.Auth;
 using Infrastructure.Persistance;
 using Infrastructure.Persistance.Repositories;
@@ -35,7 +37,8 @@ public static class DependencyInjection
         });
 
         services
-            .AddScoped<IEntityRepository, EntityRepository>();
+            .AddScoped<IEntityRepository, EntityRepository>()
+            .AddScoped<IProductQueryRepository, ProductQueryRepository>();
 
         return services;
     }

@@ -248,23 +248,6 @@ export interface CurrentUserDto {
 /**
  * 
  * @export
- * @enum {string}
- */
-
-export const EProductSearchPresets = {
-    ComingSoon: 'ComingSoon',
-    EndingSoon: 'EndingSoon',
-    MostActive: 'MostActive',
-    BidHigh: 'BidHigh',
-    BidLow: 'BidLow'
-} as const;
-
-export type EProductSearchPresets = typeof EProductSearchPresets[keyof typeof EProductSearchPresets];
-
-
-/**
- * 
- * @export
  * @interface ForgotPasswordRequest
  */
 export interface ForgotPasswordRequest {
@@ -567,6 +550,23 @@ export interface ProductReviewDtoPaginatedResult {
      */
     'items'?: Array<ProductReviewDto> | null;
 }
+/**
+ * 
+ * @export
+ * @enum {string}
+ */
+
+export const ProductSearchPresets = {
+    ComingSoon: 'ComingSoon',
+    EndingSoon: 'EndingSoon',
+    MostActive: 'MostActive',
+    BidHigh: 'BidHigh',
+    BidLow: 'BidLow'
+} as const;
+
+export type ProductSearchPresets = typeof ProductSearchPresets[keyof typeof ProductSearchPresets];
+
+
 /**
  * 
  * @export
@@ -1063,6 +1063,49 @@ export const CurrentUserApiAxiosParamCreator = function (configuration?: Configu
         },
         /**
          * 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserWatchlist: async (pageIndex?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/watchlist`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+            if (pageIndex !== undefined) {
+                localVarQueryParameter['PageIndex'] = pageIndex;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['PageSize'] = pageSize;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {UpdateUserRequest} [updateUserRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1114,7 +1157,7 @@ export const CurrentUserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addUserBalance(addUserBalanceRequest?: AddUserBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+        async addUserBalance(addUserBalanceRequest?: AddUserBalanceRequest, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.addUserBalance(addUserBalanceRequest, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
@@ -1134,6 +1177,17 @@ export const CurrentUserApiFp = function(configuration?: Configuration) {
          */
         async getCurrentUser(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<CurrentUserDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getCurrentUser(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserWatchlist(pageIndex?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserWatchlist(pageIndex, pageSize, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -1162,7 +1216,7 @@ export const CurrentUserApiFactory = function (configuration?: Configuration, ba
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addUserBalance(addUserBalanceRequest?: AddUserBalanceRequest, options?: any): AxiosPromise<void> {
+        addUserBalance(addUserBalanceRequest?: AddUserBalanceRequest, options?: any): AxiosPromise<CurrentUserDto> {
             return localVarFp.addUserBalance(addUserBalanceRequest, options).then((request) => request(axios, basePath));
         },
         /**
@@ -1180,6 +1234,16 @@ export const CurrentUserApiFactory = function (configuration?: Configuration, ba
          */
         getCurrentUser(options?: any): AxiosPromise<CurrentUserDto> {
             return localVarFp.getCurrentUser(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserWatchlist(pageIndex?: number, pageSize?: number, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
+            return localVarFp.getUserWatchlist(pageIndex, pageSize, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1205,6 +1269,27 @@ export interface CurrentUserApiAddUserBalanceRequest {
      * @memberof CurrentUserApiAddUserBalance
      */
     readonly addUserBalanceRequest?: AddUserBalanceRequest
+}
+
+/**
+ * Request parameters for getUserWatchlist operation in CurrentUserApi.
+ * @export
+ * @interface CurrentUserApiGetUserWatchlistRequest
+ */
+export interface CurrentUserApiGetUserWatchlistRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrentUserApiGetUserWatchlist
+     */
+    readonly pageIndex?: number
+
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrentUserApiGetUserWatchlist
+     */
+    readonly pageSize?: number
 }
 
 /**
@@ -1257,6 +1342,17 @@ export class CurrentUserApi extends BaseAPI {
      */
     public getCurrentUser(options?: AxiosRequestConfig) {
         return CurrentUserApiFp(this.configuration).getCurrentUser(options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {CurrentUserApiGetUserWatchlistRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof CurrentUserApi
+     */
+    public getUserWatchlist(requestParameters: CurrentUserApiGetUserWatchlistRequest = {}, options?: AxiosRequestConfig) {
+        return CurrentUserApiFp(this.configuration).getUserWatchlist(requestParameters.pageIndex, requestParameters.pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -2710,16 +2806,16 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {number} [pageIndex] 
          * @param {number} [pageSize] 
          * @param {string} [category] 
-         * @param {EProductSearchPresets} [searchPreset] 
+         * @param {ProductSearchPresets} [searchPreset] 
          * @param {number} [maxPrice] 
          * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
-         * @param {number} [userId] 
+         * @param {number} [creatorId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts: async (searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, userId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchProducts: async (searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Products`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2768,8 +2864,8 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
                 localVarQueryParameter['SortDirection'] = sortDirection;
             }
 
-            if (userId !== undefined) {
-                localVarQueryParameter['UserId'] = userId;
+            if (creatorId !== undefined) {
+                localVarQueryParameter['CreatorId'] = creatorId;
             }
 
 
@@ -2870,17 +2966,17 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          * @param {number} [pageIndex] 
          * @param {number} [pageSize] 
          * @param {string} [category] 
-         * @param {EProductSearchPresets} [searchPreset] 
+         * @param {ProductSearchPresets} [searchPreset] 
          * @param {number} [maxPrice] 
          * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
-         * @param {number} [userId] 
+         * @param {number} [creatorId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, userId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, userId, options);
+        async searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, creatorId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -2937,17 +3033,17 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * @param {number} [pageIndex] 
          * @param {number} [pageSize] 
          * @param {string} [category] 
-         * @param {EProductSearchPresets} [searchPreset] 
+         * @param {ProductSearchPresets} [searchPreset] 
          * @param {number} [maxPrice] 
          * @param {number} [minPrice] 
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
-         * @param {number} [userId] 
+         * @param {number} [creatorId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: EProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, userId?: number, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
-            return localVarFp.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, userId, options).then((request) => request(axios, basePath));
+        searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
+            return localVarFp.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, creatorId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3040,10 +3136,10 @@ export interface ProductsApiSearchProductsRequest {
 
     /**
      * 
-     * @type {EProductSearchPresets}
+     * @type {ProductSearchPresets}
      * @memberof ProductsApiSearchProducts
      */
-    readonly searchPreset?: EProductSearchPresets
+    readonly searchPreset?: ProductSearchPresets
 
     /**
      * 
@@ -3078,7 +3174,7 @@ export interface ProductsApiSearchProductsRequest {
      * @type {number}
      * @memberof ProductsApiSearchProducts
      */
-    readonly userId?: number
+    readonly creatorId?: number
 }
 
 /**
@@ -3150,7 +3246,7 @@ export class ProductsApi extends BaseAPI {
      * @memberof ProductsApi
      */
     public searchProducts(requestParameters: ProductsApiSearchProductsRequest = {}, options?: AxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.pageSize, requestParameters.category, requestParameters.searchPreset, requestParameters.maxPrice, requestParameters.minPrice, requestParameters.columnNameForSorting, requestParameters.sortDirection, requestParameters.userId, options).then((request) => request(this.axios, this.basePath));
+        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.pageSize, requestParameters.category, requestParameters.searchPreset, requestParameters.maxPrice, requestParameters.minPrice, requestParameters.columnNameForSorting, requestParameters.sortDirection, requestParameters.creatorId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**

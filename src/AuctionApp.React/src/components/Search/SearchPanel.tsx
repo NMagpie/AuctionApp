@@ -1,4 +1,4 @@
-import { EProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } from "../../api/openapi-generated";
+import { ProductSearchPresets, ProductsApiSearchProductsRequest as QueryBody } from "../../api/openapi-generated";
 import { FormControl, InputLabel, Select, MenuItem, Button, TextField } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { categoryList, getQuery } from "../../common";
@@ -41,7 +41,7 @@ function SearchPanel({ query }: { query: QueryBody }) {
         setSelectedQuery({
             ...selectedQuery,
             pageIndex: 0,
-            searchPreset: EProductSearchPresets[e.target.value] ?? "none",
+            searchPreset: ProductSearchPresets[e.target.value] ?? "none",
         });
     };
 

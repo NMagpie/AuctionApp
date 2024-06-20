@@ -1,5 +1,5 @@
 import { Tooltip, IconButton } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductDto } from '../../api/openapi-generated';
 import { productDtoToProduct } from '../../common';
 import { useApi } from '../../contexts/ApiContext';
@@ -20,6 +20,10 @@ function UserProductList({ products, editMode }) {
     const navigate = useNavigate();
 
     const api = useApi();
+
+    useEffect(() => {
+        setProductsState(products);
+    }, [products]);
 
     const isProductEditable = (product: ProductDto): boolean => {
         const editableTime = Date.parse(product.startTime) - 5 * 60_000;
@@ -42,7 +46,15 @@ function UserProductList({ products, editMode }) {
                 variant: "info"
             });
         } catch (e) {
-            showEditError();
+
+            if (e.response.status == 422) {
+                showEditError();
+            } else {
+                enqueueSnackbar(e, {
+                    variant: "error"
+                });
+            }
+
         }
     };
 
@@ -106,7 +118,7 @@ function UserProductList({ products, editMode }) {
                 </div>
             </>
             :
-            <h2>User hasn't created any of products...</h2>
+            <h2>{`${editMode ? "You have" : "User has"}n't created any of products...`}</h2>
     );
 }
 

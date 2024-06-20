@@ -1,0 +1,15 @@
+.user-watchlist-body {
+    @apply bg-white text-slate-700 flex flex-col content-center items-center p-10 gap-5;
+
+    .user-watchlist-results {
+        @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8;
+
+        .product-delete-button {
+            @apply absolute top-1 z-10 bg-slate-500;
+        }
+    }
+
+    .pagination {
+        @apply mt-5 lg:mt-auto;
+    }
+}

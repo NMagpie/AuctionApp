@@ -14,5 +14,7 @@ namespace AuctionApp.Domain.Models
         public int ProductId { get; set; }
 
         public Product? Product { get; set; }
+
+        public DateTimeOffset Created { get; set; }
     }
 }

@@ -1,6 +1,9 @@
-﻿using Application.App.Queries;
+﻿using Application.App.Products.Responses;
+using Application.App.Queries;
 using Application.App.Users.Commands;
 using Application.App.Users.Responses;
+using AuctionApp.Application.App.Products.Queries;
+using AuctionApp.Application.Common.Models;
 using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -26,7 +29,7 @@ public class CurrentUserController : AppBaseController
         _mapper = mapper;
     }
 
-    [HttpGet()]
+    [HttpGet]
     [SwaggerOperation(OperationId = nameof(GetCurrentUser))]
     public async Task<ActionResult<CurrentUserDto>> GetCurrentUser()
     {
@@ -39,7 +42,7 @@ public class CurrentUserController : AppBaseController
 
     [HttpPost("add-balance")]
     [SwaggerOperation(OperationId = nameof(AddUserBalance))]
-    public async Task<ActionResult> AddUserBalance(AddUserBalanceRequest addUserBalanceRequest)
+    public async Task<ActionResult<CurrentUserDto>> AddUserBalance(AddUserBalanceRequest addUserBalanceRequest)
     {
         var userId = GetUserId();
 
@@ -47,12 +50,28 @@ public class CurrentUserController : AppBaseController
 
         userCommand.Id = userId;
 
-        await _mediator.Send(userCommand);
+        var result = await _mediator.Send(userCommand);
 
-        return Ok();
+        return Ok(result);
     }
 
-    [HttpPut()]
+    [HttpGet("/watchlist")]
+    [SwaggerOperation(OperationId = nameof(GetUserWatchlist))]
+    public async Task<ActionResult<PaginatedResult<ProductDto>>> GetUserWatchlist([FromQuery] int PageIndex, [FromQuery] int PageSize)
+    {
+        var userId = GetUserId();
+
+        var result = await _mediator.Send(new GetUserWatchlistQuery()
+        {
+            UserId = userId,
+            PageIndex = PageIndex,
+            PageSize = PageSize
+        });
+
+        return Ok(result);
+    }
+
+    [HttpPut]
     [SwaggerOperation(OperationId = nameof(UpdateUser))]
     public async Task<ActionResult<CurrentUserDto>> UpdateUser(UpdateUserRequest updateUserRequest)
     {
@@ -67,7 +86,7 @@ public class CurrentUserController : AppBaseController
         return Ok(userDto);
     }
 
-    [HttpDelete()]
+    [HttpDelete]
     [SwaggerOperation(OperationId = nameof(DeleteUser))]
     public async Task<ActionResult> DeleteUser()
     {
