@@ -2232,6 +2232,43 @@ export const ProductReviewsApiAxiosParamCreator = function (configuration?: Conf
     return {
         /**
          * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        canUserLeaveReview: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('canUserLeaveReview', 'id', id)
+            const localVarPath = `/ProductReviews/{id}/can-post-review`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {CreateProductReviewRequest} [createProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2429,6 +2466,16 @@ export const ProductReviewsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async canUserLeaveReview(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<boolean>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.canUserLeaveReview(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {CreateProductReviewRequest} [createProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2491,6 +2538,15 @@ export const ProductReviewsApiFactory = function (configuration?: Configuration,
     return {
         /**
          * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        canUserLeaveReview(id: number, options?: any): AxiosPromise<boolean> {
+            return localVarFp.canUserLeaveReview(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {CreateProductReviewRequest} [createProductReviewRequest] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -2538,6 +2594,20 @@ export const ProductReviewsApiFactory = function (configuration?: Configuration,
         },
     };
 };
+
+/**
+ * Request parameters for canUserLeaveReview operation in ProductReviewsApi.
+ * @export
+ * @interface ProductReviewsApiCanUserLeaveReviewRequest
+ */
+export interface ProductReviewsApiCanUserLeaveReviewRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductReviewsApiCanUserLeaveReview
+     */
+    readonly id: number
+}
 
 /**
  * Request parameters for createProductReview operation in ProductReviewsApi.
@@ -2630,6 +2700,17 @@ export interface ProductReviewsApiUpdateProductReviewRequest {
  * @extends {BaseAPI}
  */
 export class ProductReviewsApi extends BaseAPI {
+    /**
+     * 
+     * @param {ProductReviewsApiCanUserLeaveReviewRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof ProductReviewsApi
+     */
+    public canUserLeaveReview(requestParameters: ProductReviewsApiCanUserLeaveReviewRequest, options?: AxiosRequestConfig) {
+        return ProductReviewsApiFp(this.configuration).canUserLeaveReview(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {ProductReviewsApiCreateProductReviewRequest} requestParameters Request parameters.

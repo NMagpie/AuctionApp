@@ -8,14 +8,15 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import ReviewForm from "../../components/Reviews/ReviewForm";
 import InfiniteScroll from "react-infinite-scroll-component";
-import ReviewCard from "../../components/Reviews/ReviewCard";
+
+import { Product, hasMore } from "../../common";
 
 import './ProductPage.css';
-import { Product, hasMore } from "../../common";
+import ReviewItem from "../../components/Reviews/ReviewItem";
 
 export default function ProductPage() {
 
-    const { productData, watshlistExists, reviewsData } = useLoaderData();
+    const { productData, watshlistExists, reviewsData, canUserLeaveReview } = useLoaderData();
 
     const [product] = useState<Product>(productData);
 
@@ -30,13 +31,13 @@ export default function ProductPage() {
     const api = useApi();
 
     const addWatchlist = async () => {
-        await api.userWatchlsits.createUserWatchlist({ createUserWatchlistRequest: { productId: product?.id } });
+        await api.userWatchlists.createUserWatchlist({ createUserWatchlistRequest: { productId: product?.id } });
 
         setWatchlist(true);
     };
 
     const removeWatchlist = async () => {
-        await api.userWatchlsits.deleteUserWatchlistByProductId({ productId: product?.id });
+        await api.userWatchlists.deleteUserWatchlistByProductId({ productId: product?.id });
 
         setWatchlist(false);
     }
@@ -137,7 +138,7 @@ export default function ProductPage() {
 
             <div className="review-section">
 
-                {api.userIdentity && <ReviewForm productId={product.id} setReviews={setReviews} />}
+                {canUserLeaveReview && <ReviewForm productId={product.id} setReviews={setReviews} />}
 
                 <div className="reviews-list">
                     <InfiniteScroll
@@ -146,7 +147,13 @@ export default function ProductPage() {
                         hasMore={hasMoreReviews}
                         loader={<h4>Loading...</h4>}
                     >
-                        {reviews.map(review => <ReviewCard key={review.id} review={review} />)}
+                        {reviews.map(review =>
+                            <ReviewItem
+                                key={review.id}
+                                review={review}
+                                isEditable={review.user?.id === api.user?.id}
+                                setReviews={setReviews}
+                            />)}
                     </InfiniteScroll>
                 </div>
             </div>

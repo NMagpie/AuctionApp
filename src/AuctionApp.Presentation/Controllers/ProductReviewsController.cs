@@ -91,4 +91,15 @@ public class ProductReviewsController : AppBaseController
 
         return Ok(result);
     }
+
+    [HttpGet("{id}/can-post-review/")]
+    [SwaggerOperation(OperationId = nameof(CanUserLeaveReview))]
+    public async Task<ActionResult<bool>> CanUserLeaveReview(int id)
+    {
+        var userId = GetUserId();
+
+        var result = await _mediator.Send(new CanUserLeaveReviewQuery() { UserId = userId, ProductId = id });
+
+        return Ok(result);
+    }
 }

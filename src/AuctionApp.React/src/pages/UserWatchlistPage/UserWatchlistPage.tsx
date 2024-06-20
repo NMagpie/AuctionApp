@@ -34,7 +34,7 @@ function UserWatchlistPage() {
 
     const deleteItem = async (productId: number) => {
         try {
-            await api.userWatchlsits.deleteUserWatchlistByProductId({ productId: productId });
+            await api.userWatchlists.deleteUserWatchlistByProductId({ productId: productId });
 
             const updatedWatchlist = userWatchlist.filter((p: ProductDto) => p.id !== productId);
 

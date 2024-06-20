@@ -1,0 +1,7 @@
+.review-item {
+    @apply relative;
+
+    .review-manage-button {
+        @apply absolute top-1 z-10 bg-slate-500;
+    }
+}

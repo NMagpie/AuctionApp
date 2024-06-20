@@ -11,23 +11,13 @@ const productPageLoader = async (api: ApiManager, id: string) => {
 
     const { data: reviewsData } = await api.productReviews.getPagedReviews({ productId: intId, pageIndex: 0 });
 
-    // const date = new Date();
-
-    // date.setHours(date.getHours() + 1);
-
-    // productData.endTime = date;
-
-    // const date1 = new Date();
-
-    // date1.setSeconds(date1.getSeconds());
-
-    // productData.startTime = date1;
-
     let watshlistExists = false;
+
+    let canUserLeaveReview = false;
 
     if (api.userIdentity) {
         try {
-            await api.userWatchlsits.existsUserWatchlistByProductId({ productId: intId })
+            await api.userWatchlists.existsUserWatchlistByProductId({ productId: intId });
 
             watshlistExists = true;
         } catch (e) {
@@ -35,9 +25,11 @@ const productPageLoader = async (api: ApiManager, id: string) => {
                 throw e;
             }
         }
+
+        canUserLeaveReview = (await api.productReviews.canUserLeaveReview({ id: intId, })).data;
     }
 
-    return { productData, watshlistExists, reviewsData };
+    return { productData, watshlistExists, reviewsData, canUserLeaveReview };
 };
 
 export default productPageLoader;

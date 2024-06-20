@@ -8,14 +8,21 @@ import './ReviewForm.css';
 
 type ReviewFormProps = {
     productId: number,
+    review?: ProductReviewDto,
     setReviews: React.Dispatch<SetStateAction<ProductReviewDto[]>>,
+    setEditMode: React.Dispatch<SetStateAction<boolean>>,
+    setReviewState: React.Dispatch<React.SetStateAction<ProductReviewDto>>,
 };
 
-export default function ReviewForm({ productId, setReviews }: ReviewFormProps) {
+export default function ReviewForm({ productId, review, setReviews, setEditMode, setReviewState }: ReviewFormProps) {
 
     const api = useApi();
 
     const { enqueueSnackbar } = useSnackbar();
+
+    const [rating, setRating] = useState(review?.rating ?? 0);
+
+    const [reviewText, setReviewText] = useState<string | null>(review?.reviewText ?? "");
 
     const onSubmit = async (e) => {
         e.preventDefault();
@@ -34,39 +41,59 @@ export default function ReviewForm({ productId, setReviews }: ReviewFormProps) {
             return;
         }
 
-        api.productReviews
-            .createProductReview({
-                createProductReviewRequest:
-                {
-                    productId: productId,
-                    rating: rating,
-                    reviewText: reviewText,
-                }
-            })
-            .then(({ data }) => {
-                setRating(0);
-                setReviewText("");
+        const invokeRequest = review ?
+            api.productReviews.updateProductReview.bind(api.productReviews) :
+            api.productReviews.createProductReview.bind(api.productReviews);
 
-                setReviews((prevReviews) => [
-                    data,
-                    ...prevReviews
-                ]);
+        const requestType = review ? "updateProductReviewRequest" : "createProductReviewRequest";
+
+        const requestBody = {
+            ...review && { id: review.id },
+            [requestType]: {
+                productId: productId,
+                rating: rating,
+                reviewText: reviewText,
+            }
+        };
+
+        invokeRequest(requestBody)
+            .then(({ data }) => {
+
+                if (!review) {
+                    setRating(0);
+                    setReviewText("");
+
+                    setReviews((prevReviews) => [
+                        data,
+                        ...prevReviews
+                    ]);
+                } else {
+                    setReviewState((prevState: ProductReviewDto) => {
+                        return {
+                            ...prevState,
+                            rating: rating,
+                            ...reviewText && { reviewText },
+                        };
+                    });
+
+                    setEditMode(false);
+                }
+
             })
-            .catch(e =>
-                enqueueSnackbar(e.message, {
+            .catch(e => {
+                const msg = e?.response?.status === 422 ? "Cannot put review: product sell is not finished" : e;
+
+                enqueueSnackbar(msg, {
                     variant: "error"
-                })
+                });
+            }
             );
     };
 
-    const [rating, setRating] = useState(0);
-
-    const [reviewText, setReviewText] = useState<string | undefined>(undefined);
-
     return (
-        <form className='review-form-body'>
+        <form className={`${review ? "bg-white p-5" : "bg-slate-100"} review-form-body`}>
             <h3 className='mt-0'>
-                Leave a review:
+                {review ? "Edit review" : "How was your bidding? Please, leave a review:"}
             </h3>
 
             <Rating

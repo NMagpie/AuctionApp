@@ -36,12 +36,17 @@ public class CreateProductReviewCommandHandler : IRequestHandler<CreateProductRe
         var user = await _entityRepository.GetById<User>(request.UserId)
             ?? throw new EntityNotFoundException("User cannot be found");
 
-        var product = await _entityRepository.GetById<Product>(request.ProductId)
+        var product = await _entityRepository.GetByIdWithInclude<Product>(request.ProductId, p => p.Bids)
             ?? throw new EntityNotFoundException("Product cannot be found");
 
         if (product.EndTime >= DateTimeOffset.UtcNow)
         {
             throw new BusinessValidationException("Cannot put review: product sell is not finished");
+        }
+
+        if (product.Bids.All(b => b.UserId != request.UserId))
+        {
+            throw new BusinessValidationException("You did not participate in the selling");
         }
 
         var productReview = _mapper.Map<CreateProductReviewCommand, ProductReview>(request);

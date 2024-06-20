@@ -38,7 +38,7 @@ export default class ApiManager {
 
     currentUser: CurrentUserApi;
 
-    userWatchlsits: UserWatchlistsApi;
+    userWatchlists: UserWatchlistsApi;
 
     userIdentity: UserIdentity | null;
 
@@ -67,7 +67,7 @@ export default class ApiManager {
 
         this.currentUser = new CurrentUserApi(configuration, undefined, this.axios);
 
-        this.userWatchlsits = new UserWatchlistsApi(configuration, undefined, this.axios);
+        this.userWatchlists = new UserWatchlistsApi(configuration, undefined, this.axios);
 
         const userIdentityString = localStorage.getItem('userIdentity');
 

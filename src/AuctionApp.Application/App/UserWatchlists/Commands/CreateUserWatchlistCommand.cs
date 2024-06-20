@@ -37,7 +37,7 @@ public class CreateUserWatchlistCommandHandler : IRequestHandler<CreateUserWatch
 
         var userWatchlist = _mapper.Map<CreateUserWatchlistCommand, UserWatchlist>(request);
 
-        userWatchlist.Created = DateTimeOffset.Now;
+        userWatchlist.Created = DateTimeOffset.UtcNow;
 
         await _repository.Add(userWatchlist);
 
