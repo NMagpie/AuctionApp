@@ -20,9 +20,9 @@ function CategoryItem({ category }: { category: string }) {
             <img
                 className={itemHovered ? "scale-125" : ""}
                 src={itemHovered ?
-                    `./src/assets/${category}-Color-Category.png`
+                    `./src/assets/Category-Buttons/${category}-Color-Category.png`
                     :
-                    `./src/assets/${category}-Category.png`}
+                    `./src/assets/Category-Buttons/${category}-Category.png`}
                 alt={`category-${category}`}
             />
             <label className="mt-5">{category}</label>

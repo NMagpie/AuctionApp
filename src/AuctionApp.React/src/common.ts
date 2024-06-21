@@ -10,6 +10,7 @@ export type Product = {
     initialPrice: number;
     startTime: Date | null;
     endTime: Date | null;
+    category: string,
     bids: Set<BidDto>;
 };
 
@@ -22,6 +23,7 @@ export const productDtoToProduct = (productDto: ProductDto) => {
         initialPrice: productDto.initialPrice,
         startTime: productDto.startTime ? new Date(productDto.startTime) : null,
         endTime: productDto.endTime ? new Date(productDto.endTime) : null,
+        category: productDto.category?.name ?? "Other",
         bids: productDto.bids ?? [],
     };
 
@@ -86,3 +88,13 @@ export const categoryList = [
     "Books",
     "Other"
 ];
+
+export const getProductImage = (category: string) => {
+
+    if (categoryList.includes(category)) {
+        return `/src/assets/Category-Photos/${category}.jpg`;
+    } else {
+        return `/src/assets/Category-Photos/Other.jpg`;
+    }
+
+}

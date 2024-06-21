@@ -1,17 +1,23 @@
 import { useLoaderData, useNavigate } from "react-router-dom";
-import { Avatar, Button, Pagination, TextField, Typography } from "@mui/material";
+import { Avatar, Button, Pagination, Tab, Tabs, TextField, Typography } from "@mui/material";
 import Divider from '@mui/material/Divider';
 import { useApi } from "../../contexts/ApiContext";
 import { useState } from "react";
 import EditIcon from '@mui/icons-material/Edit';
-import UserProductList from "../../components/UserProducts/UserProductList";
+import UserProductList from "../../components/UserPageSections/UserProductList";
 import { useSnackbar } from "notistack";
+import UserWatchlistList from "../../components/UserPageSections/UserWatchlistList";
+import UserParticipatedList from "../../components/UserPageSections/UserParticipatedList";
+
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import GavelIcon from '@mui/icons-material/Gavel';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 import './UserPage.css';
 
 export default function UserPage() {
 
-    const { user, userProductsData } = useLoaderData();
+    const { user, userProductsData, tab } = useLoaderData();
 
     const api = useApi();
 
@@ -20,7 +26,7 @@ export default function UserPage() {
     const { enqueueSnackbar } = useSnackbar();
 
     const navigateToPage = (_, value: number) => {
-        navigate(`/users/${user.id}?pageIndex=${value - 1}`, { replace: true });
+        navigate(`/${isEditable ? "me" : `users/${user.id}`}?tab=${tab}&pageIndex=${value - 1}`, { replace: true });
 
         window.scrollTo(0, 0);
     };
@@ -65,6 +71,8 @@ export default function UserPage() {
         setEditMode(!editMode);
     };
 
+    const tabStyle = (tabValue: string) => tab === tabValue ? "text-slate-900" : "text-slate-500";
+
     return (
         <div className="user-page-info">
 
@@ -99,11 +107,42 @@ export default function UserPage() {
 
                 <Divider className="bg-black border-slate-700 border-solid w-1/2" />
 
-                <Typography className="font-bold" variant="h5">Products:</Typography>
+                <Tabs
+                    TabIndicatorProps={{ style: { display: "none" } }}
+                    className="bg-slate-300 px-5 py-1"
+                    value={tab}
+                    onChange={(_, value) => { navigate(`/${isEditable ? "me" : `users/${user.id}`}?tab=${value}`); }}
+                >
 
-                <UserProductList products={userProductsData.items} editMode={editMode} />
+                    <Tab
+                        icon={<ShoppingBagIcon />}
+                        className={`w-1/3 overflow-visible ${tabStyle("products")}`}
+                        value="products"
+                        label="Products"
+                    />
+                    {isEditable &&
+                        <Tab
+                            icon={<BookmarkIcon />}
+                            className={`w-1/3 overflow-visible ${tabStyle("watchlist")}`}
+                            value="watchlist"
+                            label="Watchlist"
+                        />}
+                    <Tab
+                        icon={<GavelIcon />}
+                        className={`w-1/3 overflow-visible ${tabStyle("participated")}`}
+                        value="participated"
+                        label="Participated"
+                    />
 
-                <Pagination
+                </Tabs>
+
+                {tab === "products" && <UserProductList products={userProductsData.items} editMode={editMode} />}
+
+                {tab === "watchlist" && <UserWatchlistList products={userProductsData.items} />}
+
+                {tab === "participated" && <UserParticipatedList products={userProductsData.items} userId={user.id} />}
+
+                {userProductsData.items.length !== 0 && <Pagination
                     className='mt-5 lg:mt-auto'
                     color="primary"
                     variant="outlined"
@@ -114,7 +153,7 @@ export default function UserPage() {
                     showFirstButton
                     showLastButton
                     size='large'
-                />
+                />}
             </div>
 
         </div>

@@ -82,13 +82,6 @@ const AppRouter = () => {
         />
 
         <Route
-          path='me/watchlist'
-          element={<RequireAuth> <UserWatchlistPage /> </RequireAuth>}
-          loader={async ({ request }) => userWatchlistPageLoader(api, request)}
-          errorElement={<ErrorPage />}
-        />
-
-        <Route
           path="users/:id"
           element={<UserPage />}
           loader={async ({ params, request }) => userPageLoader(api, Number.parseInt(params.id ?? "0"), request)}

@@ -1,7 +1,7 @@
 import { Card, CardActionArea, CardMedia, CardContent, Button } from '@mui/material';
 import CountDown from '../CountDown/CountDown';
 import { useState } from 'react';
-import { Product, ProductStatus, getProductStatus } from '../../common';
+import { Product, ProductStatus, getProductImage, getProductStatus } from '../../common';
 import { useNavigate } from 'react-router-dom';
 
 import './SearchResultCard.css';
@@ -48,7 +48,7 @@ export default function SearchResultCard({ product }: { product: Product }) {
                 <CardMedia
                     className={`card-image ${cardHovered && "scale-125"}`}
                     component="img"
-                    image="https://bidpro.webdevia.com/wp-content/uploads/2018/05/alexander-andrews-BX4Q0gojWAs-unsplash.jpg"
+                    image={getProductImage(product.category)}
                     alt={`product-${product.id}`}
                 />
 

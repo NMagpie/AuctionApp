@@ -1,4 +1,4 @@
-import { Tooltip, IconButton } from '@mui/material';
+import { Tooltip, IconButton, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { ProductDto } from '../../api/openapi-generated';
 import { productDtoToProduct } from '../../common';
@@ -73,7 +73,10 @@ function UserProductList({ products, editMode }) {
     return (
         productsState.length ?
             <>
+                <Typography className="font-bold" variant="h5">Products:</Typography>
+
                 <div className="user-product-list">
+
                     {productsState.map((product: ProductDto) => {
 
                         const isEditable = isProductEditable(product);
@@ -89,7 +92,7 @@ function UserProductList({ products, editMode }) {
                                             title="Delete"
                                         >
                                             <IconButton
-                                                className={`product-card-edit-button right-1 ${isEditable ? "text-white" : "text-slate-400"}`} >
+                                                className={`product-manage-button right-1 ${isEditable ? "text-white" : "text-slate-400"}`} >
                                                 <DeleteIcon />
                                             </IconButton>
                                         </Tooltip>
@@ -100,7 +103,7 @@ function UserProductList({ products, editMode }) {
                                             title="Edit"
                                         >
                                             <IconButton
-                                                className={`product-card-edit-button right-12 ${isEditable ? "text-white" : "text-slate-400"}`}>
+                                                className={`product-manage-button right-12 ${isEditable ? "text-white" : "text-slate-400"}`}>
                                                 <EditIcon />
                                             </IconButton>
                                         </Tooltip>
@@ -118,7 +121,7 @@ function UserProductList({ products, editMode }) {
                 </div>
             </>
             :
-            <h2>{`${editMode ? "You have" : "User has"}n't created any of products...`}</h2>
+            <h2>Empty!</h2>
     );
 }
 

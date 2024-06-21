@@ -3,6 +3,10 @@
 
     .user-page-info-content {
         @apply flex flex-col content-center items-center p-10 gap-5;
+
+        .MuiTabs-flexContainer {
+            @apply flex-wrap justify-center;
+        }
     }
 
     .edit-button {

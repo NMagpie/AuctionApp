@@ -90,6 +90,37 @@ public class ProductQueryRepository : IProductQueryRepository
         };
     }
 
+    public async Task<PaginatedResult<TDto>> GetProductsUserParticipated<TDto>(GetProductsUserParticipatedQuery requestQuery)
+    where TDto : class
+    {
+        var query = _auctionAppDbContext
+            .Set<Product>()
+            .Where(p => p.Bids.Any(b => b.UserId == requestQuery.UserId))
+            .Select(p => new
+            {
+                Product = p,
+                LatestBidTime = p.Bids.Any() ? p.Bids.Max(b => b.CreateTime) : DateTimeOffset.MinValue
+            })
+            .OrderByDescending(x => x.LatestBidTime)
+            .Select(x => x.Product);
+
+        var total = await query.CountAsync();
+
+        var projectionResult = query.ProjectTo<TDto>(_mapper.ConfigurationProvider);
+
+        projectionResult = Paginate(requestQuery, projectionResult);
+
+        var listResult = await projectionResult.ToListAsync();
+
+        return new PaginatedResult<TDto>()
+        {
+            Items = listResult,
+            PageSize = requestQuery.PageSize,
+            PageIndex = requestQuery.PageIndex,
+            Total = total
+        };
+    }
+
     private IQueryable<Product> Filter(SearchProductsQuery requestQuery, IQueryable<Product> query)
     {
         if (!string.IsNullOrEmpty(requestQuery.SearchQuery))

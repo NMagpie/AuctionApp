@@ -3833,6 +3833,49 @@ export const UsersApiAxiosParamCreator = function (configuration?: Configuration
                 options: localVarRequestOptions,
             };
         },
+        /**
+         * 
+         * @param {number} id 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserParticipatedProducts: async (id: number, pageIndex?: number, pageSize?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('getUserParticipatedProducts', 'id', id)
+            const localVarPath = `/Users/{id}/participated`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (pageIndex !== undefined) {
+                localVarQueryParameter['PageIndex'] = pageIndex;
+            }
+
+            if (pageSize !== undefined) {
+                localVarQueryParameter['PageSize'] = pageSize;
+            }
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
     }
 };
 
@@ -3851,6 +3894,18 @@ export const UsersApiFp = function(configuration?: Configuration) {
          */
         async getUser(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<UserDto>> {
             const localVarAxiosArgs = await localVarAxiosParamCreator.getUser(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {number} id 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getUserParticipatedProducts(id: number, pageIndex?: number, pageSize?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getUserParticipatedProducts(id, pageIndex, pageSize, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
     }
@@ -3872,6 +3927,17 @@ export const UsersApiFactory = function (configuration?: Configuration, basePath
         getUser(id: number, options?: any): AxiosPromise<UserDto> {
             return localVarFp.getUser(id, options).then((request) => request(axios, basePath));
         },
+        /**
+         * 
+         * @param {number} id 
+         * @param {number} [pageIndex] 
+         * @param {number} [pageSize] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserParticipatedProducts(id: number, pageIndex?: number, pageSize?: number, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
+            return localVarFp.getUserParticipatedProducts(id, pageIndex, pageSize, options).then((request) => request(axios, basePath));
+        },
     };
 };
 
@@ -3890,6 +3956,34 @@ export interface UsersApiGetUserRequest {
 }
 
 /**
+ * Request parameters for getUserParticipatedProducts operation in UsersApi.
+ * @export
+ * @interface UsersApiGetUserParticipatedProductsRequest
+ */
+export interface UsersApiGetUserParticipatedProductsRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof UsersApiGetUserParticipatedProducts
+     */
+    readonly id: number
+
+    /**
+     * 
+     * @type {number}
+     * @memberof UsersApiGetUserParticipatedProducts
+     */
+    readonly pageIndex?: number
+
+    /**
+     * 
+     * @type {number}
+     * @memberof UsersApiGetUserParticipatedProducts
+     */
+    readonly pageSize?: number
+}
+
+/**
  * UsersApi - object-oriented interface
  * @export
  * @class UsersApi
@@ -3905,6 +3999,17 @@ export class UsersApi extends BaseAPI {
      */
     public getUser(requestParameters: UsersApiGetUserRequest, options?: AxiosRequestConfig) {
         return UsersApiFp(this.configuration).getUser(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {UsersApiGetUserParticipatedProductsRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersApi
+     */
+    public getUserParticipatedProducts(requestParameters: UsersApiGetUserParticipatedProductsRequest, options?: AxiosRequestConfig) {
+        return UsersApiFp(this.configuration).getUserParticipatedProducts(requestParameters.id, requestParameters.pageIndex, requestParameters.pageSize, options).then((request) => request(this.axios, this.basePath));
     }
 }
 

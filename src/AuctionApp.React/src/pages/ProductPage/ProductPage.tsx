@@ -8,10 +8,11 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import ReviewForm from "../../components/Reviews/ReviewForm";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Product, hasMore } from "../../common";
+import { Product, getProductImage, hasMore } from "../../common";
 import ReviewItem from "../../components/Reviews/ReviewItem";
 
 import './ProductPage.css';
+import { Image } from "@mui/icons-material";
 
 export default function ProductPage() {
 
@@ -111,8 +112,9 @@ export default function ProductPage() {
             </div>
 
             <div className="product-body">
+
                 <img
-                    src="https://bidpro.webdevia.com/wp-content/uploads/2018/05/alexander-andrews-BX4Q0gojWAs-unsplash.jpg"
+                    src={getProductImage(product.category)}
                     alt={`product-${product?.id}-img`}
                 />
 
