@@ -8,11 +8,10 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import ReviewForm from "../../components/Reviews/ReviewForm";
 import InfiniteScroll from "react-infinite-scroll-component";
-
 import { Product, hasMore } from "../../common";
+import ReviewItem from "../../components/Reviews/ReviewItem";
 
 import './ProductPage.css';
-import ReviewItem from "../../components/Reviews/ReviewItem";
 
 export default function ProductPage() {
 
@@ -141,20 +140,25 @@ export default function ProductPage() {
                 {canUserLeaveReview && <ReviewForm productId={product.id} setReviews={setReviews} />}
 
                 <div className="reviews-list">
-                    <InfiniteScroll
-                        dataLength={reviews.length}
-                        next={fetchReviews}
-                        hasMore={hasMoreReviews}
-                        loader={<h4>Loading...</h4>}
-                    >
-                        {reviews.map(review =>
-                            <ReviewItem
-                                key={review.id}
-                                review={review}
-                                isEditable={review.user?.id === api.user?.id}
-                                setReviews={setReviews}
-                            />)}
-                    </InfiniteScroll>
+                    {reviews.length ?
+                        <InfiniteScroll
+                            dataLength={reviews.length}
+                            next={fetchReviews}
+                            hasMore={hasMoreReviews}
+                            loader={<h4>Loading...</h4>}
+
+                        >
+                            {reviews.map(review =>
+                                <ReviewItem
+                                    key={review.id}
+                                    review={review}
+                                    isEditable={review.user?.id === api.user?.id}
+                                    setReviews={setReviews}
+                                />)}
+                        </InfiniteScroll>
+                        :
+                        <h2>No reviews</h2>
+                    }
                 </div>
             </div>
 

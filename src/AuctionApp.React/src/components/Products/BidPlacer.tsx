@@ -31,15 +31,19 @@ export default function BidPlacer({ product }: { product: Product }) {
         setAmount(Number(e.target.value));
     };
 
-    const placeBid = (e) => {
+    const placeBid = async (e) => {
         e.preventDefault();
-        connection
-            ?.invoke("PlaceBid", { productId: product.id, amount: amount })
-            .catch(error => {
-                enqueueSnackbar(error.message, {
-                    variant: "error"
-                });
+
+        try {
+            await connection
+                ?.invoke("PlaceBid", { productId: product.id, amount: amount })
+        } catch (error) {
+            enqueueSnackbar(error.message, {
+                variant: "error"
             });
+        }
+
+        await api.getCurrentUser();
     };
 
     useEffect(() => {

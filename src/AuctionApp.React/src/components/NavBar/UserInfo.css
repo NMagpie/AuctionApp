@@ -12,6 +12,10 @@
 .menu-user-info {
     @apply mx-4 my-2 text-center flex flex-col items-center;
 
+    .text-flex-divider {
+        @apply mt-3;
+    }
+
     .user-balance {
         @apply flex flex-row items-center;
 

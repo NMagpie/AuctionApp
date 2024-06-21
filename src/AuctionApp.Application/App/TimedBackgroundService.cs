@@ -1,5 +1,7 @@
 ﻿using Application.Common.Abstractions;
 using AuctionApp.Domain.Models;
+using Domain.Auth;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
@@ -10,14 +12,14 @@ public class TimedBackgroundService : BackgroundService
 {
     private readonly ILogger<TimedBackgroundService> _logger;
 
-    private readonly IEntityRepository _repository;
+    private readonly IServiceProvider _services;
 
     private TimeSpan _timeout;
 
-    public TimedBackgroundService(ILogger<TimedBackgroundService> logger, IEntityRepository repository)
+    public TimedBackgroundService(ILogger<TimedBackgroundService> logger, IServiceProvider services)
     {
         _logger = logger;
-        _repository = repository;
+        _services = services;
         _timeout = TimeSpan.FromMinutes(1);
     }
 
@@ -45,13 +47,31 @@ public class TimedBackgroundService : BackgroundService
     private async Task DoWork()
     {
         Expression<Func<Product, bool>> predicate = product =>
-        (product.EndTime < DateTimeOffset.UtcNow) && product.Bids.All(bid => !bid.IsWon);
+            (product.EndTime < DateTimeOffset.UtcNow) && !product.SellingFinished;
 
-        var finishedProducts = await _repository.GetByPredicate<Product>(predicate);
+        using var scope = _services.CreateScope();
+
+        var scopedRepository = scope.ServiceProvider.GetRequiredService<IEntityRepository>();
+
+        var finishedProducts = await scopedRepository.GetByPredicate(predicate, p => p.Bids);
 
         foreach (Product product in finishedProducts)
         {
-                //think about further logic and implement
+            var wonBid = product.Bids.Where(b => b.IsWon).FirstOrDefault();
+
+            if (wonBid != null)
+            {
+                var wonUser = await scopedRepository.GetById<User>(wonBid.UserId);
+
+                if (wonUser != null)
+                {
+                    wonUser.Balance -= wonBid.Amount;
+                }
+            }
+
+            product.SellingFinished = true;
+
+            await scopedRepository.SaveChanges();
         }
     }
 }

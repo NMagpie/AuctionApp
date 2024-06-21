@@ -1,8 +1,8 @@
 import { Box, Typography, Tooltip, IconButton, Avatar, Menu, MenuItem, Button } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useApi } from "../../contexts/ApiContext";
 import AddCardIcon from '@mui/icons-material/AddCard';
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import AddBalanceDialog from "./AddBalanceDialog";
 
 import './UserInfo.css';
@@ -10,6 +10,8 @@ import './UserInfo.css';
 export default function UserInfo() {
 
     const navigate = useNavigate();
+
+    const { pathname } = useLocation();
 
     const api = useApi();
 
@@ -20,6 +22,16 @@ export default function UserInfo() {
     const handleCloseUserMenu = () => setAnchorElUser(null);
 
     const [addBalanceOpen, setAddBalanceOpen] = useState(false);
+
+    const [user, setUser] = useState(api.user);
+
+    useEffect(() => {
+        setUser(api.user);
+    }, [api.user]);
+
+    useEffect(() => {
+        api.getCurrentUser();
+    }, [pathname])
 
     const settings = [
         { title: 'My Profile', action: () => { navigate("/me"); window.scrollTo(0, 0); } },
@@ -32,13 +44,13 @@ export default function UserInfo() {
         <div className='user-info items-center'>
 
             {
-                api.user ?
+                user ?
 
                     <Box className='flex items-center'>
 
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu}>
-                                <Avatar alt={api.user.userName?.charAt(0)} src="./src" />
+                                <Avatar alt={user.userName?.charAt(0)} src="./src" />
                             </IconButton>
                         </Tooltip>
 
@@ -62,22 +74,31 @@ export default function UserInfo() {
                             <div className="menu-user-info">
 
                                 <Typography className="menu-user-name">
-                                    {api.user.userName}
+                                    {user.userName}
                                 </Typography>
 
-                                <div key="user-balance" className='user-balance'>
+                                <div>
+                                    <div className="user-balance">
+                                        <Typography>
+                                            {user.balance} $
+                                        </Typography>
+
+                                        <Tooltip title="Add balance">
+                                            <IconButton
+                                                size="large"
+                                                onClick={() => { setAddBalanceOpen(true); }}
+                                                color="inherit"
+                                            >
+                                                <AddCardIcon />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                    </div>
+
                                     <Typography>
-                                        {api.user.balance} $
+                                        {user.reservedBalance} $ (reserved)
                                     </Typography>
-                                    <Tooltip title="Add balance">
-                                        <IconButton
-                                            size="large"
-                                            onClick={() => { setAddBalanceOpen(true); }}
-                                            color="inherit"
-                                        >
-                                            <AddCardIcon />
-                                        </IconButton>
-                                    </Tooltip>
+
                                     <AddBalanceDialog
                                         open={addBalanceOpen}
                                         onClose={() => { setAddBalanceOpen(false); }}

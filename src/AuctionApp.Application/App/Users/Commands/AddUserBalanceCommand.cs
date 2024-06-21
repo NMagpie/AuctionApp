@@ -1,6 +1,7 @@
 ﻿using Application.App.Users.Responses;
 using Application.Common.Abstractions;
 using Application.Common.Exceptions;
+using AuctionApp.Domain.Models;
 using AutoMapper;
 using Domain.Auth;
 using MediatR;
@@ -32,9 +33,15 @@ public class AddUserBalanceCommandHandler : IRequestHandler<AddUserBalanceComman
 
         user.Balance += request.Amount;
 
+        var userReservedBalance =
+            (await _repository.GetByPredicate<Bid>(b => b.UserId == user.Id && b.IsWon && !b.Product.SellingFinished))
+            .Sum(b => b.Amount);
+
         await _repository.SaveChanges();
 
         var userDto = _mapper.Map<User, CurrentUserDto>(user);
+
+        userDto.ReservedBalance = userReservedBalance;
 
         return userDto;
     }

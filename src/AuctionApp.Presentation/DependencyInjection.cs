@@ -1,6 +1,7 @@
 ﻿using Application;
 using AuctionApp.Presentation.Common.Configurations;
 using AuctionApp.Presentation.SignalR;
+using AuctionApp.Presentation.SignalR.Filters;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.SignalR;
@@ -46,8 +47,17 @@ public static class DependencyInjection
 
         builder.Services.AddSingleton<ExceptionHandlingHubFilter>();
 
+        builder.Services.AddScoped<TransactionHandlingHubFilter>();
+
         builder.Services
-            .AddSignalR(options => options.AddFilter<ExceptionHandlingHubFilter>());
+            .AddSignalR(options => 
+            {
+                options
+                    .AddFilter<ExceptionHandlingHubFilter>();
+
+                options
+                    .AddFilter<TransactionHandlingHubFilter>();
+            });
 
         builder.Services.TryAddEnumerable(
             ServiceDescriptor.Singleton<IPostConfigureOptions<BearerTokenOptions>,

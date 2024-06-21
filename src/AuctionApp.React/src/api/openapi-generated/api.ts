@@ -244,6 +244,12 @@ export interface CurrentUserDto {
      * @memberof CurrentUserDto
      */
     'balance'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CurrentUserDto
+     */
+    'reservedBalance'?: number;
 }
 /**
  * 

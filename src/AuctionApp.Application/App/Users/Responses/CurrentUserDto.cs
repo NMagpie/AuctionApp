@@ -10,4 +10,6 @@ public class CurrentUserDto
     public required string PhoneNumber { get; set; }
 
     public decimal Balance { get; set; }
+
+    public decimal ReservedBalance { get; set; }
 }

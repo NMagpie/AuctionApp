@@ -19,6 +19,8 @@ public class Product : IEntity
 
     public DateTimeOffset? EndTime { get; set; }
 
+    public bool SellingFinished { get; set; }
+
     public decimal InitialPrice { get; set; }
 
     public ICollection<Bid>? Bids { get; set; } = [];

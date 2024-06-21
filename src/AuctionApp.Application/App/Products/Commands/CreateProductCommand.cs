@@ -47,6 +47,8 @@ public class CreateProductCommandHandler : IRequestHandler<CreateProductCommand,
 
         product.Category = category;
 
+        product.SellingFinished = false;
+
         await _repository.Add(product);
 
         await _repository.SaveChanges();

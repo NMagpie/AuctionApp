@@ -1761,6 +1761,10 @@
           "balance": {
             "type": "number",
             "format": "double"
+          },
+          "reservedBalance": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false

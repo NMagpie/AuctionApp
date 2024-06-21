@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 
-namespace AuctionApp.Presentation.SignalR;
+namespace AuctionApp.Presentation.SignalR.Filters;
 public class ExceptionHandlingHubFilter : IHubFilter
 {
     public async ValueTask<object?> InvokeMethodAsync(
