@@ -18,11 +18,9 @@ import searchPageLoader from './pages/SearchPage/SearchPageLoader';
 import homePageLoader from './pages/HomePage/HomePageLoader';
 import { currentUserPageLoader, userPageLoader } from './pages/UserPage/UserPageLoader';
 import ManageProductPage from './pages/ManageProductPage/ManageProductPage';
+import editProductLoader from './pages/ManageProductPage/editProductLoader';
 
 import './App.css'
-import editProductLoader from './pages/ManageProductPage/editProductLoader';
-import UserWatchlistPage from './pages/UserWatchlistPage/UserWatchlistPage';
-import userWatchlistPageLoader from './pages/UserWatchlistPage/UserWatchlistPageLoader';
 
 function App() {
   return (

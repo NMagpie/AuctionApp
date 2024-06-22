@@ -2,7 +2,7 @@
     @apply text-slate-700 mx-5 lg:mx-10;
 
     .search-title {
-        @apply text-center lg:text-start break-words;
+        @apply text-center lg:text-start overflow-hidden text-ellipsis;
     }
 
     .search-page-body {

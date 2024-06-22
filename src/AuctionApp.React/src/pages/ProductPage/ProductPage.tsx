@@ -65,13 +65,13 @@ export default function ProductPage() {
                 <Typography
                     className="product-brief-title hidden lg:block"
                     variant="h3">
-                    {product?.title?.substring(0, 50)}
+                    {product?.title}
                 </Typography>
 
                 <Typography
                     className="product-brief-title lg:hidden"
                     variant="h4">
-                    {product?.title?.substring(0, 50)}
+                    {product?.title}
                 </Typography>
 
                 <div className="creator-info">
@@ -131,7 +131,7 @@ export default function ProductPage() {
                 </Typography>
 
                 <Typography
-                    className="text-xl font-medium mb-5">
+                    className="text-xl font-medium mb-5 break-words">
                     {product?.description}
                 </Typography>
 

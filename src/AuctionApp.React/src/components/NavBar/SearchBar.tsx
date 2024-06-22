@@ -1,10 +1,11 @@
 import { IconButton } from "@mui/material";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchBarInput from "./SearchBarInput";
 
 import './SearchBar.css';
+import { useApi } from "../../contexts/ApiContext";
 
 type SearchBarProps = {
     isSearchBarOpen: boolean;
@@ -12,7 +13,6 @@ type SearchBarProps = {
 }
 
 export default function SearchBar({ isSearchBarOpen, setSearchBarOpen }: SearchBarProps) {
-
     const [inputValue, setInputValue] = useState('');
 
     const handleInputChange = (e) => {
@@ -35,7 +35,10 @@ export default function SearchBar({ isSearchBarOpen, setSearchBarOpen }: SearchB
 
                         </IconButton>
 
-                        <SearchBarInput inputValue={inputValue} handleInputChange={handleInputChange} />
+                        <SearchBarInput
+                            inputValue={inputValue}
+                            handleInputChange={handleInputChange}
+                        />
                     </>
                     :
                     <IconButton
@@ -52,7 +55,10 @@ export default function SearchBar({ isSearchBarOpen, setSearchBarOpen }: SearchB
             </div>
 
             <div className="grow hidden sm:flex">
-                <SearchBarInput inputValue={inputValue} handleInputChange={handleInputChange} />
+                <SearchBarInput
+                    inputValue={inputValue}
+                    handleInputChange={handleInputChange}
+                />
             </div>
         </>
     );

@@ -53,7 +53,7 @@ public class UpdateProductCommandHandler : IRequestHandler<UpdateProductCommand,
             throw new InvalidUserException("You do not have permission to modify this data");
         }
 
-        if (product.StartTime <= DateTime.UtcNow + TimeSpan.FromMinutes(5))
+        if (product.StartTime <= DateTimeOffset.UtcNow + TimeSpan.FromMinutes(5))
         {
             throw new BusinessValidationException("Cannot edit products of 5 minutes before its selling start");
         }

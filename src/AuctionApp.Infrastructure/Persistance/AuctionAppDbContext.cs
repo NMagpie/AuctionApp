@@ -14,6 +14,8 @@ public class AuctionAppDbContext : IdentityDbContext<User, IdentityRole<int>, in
 
     public DbSet<ProductReview> ProductReviews { get; set; } = default!;
 
+    public DbSet<SearchRecord> SearchRecords { get; set; } = default!;
+
     public DbSet<Bid> Bids { get; set; } = default!;
 
     public DbSet<Category> Categories { get; set; } = default!;

@@ -87,6 +87,10 @@ public class ProductsController : AppBaseController
     [SwaggerOperation(OperationId = nameof(SearchProducts))]
     public async Task<ActionResult<PaginatedResult<ProductDto>>> SearchProducts([FromQuery] SearchProductsQuery query)
     {
+        var userId = GetUserId();
+
+        query.UserId = userId == 0 ? null : userId;
+
         var result = await _mediator.Send(query);
 
         return Ok(result);

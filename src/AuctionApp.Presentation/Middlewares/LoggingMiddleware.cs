@@ -13,8 +13,8 @@ public class LoggingMiddleware
 
     public async Task Invoke(HttpContext ctx)
     {
-        var startTime = DateTime.UtcNow;
+        var startTime = DateTimeOffset.UtcNow;
         await _next.Invoke(ctx);
-        _logger.LogInformation($"The request {ctx.Connection.Id}: {(DateTime.UtcNow - startTime).TotalMilliseconds} ms");
+        _logger.LogInformation($"The request {ctx.Connection.Id}: {(DateTimeOffset.UtcNow - startTime).TotalMilliseconds} ms");
     }
 }

@@ -37,7 +37,15 @@ const searchPageLoader = async (api: ApiManager, request: Request) => {
         ...maxPrice && { maxPrice },
     }
 
-    const { data: searchData } = await api.products.searchProducts(queryBody);
+    const authOptions = {
+        ...api.userIdentity && {
+            headers: {
+                Authorization: `Bearer ${await api.retrieveAccessToken()}`,
+            }
+        },
+    };
+
+    const { data: searchData } = await api.products.searchProducts(queryBody, authOptions);
 
     return { searchData, queryBody };
 }

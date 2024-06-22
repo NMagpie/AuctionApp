@@ -1,5 +1,5 @@
 .search-bar {
-    @apply flex w-3/4 mx-auto bg-slate-200 transition-colors rounded-md;
+    @apply flex w-3/4 mx-auto bg-slate-200 transition-colors relative;
 
     button {
         @apply text-black my-auto mx-2;

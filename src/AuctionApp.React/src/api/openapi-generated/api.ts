@@ -646,6 +646,68 @@ export interface ResetPasswordRequest {
 /**
  * 
  * @export
+ * @interface SearchRecordDto
+ */
+export interface SearchRecordDto {
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchRecordDto
+     */
+    'id'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchRecordDto
+     */
+    'userId'?: number;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchRecordDto
+     */
+    'searchQuery'?: string | null;
+    /**
+     * 
+     * @type {string}
+     * @memberof SearchRecordDto
+     */
+    'lastUserAt'?: string;
+}
+/**
+ * 
+ * @export
+ * @interface SearchRecordDtoPaginatedResult
+ */
+export interface SearchRecordDtoPaginatedResult {
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchRecordDtoPaginatedResult
+     */
+    'pageIndex'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchRecordDtoPaginatedResult
+     */
+    'pageSize'?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchRecordDtoPaginatedResult
+     */
+    'total'?: number;
+    /**
+     * 
+     * @type {Array<SearchRecordDto>}
+     * @memberof SearchRecordDtoPaginatedResult
+     */
+    'items'?: Array<SearchRecordDto> | null;
+}
+/**
+ * 
+ * @export
  * @interface TwoFactorRequest
  */
 export interface TwoFactorRequest {
@@ -2899,10 +2961,11 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
          * @param {number} [creatorId] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts: async (searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        searchProducts: async (searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, userId?: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             const localVarPath = `/Products`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
@@ -2953,6 +3016,10 @@ export const ProductsApiAxiosParamCreator = function (configuration?: Configurat
 
             if (creatorId !== undefined) {
                 localVarQueryParameter['CreatorId'] = creatorId;
+            }
+
+            if (userId !== undefined) {
+                localVarQueryParameter['UserId'] = userId;
             }
 
 
@@ -3059,11 +3126,12 @@ export const ProductsApiFp = function(configuration?: Configuration) {
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
          * @param {number} [creatorId] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
-            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, creatorId, options);
+        async searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, userId?: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<ProductDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, creatorId, userId, options);
             return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
         },
         /**
@@ -3126,11 +3194,12 @@ export const ProductsApiFactory = function (configuration?: Configuration, baseP
          * @param {string} [columnNameForSorting] 
          * @param {string} [sortDirection] 
          * @param {number} [creatorId] 
+         * @param {number} [userId] 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
-            return localVarFp.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, creatorId, options).then((request) => request(axios, basePath));
+        searchProducts(searchQuery?: string, pageIndex?: number, pageSize?: number, category?: string, searchPreset?: ProductSearchPresets, maxPrice?: number, minPrice?: number, columnNameForSorting?: string, sortDirection?: string, creatorId?: number, userId?: number, options?: any): AxiosPromise<ProductDtoPaginatedResult> {
+            return localVarFp.searchProducts(searchQuery, pageIndex, pageSize, category, searchPreset, maxPrice, minPrice, columnNameForSorting, sortDirection, creatorId, userId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -3262,6 +3331,13 @@ export interface ProductsApiSearchProductsRequest {
      * @memberof ProductsApiSearchProducts
      */
     readonly creatorId?: number
+
+    /**
+     * 
+     * @type {number}
+     * @memberof ProductsApiSearchProducts
+     */
+    readonly userId?: number
 }
 
 /**
@@ -3333,7 +3409,7 @@ export class ProductsApi extends BaseAPI {
      * @memberof ProductsApi
      */
     public searchProducts(requestParameters: ProductsApiSearchProductsRequest = {}, options?: AxiosRequestConfig) {
-        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.pageSize, requestParameters.category, requestParameters.searchPreset, requestParameters.maxPrice, requestParameters.minPrice, requestParameters.columnNameForSorting, requestParameters.sortDirection, requestParameters.creatorId, options).then((request) => request(this.axios, this.basePath));
+        return ProductsApiFp(this.configuration).searchProducts(requestParameters.searchQuery, requestParameters.pageIndex, requestParameters.pageSize, requestParameters.category, requestParameters.searchPreset, requestParameters.maxPrice, requestParameters.minPrice, requestParameters.columnNameForSorting, requestParameters.sortDirection, requestParameters.creatorId, requestParameters.userId, options).then((request) => request(this.axios, this.basePath));
     }
 
     /**
@@ -3345,6 +3421,185 @@ export class ProductsApi extends BaseAPI {
      */
     public updateProduct(requestParameters: ProductsApiUpdateProductRequest, options?: AxiosRequestConfig) {
         return ProductsApiFp(this.configuration).updateProduct(requestParameters.id, requestParameters.updateProductRequest, options).then((request) => request(this.axios, this.basePath));
+    }
+}
+
+
+/**
+ * SearchRecordsApi - axios parameter creator
+ * @export
+ */
+export const SearchRecordsApiAxiosParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSearchRecord: async (id: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'id' is not null or undefined
+            assertParamExists('deleteSearchRecord', 'id', id)
+            const localVarPath = `/SearchRecords/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecentSearches: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/SearchRecords`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * SearchRecordsApi - functional programming interface
+ * @export
+ */
+export const SearchRecordsApiFp = function(configuration?: Configuration) {
+    const localVarAxiosParamCreator = SearchRecordsApiAxiosParamCreator(configuration)
+    return {
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteSearchRecord(id: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteSearchRecord(id, options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getRecentSearches(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<SearchRecordDtoPaginatedResult>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.getRecentSearches(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+    }
+};
+
+/**
+ * SearchRecordsApi - factory interface
+ * @export
+ */
+export const SearchRecordsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+    const localVarFp = SearchRecordsApiFp(configuration)
+    return {
+        /**
+         * 
+         * @param {number} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteSearchRecord(id: number, options?: any): AxiosPromise<void> {
+            return localVarFp.deleteSearchRecord(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getRecentSearches(options?: any): AxiosPromise<SearchRecordDtoPaginatedResult> {
+            return localVarFp.getRecentSearches(options).then((request) => request(axios, basePath));
+        },
+    };
+};
+
+/**
+ * Request parameters for deleteSearchRecord operation in SearchRecordsApi.
+ * @export
+ * @interface SearchRecordsApiDeleteSearchRecordRequest
+ */
+export interface SearchRecordsApiDeleteSearchRecordRequest {
+    /**
+     * 
+     * @type {number}
+     * @memberof SearchRecordsApiDeleteSearchRecord
+     */
+    readonly id: number
+}
+
+/**
+ * SearchRecordsApi - object-oriented interface
+ * @export
+ * @class SearchRecordsApi
+ * @extends {BaseAPI}
+ */
+export class SearchRecordsApi extends BaseAPI {
+    /**
+     * 
+     * @param {SearchRecordsApiDeleteSearchRecordRequest} requestParameters Request parameters.
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SearchRecordsApi
+     */
+    public deleteSearchRecord(requestParameters: SearchRecordsApiDeleteSearchRecordRequest, options?: AxiosRequestConfig) {
+        return SearchRecordsApiFp(this.configuration).deleteSearchRecord(requestParameters.id, options).then((request) => request(this.axios, this.basePath));
+    }
+
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SearchRecordsApi
+     */
+    public getRecentSearches(options?: AxiosRequestConfig) {
+        return SearchRecordsApiFp(this.configuration).getRecentSearches(options).then((request) => request(this.axios, this.basePath));
     }
 }
 

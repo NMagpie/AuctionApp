@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { Configuration, BidsApi, IdentityApi, UsersApi, CurrentUserApi, UserWatchlistsApi, AccessTokenResponse, CurrentUserDto, ProductReviewsApi, ProductsApi } from "../api/openapi-generated";
+import { Configuration, BidsApi, IdentityApi, UsersApi, CurrentUserApi, UserWatchlistsApi, AccessTokenResponse, CurrentUserDto, ProductReviewsApi, ProductsApi, SearchRecordsApi } from "../api/openapi-generated";
 
 export const baseUrl: string = process.env.REACT_APP_BASE_URL;
 
@@ -44,32 +44,32 @@ export default class ApiManager {
 
     userIdentity: UserIdentity | null;
 
+    searchRecords: SearchRecordsApi;
+
     user: User | null;
 
-    axios: AxiosInstance;
-
     constructor(baseUrl: string) {
-
-        this.axios = axios.create();
 
         const configuration = new Configuration({
             basePath: baseUrl,
             accessToken: () => this.retrieveAccessToken()
         });
 
-        this.productReviews = new ProductReviewsApi(configuration, undefined, this.axios);
+        this.productReviews = new ProductReviewsApi(configuration);
 
-        this.products = new ProductsApi(configuration, undefined, this.axios);
+        this.products = new ProductsApi(configuration);
 
-        this.bids = new BidsApi(configuration, undefined, this.axios);
+        this.bids = new BidsApi(configuration);
 
-        this.identity = new IdentityApi(configuration, undefined, this.axios);
+        this.identity = new IdentityApi(configuration);
 
-        this.users = new UsersApi(configuration, undefined, this.axios);
+        this.users = new UsersApi(configuration);
 
-        this.currentUser = new CurrentUserApi(configuration, undefined, this.axios);
+        this.currentUser = new CurrentUserApi(configuration);
 
-        this.userWatchlists = new UserWatchlistsApi(configuration, undefined, this.axios);
+        this.userWatchlists = new UserWatchlistsApi(configuration);
+
+        this.searchRecords = new SearchRecordsApi(configuration);
 
         const userIdentityString = localStorage.getItem('userIdentity');
 

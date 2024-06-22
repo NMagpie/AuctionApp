@@ -3,7 +3,6 @@ using Application.Common.Abstractions;
 using Application.Common.Exceptions;
 using AuctionApp.Application.Common.Abstractions;
 using AuctionApp.Application.Common.Models;
-using AutoMapper;
 using Domain.Auth;
 using MediatR;
 
