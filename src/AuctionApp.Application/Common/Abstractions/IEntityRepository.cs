@@ -21,6 +21,8 @@ public interface IEntityRepository
 
     Task RemoveRange<T>(List<int> ids) where T : class, IEntity;
 
+    Task RemoveByPredicate<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity;
+
     Task SaveChanges();
 
     Task<PaginatedResult<TDto>> GetPagedData<TEntity, TDto>(PagedRequest pagedRequest, params Expression<Func<TEntity, object>>[] includeProperties)

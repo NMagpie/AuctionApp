@@ -1,7 +1,10 @@
 .records-stack {
-    @apply absolute top-10 text-slate-800 bg-slate-300 w-[calc(100%-2.5rem-2px)] px-5 border-solid border-x border-b border-t-0 border-slate-800;
+    @apply absolute top-10 -left-px text-slate-800 bg-slate-300 w-[calc(100%+0.5px)] border-solid border-x border-b border-t-0 border-slate-800;
 
-    p:hover {
-        /* @apply ; */
+    .search-record-button {
+
+        text-transform: none;
+
+        @apply w-full my-2;
     }
 }

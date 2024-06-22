@@ -4,6 +4,7 @@ using AuctionApp.Application.Common.Abstractions;
 using AuctionApp.Application.Common.Models;
 using AuctionApp.Domain.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace AuctionApp.Application.App.Products.Queries;
 
@@ -50,7 +51,7 @@ public class SearchProductsQueryHandler : IRequestHandler<SearchProductsQuery, P
         {
             var searchRecord = (await _entityRepository.GetByPredicate<SearchRecord>(
                 r => r.UserId == request.UserId &&
-                r.SearchQuery == request.SearchQuery
+                r.SearchQuery == EF.Functions.Collate(request.SearchQuery, "SQL_Latin1_General_CP1_CS_AS")
                 )).FirstOrDefault();
 
             if (searchRecord == null)

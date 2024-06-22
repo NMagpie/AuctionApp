@@ -12,10 +12,8 @@ public class DeleteSearchRecordCommand : IRequest
     public int UserId { get; set; }
 }
 
-
 public class DeleteSearchRecordCommandHandler : IRequestHandler<DeleteSearchRecordCommand>
 {
-
     private readonly IEntityRepository _repository;
 
     public DeleteSearchRecordCommandHandler(IEntityRepository repository)

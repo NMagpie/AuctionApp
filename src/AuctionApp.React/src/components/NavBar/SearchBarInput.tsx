@@ -5,27 +5,30 @@ import { useEffect, useState } from "react";
 import SearchRecordsList from "./SearchRecordsList";
 import { useApi } from "../../contexts/ApiContext";
 import { SearchRecordDto } from "../../api/openapi-generated";
+import useComponentVisible from "../../hooks/useComponentVisible";
 
-type SearchBarInputProps = {
-    inputValue: string,
-    handleInputChange: (e: any) => void,
-};
+import './SearchBarInput.css';
 
-export default function SearchBarInput({ inputValue, handleInputChange }: SearchBarInputProps) {
+function SearchBarInput() {
+
     const api = useApi();
 
     const navigate = useNavigate();
 
+    const { ref, isComponentVisible, setIsComponentVisible } = useComponentVisible(false);
+
     const [searchRecords, setSearchRecords] = useState<SearchRecordDto[]>([]);
 
-    const [focused, setFocused] = useState(false);
-    const onFocus = () => setFocused(true);
-    const onBlur = () => setFocused(false);
+    const [inputValue, setInputValue] = useState('');
+
+    const handleInputChange = (e) => {
+        setInputValue(e.target.value);
+    };
 
     const search = (e) => {
         e.preventDefault();
 
-        setFocused(false);
+        setIsComponentVisible(false);
 
         navigate(`/search?q=${inputValue}`);
 
@@ -55,17 +58,21 @@ export default function SearchBarInput({ inputValue, handleInputChange }: Search
 
     return (
         <form
-            className={`search-bar ${inputValue && 'search-bar-active'} ${focused && searchRecords.length ? "rounded-t-md" : "rounded-md"}`}
+            ref={ref}
+            className={`search-bar 
+                ${inputValue && 'search-bar-active'} 
+                ${isComponentVisible && searchRecords.length ? "rounded-t-md" : "rounded-md"}`}
         >
 
             <SearchRecordsList
-                focused={focused}
+                focused={isComponentVisible}
                 searchRecords={searchRecords}
+                setSearchRecords={setSearchRecords}
+                setIsComponentVisible={setIsComponentVisible}
             />
 
             <InputBase
-                onFocus={onFocus}
-                onBlur={onBlur}
+                onFocus={() => setIsComponentVisible(true)}
                 className='grow px-3'
                 placeholder='Search...'
                 value={inputValue}
@@ -82,3 +89,5 @@ export default function SearchBarInput({ inputValue, handleInputChange }: Search
         </form>
     );
 }
+
+export default SearchBarInput;

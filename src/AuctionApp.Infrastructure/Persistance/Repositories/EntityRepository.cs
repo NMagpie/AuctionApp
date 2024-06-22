@@ -82,7 +82,24 @@ public class EntityRepository : IEntityRepository
             .AsQueryable()
             .Where(e => ids.Contains(e.Id));
 
-        _auctionAppDbContext.Set<T>().RemoveRange(query);
+        _auctionAppDbContext
+            .Set<T>()
+            .RemoveRange(query);
+
+        return Task.CompletedTask;
+    }
+
+    public Task RemoveByPredicate<T>(Expression<Func<T, bool>> predicate) where T : class, IEntity
+    {
+        IQueryable<T> query = _auctionAppDbContext
+            .Set<T>()
+            .AsQueryable()
+            .Where(predicate);
+
+        _auctionAppDbContext
+            .Set<T>()
+            .RemoveRange(query);
+
         return Task.CompletedTask;
     }
 

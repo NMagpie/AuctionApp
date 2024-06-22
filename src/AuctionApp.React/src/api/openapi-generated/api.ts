@@ -3433,6 +3433,39 @@ export const SearchRecordsApiAxiosParamCreator = function (configuration?: Confi
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAllSearchRecords: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/SearchRecords`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, DUMMY_BASE_URL);
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+
+            const localVarRequestOptions = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication oauth2 required
+            // http bearer authentication required
+            await setBearerAuthToObject(localVarHeaderParameter, configuration)
+
+
+    
+            setSearchParams(localVarUrlObj, localVarQueryParameter);
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: toPathString(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3513,6 +3546,15 @@ export const SearchRecordsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async deleteAllSearchRecords(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => AxiosPromise<void>> {
+            const localVarAxiosArgs = await localVarAxiosParamCreator.deleteAllSearchRecords(options);
+            return createRequestFunction(localVarAxiosArgs, globalAxios, BASE_PATH, configuration);
+        },
+        /**
+         * 
          * @param {number} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -3540,6 +3582,14 @@ export const SearchRecordsApiFp = function(configuration?: Configuration) {
 export const SearchRecordsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     const localVarFp = SearchRecordsApiFp(configuration)
     return {
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        deleteAllSearchRecords(options?: any): AxiosPromise<void> {
+            return localVarFp.deleteAllSearchRecords(options).then((request) => request(axios, basePath));
+        },
         /**
          * 
          * @param {number} id 
@@ -3581,6 +3631,16 @@ export interface SearchRecordsApiDeleteSearchRecordRequest {
  * @extends {BaseAPI}
  */
 export class SearchRecordsApi extends BaseAPI {
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof SearchRecordsApi
+     */
+    public deleteAllSearchRecords(options?: AxiosRequestConfig) {
+        return SearchRecordsApiFp(this.configuration).deleteAllSearchRecords(options).then((request) => request(this.axios, this.basePath));
+    }
+
     /**
      * 
      * @param {SearchRecordsApiDeleteSearchRecordRequest} requestParameters Request parameters.

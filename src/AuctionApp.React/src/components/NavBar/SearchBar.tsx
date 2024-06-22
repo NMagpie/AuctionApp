@@ -1,11 +1,8 @@
 import { IconButton } from "@mui/material";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import SearchIcon from '@mui/icons-material/Search';
 import CancelIcon from '@mui/icons-material/Cancel';
 import SearchBarInput from "./SearchBarInput";
-
-import './SearchBar.css';
-import { useApi } from "../../contexts/ApiContext";
 
 type SearchBarProps = {
     isSearchBarOpen: boolean;
@@ -13,53 +10,40 @@ type SearchBarProps = {
 }
 
 export default function SearchBar({ isSearchBarOpen, setSearchBarOpen }: SearchBarProps) {
-    const [inputValue, setInputValue] = useState('');
-
-    const handleInputChange = (e) => {
-        setInputValue(e.target.value);
-    };
 
     return (
-        <>
-            <div className={`flex sm:hidden ${isSearchBarOpen && 'grow'}`}>
-                {isSearchBarOpen ?
-                    <>
-                        <IconButton
-                            onClick={() => setSearchBarOpen(false)}
-                            disableRipple={true}
-                            sx={{
-                                color: "white",
-                                backgroundColor: "#bdbdbd"
-                            }}>
-                            <CancelIcon />
+        <div className={`flex sm:grow ${isSearchBarOpen && "grow"}`}>
 
-                        </IconButton>
+            {isSearchBarOpen &&
+                <IconButton
+                    className="sm:hidden"
+                    onClick={() => setSearchBarOpen(false)}
+                    disableRipple={true}
+                    sx={{
+                        color: "white",
+                        backgroundColor: "#bdbdbd"
+                    }}>
+                    <CancelIcon />
 
-                        <SearchBarInput
-                            inputValue={inputValue}
-                            handleInputChange={handleInputChange}
-                        />
-                    </>
-                    :
-                    <IconButton
-                        onClick={() => setSearchBarOpen(true)}
-                        disableRipple={true}
-                        sx={{
-                            color: "white",
-                            backgroundColor: "#bdbdbd"
-                        }}>
+                </IconButton>}
 
-                        <SearchIcon />
-
-                    </IconButton>}
+            <div className={`grow sm:block ${isSearchBarOpen ? "block" : "hidden"}`}>
+                <SearchBarInput />
             </div>
 
-            <div className="grow hidden sm:flex">
-                <SearchBarInput
-                    inputValue={inputValue}
-                    handleInputChange={handleInputChange}
-                />
-            </div>
-        </>
+            {!isSearchBarOpen &&
+                <IconButton
+                    className="sm:hidden"
+                    onClick={() => setSearchBarOpen(true)}
+                    disableRipple={true}
+                    sx={{
+                        color: "white",
+                        backgroundColor: "#bdbdbd"
+                    }}>
+
+                    <SearchIcon />
+
+                </IconButton>}
+        </div>
     );
 }

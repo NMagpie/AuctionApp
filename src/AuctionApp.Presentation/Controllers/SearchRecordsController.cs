@@ -43,4 +43,15 @@ public class SearchRecordsController : AppBaseController
 
         return Ok();
     }
+
+    [HttpDelete]
+    [SwaggerOperation(OperationId = nameof(DeleteAllSearchRecords))]
+    public async Task<ActionResult> DeleteAllSearchRecords()
+    {
+        var userId = GetUserId();
+
+        await _mediator.Send(new DeleteAllSearchRecordsCommand() { UserId = userId });
+
+        return Ok();
+    }
 }
