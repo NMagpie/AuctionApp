@@ -57,7 +57,8 @@ public class ProductQueryRepository : IProductQueryRepository
     {
         var watchlistQuery = _auctionAppDbContext
             .Set<UserWatchlist>()
-            .OrderByDescending(x => x.Created);
+            .Where(w => w.UserId == requestQuery.UserId)
+            .OrderByDescending(w => w.Created);
 
         var total = await watchlistQuery.CountAsync();
 

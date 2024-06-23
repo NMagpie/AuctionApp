@@ -38,12 +38,19 @@ export default function LoginPage() {
                         })
                     }
 
+                    if (error.response?.status == 401) {
+                        setError("password", {
+                            type: "server",
+                            message: "Incorrect Email or Password. Please, try again.",
+                        });
+                    }
+
                     const msg = Object.values(error.response?.data.errors)[0];
 
                     setError("password", {
                         type: "server",
                         message: msg,
-                    })
+                    });
                 }
             });
     }

@@ -53,7 +53,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bids");
+                    b.ToTable("Bids", (string)null);
                 });
 
             modelBuilder.Entity("AuctionApp.Domain.Models.Product", b =>
@@ -97,7 +97,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CreatorId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("AuctionApp.Domain.Models.ProductReview", b =>
@@ -130,7 +130,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProductReviews");
+                    b.ToTable("ProductReviews", (string)null);
                 });
 
             modelBuilder.Entity("AuctionApp.Domain.Models.SearchRecord", b =>
@@ -157,7 +157,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SearchRecords");
+                    b.ToTable("SearchRecords", (string)null);
                 });
 
             modelBuilder.Entity("AuctionApp.Domain.Models.UserWatchlist", b =>
@@ -184,7 +184,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId", "ProductId")
                         .IsUnique();
 
-                    b.ToTable("UserWatchlists");
+                    b.ToTable("UserWatchlists", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Auth.User", b =>
@@ -282,7 +282,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
 
                     b.HasData(
                         new
