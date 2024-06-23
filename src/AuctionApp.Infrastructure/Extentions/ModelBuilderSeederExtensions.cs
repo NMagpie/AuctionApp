@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AuctionApp.Infrastructure.Extentions;
 
-public static class ModelBuilderExtensions
+public static class ModelBuilderSeederExtensions
 {
     public static void Seed(this ModelBuilder modelBuilder)
     {
@@ -62,7 +62,7 @@ public static class ModelBuilderExtensions
                 EndTime = DateTimeOffset.UtcNow - TimeSpan.FromMinutes(i + 90),
                 SellingFinished = false,
                 InitialPrice = GenerateRandomDecimal(rand, 1, 1500),
-                CategoryId = rand.Next(1, 5),
+                CategoryId = rand.Next(1, 6),
             };
 
             products.Add(product);
@@ -81,7 +81,7 @@ public static class ModelBuilderExtensions
                 EndTime = DateTimeOffset.UtcNow + TimeSpan.FromMinutes(i - 100),
                 SellingFinished = false,
                 InitialPrice = GenerateRandomDecimal(rand, 1, 1500),
-                CategoryId = rand.Next(1, 5),
+                CategoryId = rand.Next(1, 6),
             };
 
             products.Add(product);
@@ -100,7 +100,7 @@ public static class ModelBuilderExtensions
                 EndTime = DateTimeOffset.UtcNow + TimeSpan.FromMinutes(i),
                 SellingFinished = false,
                 InitialPrice = GenerateRandomDecimal(rand, 1, 1500),
-                CategoryId = rand.Next(1, 5),
+                CategoryId = rand.Next(1, 6),
             };
 
             products.Add(product);
@@ -111,7 +111,7 @@ public static class ModelBuilderExtensions
         for (int i = 1; i <= 400; i++)
         {
 
-            var product = products[rand.Next(1, 200)];
+            var product = products[rand.Next(0, 200)];
 
             var bid = new Bid
             {
@@ -125,13 +125,29 @@ public static class ModelBuilderExtensions
             bids.Add(bid);
         }
 
+        var maxAmountsByProduct = bids
+            .GroupBy(b => b.ProductId)
+            .Select(g => new
+            {
+                ProductId = g.Key,
+                MaxAmount = g.Max(b => b.Amount)
+            }).ToList();
+
+        foreach (var maxAmount in maxAmountsByProduct)
+        {
+            bids
+                .Where(b => b.ProductId == maxAmount.ProductId && b.Amount == maxAmount.MaxAmount)
+                .ToList()
+                .ForEach(b => b.IsWon = true);
+        }
+
         var productReviews = new List<ProductReview>();
 
         for (int i = 1; i <= 300; i++)
         {
-            var user = users[rand.Next(1, 100)];
+            var user = users[rand.Next(0, 100)];
 
-            var product = products[rand.Next(1, 100)];
+            var product = products[rand.Next(0, 100)];
 
             var review = new ProductReview
             {
@@ -139,7 +155,7 @@ public static class ModelBuilderExtensions
                 UserId = user.Id,
                 ProductId = product.Id,
                 ReviewText = $"Wow, the another review no. {i} by user {user.UserName}!",
-                Rating = (float)(rand.NextDouble() * (1 - 5) + 1),
+                Rating = (float)(rand.Next(1, 11) * 0.5),
                 DateCreated = GenerateRandomDate(rand, product.StartTime.Value, product.EndTime.Value),
             };
 
@@ -148,9 +164,9 @@ public static class ModelBuilderExtensions
 
         var userWatchlists = new List<UserWatchlist>();
 
-        for (int i = 1; i <= 600; i++)
+        for (int i = 1; i <= 300; i++)
         {
-            var product = products[rand.Next(1, 300)];
+            var product = products[rand.Next(0, 300)];
 
             var startTime = product.StartTime.Value > DateTimeOffset.UtcNow ? DateTimeOffset.UtcNow : product.StartTime.Value;
 
@@ -183,7 +199,8 @@ public static class ModelBuilderExtensions
         double range = (double)(maxValue - minValue);
         double sample = random.NextDouble();
         double scaled = (sample * range) + (double)minValue;
-        return (decimal)scaled;
+
+        return decimal.Round((decimal)scaled, 2);
     }
 
     private static DateTimeOffset GenerateRandomDate(Random random, DateTimeOffset startTime, DateTimeOffset endTime)
